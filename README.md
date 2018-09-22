@@ -1,2 +1,3 @@
-# ngx-mini-store
-Angular mini store
+## ngx-mini-store
+
+Mini state management library for Angular
