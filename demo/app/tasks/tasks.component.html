@@ -1,0 +1,14 @@
+<div>Tasks:</div>
+<div *ngFor="let task of this.tasks$ | async">
+  {{task.id}} - {{task.title}}
+  <button (click)="updateTask(task)">Change</button>
+</div>
+
+<hr>
+<input [(ngModel)]="addTaskTitle" placeholder="please input task title" (keydown.enter)="addTask(addTaskTitle)">
+<button (click)="addTask(addTaskTitle)">Submit</button>
+
+
+<hr>
+
+<button (click)="patchTask()">Patch Task</button>

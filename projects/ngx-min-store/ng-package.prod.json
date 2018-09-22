@@ -1,7 +1,7 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../dist/ngx-min-store",
+  "dest": "../../built/ngx-min-store",
   "lib": {
-    "entryFile": "src/public_api.ts"
+    "entryFile": "index.ts"
   }
 }

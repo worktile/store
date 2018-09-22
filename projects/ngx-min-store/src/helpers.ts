@@ -8,20 +8,42 @@ export function findAndCreateStoreMetadata(target: any): StoreMetaInfo {
             children: [],
             instance: null
         };
-        Object.defineProperty(target, META_KEY, { value: defaultMetadata, enumerable: false });
         // target[META_KEY] = defaultMetadata;
+        Object.defineProperty(target, META_KEY, { value: defaultMetadata, enumerable: false });
     }
-    return new Proxy(target, {
-        apply: function (target1, thisArg, argumentsList) {
-            console.log(`Calculate sum: ${argumentsList}`);
-            // expected output: "Calculate sum: 1,2"
-
-            return target1(argumentsList[0], argumentsList[1]) * 10;
-        }
-    });
-    // return target[META_KEY];
+    return target[META_KEY];
 }
 
 export function isFunction(value: any) {
     return value && typeof value === 'function';
 }
+
+export function isString(value: any) {
+    return value && typeof value === 'string';
+}
+
+export function getSelectorFn(selector: any) {
+    if (isString(selector)) {
+        return fastPropGetter(selector.split('.'));
+    } else if (isFunction(selector)) {
+        return selector;
+    } else {
+        throw new Error(`this selector(${selector}) is not support.`);
+    }
+}
+export function fastPropGetter(paths: string[]): (x: any) => any {
+    const segments = paths;
+    let seg = 'state.' + segments[0];
+    let i = 0;
+    const l = segments.length;
+
+    let expr = seg;
+    while (++i < l) {
+        expr = expr + ' && ' + (seg = seg + '.' + segments[i]);
+    }
+
+    const fn = new Function('state', 'return ' + expr + ';');
+
+    return <(x: any) => any>fn;
+}
+

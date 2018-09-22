@@ -2,6 +2,7 @@
 import { Observable, Observer, BehaviorSubject, from, of, PartialObserver, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { META_KEY, StoreMetaInfo } from './types';
+import * as helpers from './helpers';
 
 interface Action {
     type: string;
@@ -40,7 +41,7 @@ export class Store<TState extends Object> implements Observer<TState> {
         if (!actionMeta) {
             throw new Error(`${action.type} is not found`);
         }
-        let result: any = this[actionMeta.fn](this.snapshot, action.payload);
+        let result: any = this[actionMeta.functionName](this.snapshot, action.payload);
 
         if (result instanceof Promise) {
             result = from(result);
@@ -58,10 +59,11 @@ export class Store<TState extends Object> implements Observer<TState> {
     }
 
     select<T>(selector: (state: TState) => T): Observable<T>;
-    select(selector: string | any): Observable<any>;
+    select<T>(selector: string, options?: string): Observable<T>;
     select(selector: any): Observable<any> {
+        const selectorFn  = helpers.getSelectorFn(selector);
         return this.state$.pipe(
-            map(selector),
+            map(selectorFn),
             distinctUntilChanged()
         );
     }

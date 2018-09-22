@@ -3,6 +3,6 @@
   "dest": "../../built/ngx-min-store",
   "deleteDestPath": false,
   "lib": {
-    "entryFile": "src/public_api.ts"
+    "entryFile": "index.ts"
   }
 }

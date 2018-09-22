@@ -1,14 +1,17 @@
-import { Store, Action } from 'projects/ngx-min-store/src/public_api';
+import { Store, Action } from 'projects/ngx-min-store';
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-interface TaskInfo {
+export interface TaskInfo {
     id: number;
     title: string;
 }
 
 interface TaskListState {
+
     tasks: TaskInfo[];
+
+    task: TaskInfo;
 }
 
 export class TaskListStore extends Store<TaskListState> {
@@ -25,7 +28,9 @@ export class TaskListStore extends Store<TaskListState> {
     }
 
     constructor() {
-        super({});
+        super({
+            tasks: []
+        });
     }
 
     @Action()
@@ -45,5 +50,11 @@ export class TaskListStore extends Store<TaskListState> {
             state.tasks.push(task);
             this.next(state);
         }));
+    }
+
+    @Action()
+    patchTask(task: TaskInfo) {
+        this.snapshot.task = task;
+        this.next();
     }
 }
