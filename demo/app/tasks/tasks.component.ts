@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { TaskListStore, TaskInfo } from '../tasks-list-store';
+import { TasksStore, TaskInfo } from '../tasks-store';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -16,11 +16,11 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   unSubscription$ = new Subject();
 
-  constructor(public store: TaskListStore) {
-    // this.tasks$ = this.store.select((state) => {
-    //   return state.tasks;
-    // });
-    this.tasks$ = this.store.select<TaskInfo[]>('tasks');
+  constructor(public store: TasksStore) {
+    this.tasks$ = this.store.select((state) => {
+      return state.tasks;
+    });
+    // this.tasks$ = this.store.select<TaskInfo[]>('tasks');
 
     this.tasks$
       .pipe(takeUntil(this.unSubscription$))

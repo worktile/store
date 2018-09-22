@@ -7,14 +7,14 @@ export interface TaskInfo {
     title: string;
 }
 
-interface TaskListState {
+interface TasksState {
 
     tasks: TaskInfo[];
 
     task: TaskInfo;
 }
 
-export class TaskListStore extends Store<TaskListState> {
+export class TasksStore extends Store<TasksState> {
 
     private getTaskNewId(): number {
         const maxTaskId = (this.snapshot.tasks || []).reduce((maxId, task) => {
