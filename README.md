@@ -62,7 +62,7 @@ export class TasksStore extends Store<TasksState> {
 
 ```
 
-### 2. Import and use NgxMiniStoreModule in you AppModule (or CoreModule), and use `forRoot` set stores
+### 2. Import and use NgxMiniStoreModule in you AppModule, and use `forRoot` set stores
 
 ```
 import { NgxMiniStoreModule } from 'ngx-mini-store';
