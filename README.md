@@ -1,11 +1,12 @@
 ## ngx-mini-store
 
-Mini and powerful state management library for Angular
+Mini and powerful state management library for Angular.
+>sharing state between components as mini and powerful. 
 
 
 ## Introduction
 
-sharing state between components as mini and powerful. 
+
 
 ## Installation
 
