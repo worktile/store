@@ -17,8 +17,8 @@ yarn add ngx-min-store --save
 ```
 
 ## Usage & Example
-1. Define Store and State
-    ```
+### 1. Define Store and State
+```
 import { Store, Action } from 'ngx-mini-store';
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -62,9 +62,9 @@ export class TasksStore extends Store<TasksState> {
 
 ```
 
-2. Import and use NgxMiniStoreModule in you AppModule (or CoreModule), and use `forRoot` set stores
+### 2. Import and use NgxMiniStoreModule in you AppModule (or CoreModule), and use `forRoot` set stores
 
- ```
+```
 import { NgxMiniStoreModule } from 'ngx-mini-store';
 import { TasksStore } from './tasks.store.ts'; 
 
@@ -76,9 +76,9 @@ import { TasksStore } from './tasks.store.ts';
 export class AppModule {}
 ```
 
-3. Component inject TasksStore and use store select get observable data.
+### 3. Component inject TasksStore and use store select get observable data.
 
- ```
+```
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TasksStore, TaskInfo } from '../tasks-store';
 import { Observable, Subject } from 'rxjs';
