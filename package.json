@@ -4,9 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port 4600",
-    "build": "ng build ngx-min-store",
+    "build": "ng build store",
     "build:demo": "ng build",
-    "test": "ng test ngx-min-store",
+    "test": "ng test store",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

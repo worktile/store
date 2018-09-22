@@ -1,5 +1,5 @@
 {
-  "name": "ngx-min-store",
+  "name": "ngx-mini-store",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": ">6.0.0",
