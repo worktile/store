@@ -1,4 +1,4 @@
-import { Store, Action } from 'projects/ngx-min-store';
+import { Store, Action } from 'packages/store';
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 

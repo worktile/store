@@ -7,3 +7,4 @@ Mini and simple state management library for Angular
 
 `npm run ngx-min-store --save`
 
+
