@@ -4,10 +4,6 @@ Mini and powerful state management library for Angular.
 >sharing state between components as mini and powerful. 
 
 
-## Introduction
-
-
-
 ## Installation
 
 ```
