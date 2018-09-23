@@ -21,19 +21,19 @@ describe('Store: Store', () => {
         @Action({
             type: 'loadMe'
         })
-        private loadMe(state: AppState, payload) {
+        private loadMe(payload, state: AppState) {
             state.me = payload;
             this.next(state);
         }
 
         @Action()
-        private initTeam(state: AppState, team) {
+        private initTeam(team, state: AppState) {
             state.team = team;
             this.next(state);
         }
 
         @Action()
-        private httpLoadTeam(state: AppState) {
+        public httpLoadTeam(state?: AppState) {
             return of(null).pipe(map(() => {
                 state.team = {
                     name: 'fromHttp'
@@ -93,7 +93,7 @@ describe('Store: Store', () => {
         });
     });
 
-    it('store action return observable', () => {
+    it('store dispatch action return observable', () => {
         const appStore = new AppStateStore();
         appStore.select((state: AppState) => {
             return state.team;
@@ -103,6 +103,22 @@ describe('Store: Store', () => {
             });
         });
         appStore.dispatch('httpLoadTeam').subscribe((team: any) => {
+            expect(team).toEqual({
+                name: 'fromHttp'
+            });
+        });
+    });
+
+    it('store directly call action return observable', () => {
+        const appStore = new AppStateStore();
+        appStore.select((state: AppState) => {
+            return state.team;
+        }).pipe(skip(1)).subscribe((team) => {
+            expect(team).toEqual({
+                name: 'fromHttp'
+            });
+        });
+        appStore.httpLoadTeam().subscribe((team: any) => {
             expect(team).toEqual({
                 name: 'fromHttp'
             });

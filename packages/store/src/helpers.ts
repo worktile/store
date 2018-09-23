@@ -23,10 +23,10 @@ export function isString(value: any) {
 }
 
 export function getSelectorFn(selector: any) {
-    if (isString(selector)) {
-        return fastPropGetter(selector.split('.'));
-    } else if (isFunction(selector)) {
+    if (isFunction(selector)) {
         return selector;
+    } else if (isString(selector)) {
+        return fastPropGetter(selector.split('.'));
     } else {
         throw new Error(`this selector(${selector}) is not support.`);
     }

@@ -18,7 +18,7 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   projectMessage: string;
 
-  unSubscription$ = new Subject();
+  unsubscribe$ = new Subject();
 
   constructor(public store: TasksStore) {
     this.tasks$ = this.store.select((state) => {
@@ -27,13 +27,13 @@ export class TasksComponent implements OnInit, OnDestroy {
     // this.tasks$ = this.store.select<TaskInfo[]>('tasks');
 
     this.tasks$
-      .pipe(takeUntil(this.unSubscription$))
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((tasks) => {
         console.log(`tasks stream, length: ${tasks.length}, tasks: ${JSON.stringify(tasks)}`);
       });
 
     this.store.select('project.detail.name')
-      .pipe(takeUntil(this.unSubscription$))
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((name: string) => {
         this.projectMessage = `project name is [${name || 'None'}]`;
       });
@@ -69,7 +69,7 @@ export class TasksComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unSubscription$.next();
-    this.unSubscription$.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

@@ -16,7 +16,7 @@ export function Action(action?: DecoratorActionOptions) {
         if (helpers.isFunction(descriptor.value)) {
             const originalFn = descriptor.value;
             descriptor.value = function (...args: any[]) {
-                let result = originalFn.call(this, ...args);
+                let result = originalFn.call(this, ...args, this.snapshot);
                 result = _dispatch(result);
                 result.subscribe();
                 return result;

@@ -24,24 +24,22 @@ export class Store<TState extends Object> implements Observer<TState> {
     }
 
     public dispatch(type: string, payload?: any): Observable<any> {
-        const result = this._dispatch({
-            type: type,
-            payload: payload
-        });
+        const result = this._dispatch(type, payload);
         result.subscribe();
         return result;
     }
 
-    private _dispatch(action: any): Observable<any> {
+    private _dispatch(type: string, payload?: any): Observable<any> {
         const meta = this[META_KEY] as StoreMetaInfo;
         if (!meta) {
             throw new Error(`${META_KEY} is not found, current store has not action`);
         }
-        const actionMeta = meta.actions[action.type];
+        const actionMeta = meta.actions[type];
         if (!actionMeta) {
-            throw new Error(`${action.type} is not found`);
+            throw new Error(`${type} is not found`);
         }
-        let result: any = this[actionMeta.functionName](this.snapshot, action.payload);
+        let result: any = payload ? actionMeta.originalFn.call(this, payload, this.snapshot)
+            : actionMeta.originalFn.call(this, this.snapshot);
 
         if (result instanceof Promise) {
             result = from(result);
@@ -61,7 +59,7 @@ export class Store<TState extends Object> implements Observer<TState> {
     select<T>(selector: (state: TState) => T): Observable<T>;
     select<T>(selector: string, options?: string): Observable<T>;
     select(selector: any): Observable<any> {
-        const selectorFn  = helpers.getSelectorFn(selector);
+        const selectorFn = helpers.getSelectorFn(selector);
         return this.state$.pipe(
             map(selectorFn),
             distinctUntilChanged()
