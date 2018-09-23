@@ -23,7 +23,7 @@
               "demo/assets"
             ],
             "styles": [
-              "demo/styles.css"
+              "demo/styles.scss"
             ],
             "scripts": []
           },
@@ -72,7 +72,7 @@
             "tsConfig": "demo/tsconfig.spec.json",
             "karmaConfig": "demo/karma.conf.js",
             "styles": [
-              "demo/styles.css"
+              "demo/styles.scss"
             ],
             "scripts": [],
             "assets": [

@@ -12,7 +12,11 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   addTaskTitle = '';
 
+  editTask: TaskInfo;
+
   tasks$: Observable<TaskInfo[]>;
+
+  projectMessage: string;
 
   unSubscription$ = new Subject();
 
@@ -28,10 +32,10 @@ export class TasksComponent implements OnInit, OnDestroy {
         console.log(`tasks stream, length: ${tasks.length}, tasks: ${JSON.stringify(tasks)}`);
       });
 
-    this.store.select('task.title')
+    this.store.select('project.detail.name')
       .pipe(takeUntil(this.unSubscription$))
-      .subscribe((title: string) => {
-        console.log(`task title stream: ${title || 'None'}`);
+      .subscribe((name: string) => {
+        this.projectMessage = `project name is [${name || 'None'}]`;
       });
   }
 
@@ -39,8 +43,15 @@ export class TasksComponent implements OnInit, OnDestroy {
     this.store.fetchTasks();
   }
 
+  showTaskEdit(task: TaskInfo) {
+    this.editTask = { ...task };
+  }
+
   updateTask(task: TaskInfo) {
-    task.title += `1`;
+    if (!task.title) {
+      return;
+    }
+    this.store.updateTask(task.id, task.title);
   }
 
   addTask(title: string) {
@@ -50,10 +61,10 @@ export class TasksComponent implements OnInit, OnDestroy {
     }
   }
 
-  patchTask() {
-    this.store.patchTask({
+  initializeProject() {
+    this.store.initializeProjectDetail({
       id: 100,
-      title: `this is patch task`
+      name: `ngx-mini-store`
     });
   }
 

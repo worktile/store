@@ -7,11 +7,22 @@ export interface TaskInfo {
     title: string;
 }
 
+export interface ProjectInfo {
+    id?: number;
+    name?: string;
+}
+
 interface TasksState {
 
     tasks: TaskInfo[];
 
-    task: TaskInfo;
+    project: {
+        detail: ProjectInfo,
+        views: {
+            id: number,
+            name: string
+        }[]
+    };
 }
 
 export class TasksStore extends Store<TasksState> {
@@ -29,13 +40,17 @@ export class TasksStore extends Store<TasksState> {
 
     constructor() {
         super({
-            tasks: []
+            tasks: [],
+            project: {}
         });
     }
 
     @Action()
     fetchTasks() {
-        const apiMockTasks: TaskInfo[] = [{ id: 1, title: 'Todo 1' }];
+        const apiMockTasks: TaskInfo[] = [
+            { id: 1, title: 'Todo 1' },
+            { id: 2, title: 'Todo 2' }
+        ];
         return of(apiMockTasks)
             .pipe(tap((tasks) => {
                 this.snapshot.tasks = tasks;
@@ -53,8 +68,18 @@ export class TasksStore extends Store<TasksState> {
     }
 
     @Action()
-    patchTask(task: TaskInfo) {
-        this.snapshot.task = task;
+    updateTask(taskId: number, title: string) {
+        const updatedTask = this.snapshot.tasks.find((task) => {
+            return task.id === taskId;
+        });
+        if (updatedTask) {
+            updatedTask.title = title;
+        }
+    }
+
+    @Action()
+    initializeProjectDetail(project: ProjectInfo) {
+        this.snapshot.project.detail = project;
         this.next();
     }
 }
