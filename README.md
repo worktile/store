@@ -99,7 +99,7 @@ export class TasksComponent implements OnInit, OnDestroy {
 
   tasks$: Observable<TaskInfo[]>;
 
-  unSubscription$ = new Subject();
+  unsubscribe$ = new Subject();
 
   constructor(public store: TasksStore) {
     this.tasks$ = this.store.select((state) => {
@@ -125,8 +125,8 @@ export class TasksComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unSubscription$.next();
-    this.unSubscription$.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
 
