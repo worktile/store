@@ -41,8 +41,9 @@ export class TasksStore extends Store<TasksState> {
         const apiMockTasks: TaskInfo[] = [{ id: 1, title: 'Todo 1' }];
         return of(apiMockTasks)
             .pipe(tap((tasks) => {
-                this.snapshot.tasks = tasks;
-                this.next();
+                const state = this.snapshot;
+                state.tasks = tasks;
+                this.next(state);
             }));
     }
 
@@ -50,7 +51,7 @@ export class TasksStore extends Store<TasksState> {
     addTask(title: string) {
         return of({ id: 100, title: title }).pipe(tap((task) => {
             const state = this.snapshot;
-            state.tasks.push(task);
+            state.tasks = [...state.tasks, task];
             this.next(state);
         }));
     }
