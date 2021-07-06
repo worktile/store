@@ -1,7 +1,9 @@
 import { META_KEY } from './types';
-import * as helpers from './helpers';
-import { from, Observable, Observer } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { findAndCreateStoreMetadata } from './utils';
+import { Observable, Observer, of, throwError } from 'rxjs';
+import { map, shareReplay, catchError, exhaustMap } from 'rxjs/operators';
+import { ActionState } from './action-state';
+import { ActionContext, ActionStatus } from './actions-stream';
 
 export interface DecoratorActionOptions {
     type: string;
@@ -11,40 +13,55 @@ export interface DecoratorActionOptions {
 /**
  * Decorates a method with a action information.
  */
-export function Action(action?: DecoratorActionOptions) {
+export function Action(action?: DecoratorActionOptions | string) {
     return function (target: any, name: string, descriptor: TypedPropertyDescriptor<any>) {
-        if (helpers.isFunction(descriptor.value)) {
-            const originalFn = descriptor.value;
-            descriptor.value = function (...args: any[]) {
-                let result = originalFn.call(this, ...args, this.snapshot);
-                result = _dispatch(result);
-                result.subscribe();
-                return result;
-            };
+        const meta = findAndCreateStoreMetadata(target);
 
-            const metadata = helpers.findAndCreateStoreMetadata(target);
-            metadata.actions[name] = {
-                originalFn: originalFn,
-                type: name,
-                functionName: name
+        // default use function name as action type
+        if (!action) {
+            action = {
+                type: name
             };
-        } else {
-            throw new Error(`action decorator must be used on function.`);
         }
+        // support string for type
+        if (typeof action === 'string') {
+            action = {
+                type: action
+            };
+        }
+        const type = action.type;
+
+        if (!action.type) {
+            throw new Error(`Action ${action.type} is missing a static "type" property`);
+        }
+
+        const originalFn = descriptor.value;
+        meta.actions[type] = {
+            fn: name,
+            originalFn: originalFn,
+            type
+        };
+
+        descriptor.value = function (...args: any[]) {
+            ActionState.changeAction(`${target.constructor.name}-${name}`);
+            let result = originalFn.call(this, ...args);
+            if (result instanceof Observable) {
+                result = result.pipe(
+                    catchError((error) => {
+                        return of({ status: ActionStatus.Errored, action: action, error: error });
+                    }),
+                    shareReplay(),
+                    exhaustMap((result: ActionContext | any) => {
+                        if (result && result.status === ActionStatus.Errored) {
+                            return throwError(result.error);
+                        } else {
+                            return of(result);
+                        }
+                    })
+                );
+                result.subscribe();
+            }
+            return result;
+        };
     };
-}
-
-
-function _dispatch(result: any): Observable<any> {
-    if (result instanceof Promise) {
-        result = from(result);
-    }
-    if (result instanceof Observable) {
-        result = result.pipe(map(r => r));
-    } else {
-        result = Observable.create((observer: Observer<any>) => {
-            observer.next({});
-        });
-    }
-    return result.pipe(shareReplay());
 }

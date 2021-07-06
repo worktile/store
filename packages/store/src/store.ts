@@ -1,22 +1,36 @@
-
 import { Observable, Observer, BehaviorSubject, from, of, PartialObserver, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { META_KEY, StoreMetaInfo } from './types';
-import * as helpers from './helpers';
+import { getSingletonRootStore, RootStore } from './root-store';
+import { OnDestroy, isDevMode, Injectable } from '@angular/core';
+import { ActionState } from './action-state';
+import { Action } from './action';
+import { isFunction } from '@tethys/cdk/is';
 
 interface Action {
     type: string;
     payload?: any;
 }
 
-export class Store<TState extends Object> implements Observer<TState> {
+@Injectable()
+export class Store<T = unknown> implements Observer<T>, OnDestroy {
+    initialStateCache: any;
 
-    [key: string]: any;
+    public state$: BehaviorSubject<T>;
 
-    public state$: BehaviorSubject<TState>;
+    public reduxToolEnabled = isDevMode();
+
+    private _defaultStoreInstanceId: string;
 
     constructor(initialState: any) {
-        this.state$ = new BehaviorSubject<TState>(initialState);
+        this._defaultStoreInstanceId = this._getClassName();
+        this.state$ = new BehaviorSubject<T>(initialState);
+        this.initialStateCache = { ...initialState };
+        if (this.reduxToolEnabled) {
+            const rootStore: RootStore = getSingletonRootStore();
+            ActionState.changeAction(`Add-${this._defaultStoreInstanceId}`);
+            rootStore.registerStore(this);
+        }
     }
 
     get snapshot() {
@@ -24,50 +38,48 @@ export class Store<TState extends Object> implements Observer<TState> {
     }
 
     public dispatch(type: string, payload?: any): Observable<any> {
-        const result = this._dispatch(type, payload);
+        ActionState.changeAction(`${this._defaultStoreInstanceId}-${type}`);
+        const result = this._dispatch({
+            type: type,
+            payload: payload
+        });
         result.subscribe();
         return result;
     }
 
-    private _dispatch(type: string, payload?: any): Observable<any> {
+    private _dispatch(action: any): Observable<any> {
         const meta = this[META_KEY] as StoreMetaInfo;
         if (!meta) {
             throw new Error(`${META_KEY} is not found, current store has not action`);
         }
-        const actionMeta = meta.actions[type];
+        const actionMeta = meta.actions[action.type];
         if (!actionMeta) {
-            throw new Error(`${type} is not found`);
+            throw new Error(`${action.type} is not found`);
         }
-        let result: any = payload ? actionMeta.originalFn.call(this, payload, this.snapshot)
-            : actionMeta.originalFn.call(this, this.snapshot);
+        // let result: any = this[actionMeta.fn](this.snapshot, action.payload);
+        let result: any = actionMeta.originalFn.call(this, this.snapshot, action.payload);
 
         if (result instanceof Promise) {
             result = from(result);
         }
 
         if (result instanceof Observable) {
-            result = result.pipe(map(r => r));
+            result = result.pipe(map((r) => r));
         } else {
-            result = Observable.create((observer: Observer<any>) => {
+            result = new Observable((observer: Observer<any>) => {
                 observer.next({});
             });
-            // result = of({});
         }
         return result.pipe(shareReplay());
     }
 
-    select<T>(selector: (state: TState) => T): Observable<T>;
-    select<T>(selector: string, options?: string): Observable<T>;
-    select(selector: any): Observable<any> {
-        const selectorFn = helpers.getSelectorFn(selector);
-        return this.state$.pipe(
-            map(selectorFn),
-            distinctUntilChanged()
-        );
+    select<TResult>(selector: (state: T) => TResult): Observable<TResult> | Observable<TResult>;
+    select(selector: string | any): Observable<any> {
+        return this.state$.pipe(map(selector), distinctUntilChanged());
     }
 
-    next(state?: TState) {
-        this.state$.next(state || this.snapshot);
+    next(state: T) {
+        this.state$.next(state);
     }
 
     error(error: any) {
@@ -78,15 +90,77 @@ export class Store<TState extends Object> implements Observer<TState> {
         this.state$.complete();
     }
 
-    subscribe(next?: (value: TState) => void, error?: (error: any) => void, complete?: () => void): Subscription {
+    subscribe(next?: (value: T) => void, error?: (error: any) => void, complete?: () => void): Subscription {
         return this.state$.subscribe(next, error, complete);
     }
 
-    getState(): TState {
+    /**
+     * set store new state
+     *
+     * @example
+     * this.setState(newState);
+     * this.setState({ users: produce(this.snapshot.users).add(user) });
+     * this.setState((state) => {
+     *    return {
+     *        users: produce(state.users).add(user)
+     *    }
+     * });
+     * @param fn
+     */
+    setState(fn: Partial<T> | ((newState: T) => Partial<T>)): void {
+        if (isFunction(fn)) {
+            this.next({
+                ...this.snapshot,
+                ...(fn as any)(this.snapshot)
+            });
+        } else {
+            this.next({
+                ...this.snapshot,
+                ...(fn as T)
+            });
+        }
+    }
+
+    getState(): T {
         return this.snapshot;
     }
 
-    setState(state: TState) {
-        this.next(state);
+    @Action()
+    clearState() {
+        this.setState(this.initialStateCache);
+    }
+
+    ngOnDestroy() {
+        if (this.reduxToolEnabled) {
+            const rootStore: RootStore = getSingletonRootStore();
+            rootStore.unregisterStore(this);
+        }
+    }
+
+    /**
+     * You can override this method if you want to give your container instance a custom id.
+     * The returned id must be unique in the application.
+     */
+    getStoreInstanceId(): string {
+        return this._defaultStoreInstanceId;
+    }
+
+    private _getClassName(): string {
+        const name = this.constructor.name || /function (.+)\(/.exec(this.constructor + '')[1];
+        if (this.reduxToolEnabled) {
+            const rootStore: RootStore = getSingletonRootStore();
+            if (!rootStore.existStoreInstanceId(name)) {
+                return name;
+            }
+            let j = 0;
+            for (let i = 1; i < 20; i++) {
+                if (!rootStore.existStoreInstanceId(`${name}-${i}`)) {
+                    j = i;
+                    break;
+                }
+            }
+            return `${name}-${j}`;
+        }
+        return name;
     }
 }

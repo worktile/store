@@ -1,4 +1,4 @@
-## ngx-mini-store
+## @tethys/store
 
 A mini, yet powerful state management library for Angular.
 >Sharing state between several components as mini and powerful. 
@@ -7,15 +7,15 @@ A mini, yet powerful state management library for Angular.
 ## Installation
 
 ```
-npm install ngx-mini-store --save
+npm install @tethys/store --save
 # or
-yarn add ngx-mini-store --save
+yarn add @tethys/store --save
 ```
 
 ## Usage & Example
 ### 1. Define Store and State
 ```
-import { Store, Action } from 'ngx-mini-store';
+import { Store, Action } from '@tethys/store';
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -62,7 +62,7 @@ export class TasksStore extends Store<TasksState> {
 ### 2. Import and use NgxMiniStoreModule in you AppModule, and use `forRoot` set stores
 
 ```
-import { NgxMiniStoreModule } from 'ngx-mini-store';
+import { NgxMiniStoreModule } from '@tethys/store';
 import { TasksStore } from './tasks.store.ts'; 
 
 @NgModule({

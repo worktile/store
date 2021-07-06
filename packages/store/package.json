@@ -1,8 +1,13 @@
 {
-  "name": "ngx-mini-store",
-  "version": "0.0.2",
+  "name": "@tethys/store",
+  "version": "0.0.0",
   "peerDependencies": {
-    "@angular/common": ">6.0.0",
-    "@angular/core": ">6.0.0"
+    "@angular/common": "^11.2.5",
+    "@angular/core": "^11.2.5",
+    "@tethys/cdk": "^11.0.3"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0",
+    "@tethys/cdk": "^11.0.3"
   }
 }
