@@ -1,4 +1,4 @@
-name: CI NGX-VALIDATOR through Github Actions
+name: ci-tethys-store-test
 on: push
 jobs:
     build:
