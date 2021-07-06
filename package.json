@@ -6,13 +6,16 @@
     "start": "npm run start:docs",
     "docgeni": "npx --no-install docgeni init",
     "start:docs": "docgeni serve --port 8887",
-    "build": "ng build --prod",
+    "build": "ng build store --prod",
     "build:docs": "docgeni build --prod",
     "build:docs-gh-pages": "docgeni build --prod --base-href=/docgeni-template/",
     "test": "ng test",
     "lint": "ng lint",
     "prepare": "husky install",
-    "pretty": "pretty-quick"
+    "pretty": "pretty-quick",
+    "release": "wpm release",
+    "pub": "wpm publish",
+    "pub-only": "npm publish ./dist/store"
   },
   "private": true,
   "dependencies": {
@@ -39,6 +42,7 @@
     "@docgeni/template": "^1.0.7",
     "@types/jasmine": "~3.6.0",
     "@types/node": "^12.11.1",
+    "@worktile/pkg-manager": "0.0.1",
     "codelyzer": "^6.0.0",
     "husky": "^6.0.0",
     "jasmine-core": "~3.6.0",

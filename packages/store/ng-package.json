@@ -3,5 +3,6 @@
   "dest": "../../dist/store",
   "lib": {
     "entryFile": "src/public-api.ts"
-  }
+  },
+  "allowedNonPeerDependencies": ["@tethys/cdk"]
 }

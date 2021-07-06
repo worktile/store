@@ -8,8 +8,8 @@ A mini, yet powerful state management library for Angular.
 
 ```
 npm install @tethys/store --save
-# or
-yarn add @tethys/store --save
+# or if you are using yarn
+yarn add @tethys/store
 ```
 
 ## Usage & Example
