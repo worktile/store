@@ -1,8 +1,20 @@
 ## @tethys/store
 
 A mini, yet powerful state management library for Angular.
->Sharing state between several components as mini and powerful. 
 
+[![CircleCI](https://circleci.com/gh/tethys-org/store.svg?style=shield)](https://circleci.com/gh/tethys-org/store)
+[![Coverage Status][coveralls-image]][coveralls-url]
+![](https://img.shields.io/badge/Made%20with%20Angular-red?logo=angular)
+[![npm (scoped)](https://img.shields.io/npm/v/@tethys/store?style=flat)](https://www.npmjs.com/package/@tethys/store)
+[![npm](https://img.shields.io/npm/dm/@tethys/store)](https://www.npmjs.com/package/@tethys/store)
+[![release](https://img.shields.io/github/release-date/tethys-org/store.svg?style=flat-square
+)](https://github.com/atinc/ngx-tethys)
+[![docgeni](https://img.shields.io/badge/docs%20by-docgeni-348fe4)](https://github.com/docgeni/docgeni)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+
+
+[coveralls-image]: https://coveralls.io/repos/github/tethys-org/store/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/tethys-org/store
 
 ## Installation
 

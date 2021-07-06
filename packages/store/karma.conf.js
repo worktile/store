@@ -27,7 +27,7 @@ module.exports = function (config) {
         coverageReporter: {
             dir: require('path').join(__dirname, '../../coverage/store'),
             subdir: '.',
-            reporters: [{ type: 'html' }, { type: 'text-summary' }]
+            reporters: [{ type: 'html' }, { type: 'text-summary' }, { type: 'lcovonly' }]
         },
         reporters: ['progress', 'kjhtml'],
         port: 9876,
@@ -36,6 +36,12 @@ module.exports = function (config) {
         autoWatch: true,
         browsers: ['Chrome'],
         singleRun: false,
-        restartOnFileChange: true
+        restartOnFileChange: true,
+        customLaunchers: {
+            ChromeHeadlessCI: {
+                base: 'ChromeHeadless',
+                flags: ['--no-sandbox']
+            }
+        }
     });
 };
