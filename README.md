@@ -2,7 +2,7 @@
 
 A mini, yet powerful state management library for Angular.
 
-[![CircleCI](https://circleci.com/gh/tethys-org/store.svg?style=shield)](https://circleci.com/gh/tethys-org/store)
+[![GitHubActionCI](https://img.shields.io/github/workflow/status/tethys-org/store/ci-tethys-store-test)](https://github.com/tethys-org/store/actions/workflows/main.yml)
 [![Coverage Status][coveralls-image]][coveralls-url]
 ![](https://img.shields.io/badge/Made%20with%20Angular-red?logo=angular)
 [![npm (scoped)](https://img.shields.io/npm/v/@tethys/store?style=flat)](https://www.npmjs.com/package/@tethys/store)
