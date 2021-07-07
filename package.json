@@ -16,7 +16,8 @@
     "pretty": "pretty-quick",
     "release": "wpm release",
     "pub": "wpm publish",
-    "pub-only": "npm publish ./dist/store"
+    "pub-only": "npm publish ./dist/store",
+    "preinstall": "node scripts/check-yarn.js"
   },
   "private": true,
   "dependencies": {
