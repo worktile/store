@@ -9,11 +9,10 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: 14.x
-
             - name: Setup
-              run: npm ci
+              run: yarn --frozen-lockfile
 
             - name: Test
               run: |
-                  npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
-                  npm run report-coverage
+                  yarn test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+                  yarn run report-coverage
