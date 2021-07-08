@@ -24,4 +24,18 @@ npm install @tethys/store --save
 yarn add @tethys/store
 ```
 
-## 
+## Development
+```base
+$ git clone https://github.com/tethys-org/store
+
+$ cd store && yarn
+
+$ yarn start:docs // open http://localhost:8887
+```
+
+## Release & Publish
+
+```
+yarn release
+yarn pub
+```
