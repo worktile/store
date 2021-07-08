@@ -19,7 +19,8 @@
       "node"
     ],
     "paths": {
-      "@tethys/store/*":["../../src/*"]
+      "@tethys/store/*":["../../packages/store/src/*"],
+      "@tethys/store":["../../packages/store/src/index.ts"]
     }
   },
   "files": [

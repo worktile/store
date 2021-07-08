@@ -89,7 +89,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         },
         options: EntityStoreOptions<TEntity, TReferences> = { idKey: '_id' } as EntityStoreOptions<TEntity, TReferences>
     ) {
-        super(initialState);
+        super(initialState as TState);
         this.options = { idKey: '_id', ...options } as EntityStoreOptions<TEntity, TReferences>;
         if (!this.options.idKey) {
             throw new Error(`idKey is required in EntityStore`);

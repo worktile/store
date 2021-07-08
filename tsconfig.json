@@ -6,11 +6,10 @@
     "outDir": "./dist/out-tsc",
     "paths": {
       "@tethys/store/*": [
-        "src/*"
+        "packages/store/src/*"
       ],
-      "store": [
-        "dist/store/store",
-        "dist/store"
+      "@tethys/store": [
+        "packages/store/src/index.ts"
       ]
     },
     "sourceMap": true,

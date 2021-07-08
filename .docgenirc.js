@@ -10,12 +10,12 @@ module.exports = {
     navs: [
         null,
         {
-            title: 'Components',
-            path: 'components',
-            lib: '@tethys/store',
+            title: 'Examples',
+            path: 'examples',
+            lib: 'store',
             locales: {
                 'zh-cn': {
-                    title: '组件'
+                    title: '示例'
                 }
             }
         },
@@ -27,9 +27,10 @@ module.exports = {
     ],
     libs: [
         {
-            name: '@tethys/store',
+            name: 'store',
+            abbrName: 'thy',
             rootDir: './packages/store',
-            include: ['src'],
+            include: ['src', 'examples'],
             exclude: '',
             categories: []
         }

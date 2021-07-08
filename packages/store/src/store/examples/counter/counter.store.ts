@@ -1,19 +1,8 @@
----
-title: Getting Started
-order: 20
----
+import { Injectable } from '@angular/core';
+import { Action, Store } from '@tethys/store';
+import { of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
-## Installation
-
-```bash
-npm i @tethys/store --save
-// or
-yarn add @tethys/store
-```
-
-## Usage
-
-```
 interface CounterState {
     count: number;
 }
@@ -34,11 +23,7 @@ export class CounterStore extends Store<CounterState> {
     increase() {
         return of(true).pipe(
             tap(() => {
-                this.setState((state) => {
-                    return {
-                        count: state.count + 1
-                    };
-                });
+                this.setState({ count: this.snapshot.count + 1 });
             })
         );
     }
@@ -56,6 +41,3 @@ export class CounterStore extends Store<CounterState> {
         );
     }
 }
-```
-
-

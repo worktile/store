@@ -14,7 +14,7 @@ interface Action {
 
 @Injectable()
 export class Store<T = unknown> implements Observer<T>, OnDestroy {
-    initialStateCache: any;
+    private initialStateCache: T;
 
     public state$: BehaviorSubject<T>;
 
@@ -22,10 +22,10 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
 
     private _defaultStoreInstanceId: string;
 
-    constructor(initialState: any) {
+    constructor(initialState: Partial<T>) {
         this._defaultStoreInstanceId = this._getClassName();
-        this.state$ = new BehaviorSubject<T>(initialState);
-        this.initialStateCache = { ...initialState };
+        this.state$ = new BehaviorSubject<T>(initialState as T);
+        this.initialStateCache = { ...initialState } as T;
         if (this.reduxToolEnabled) {
             const rootStore: RootStore = getSingletonRootStore();
             ActionState.changeAction(`Add-${this._defaultStoreInstanceId}`);
@@ -37,7 +37,16 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         return this.state$.getValue();
     }
 
-    public dispatch(type: string, payload?: any): Observable<any> {
+    /**
+     * @deprecated
+     *
+     * @template T
+     * @param {string} type
+     * @param {T} [payload]
+     * @returns {Observable<any>}
+     * @memberof Store
+     */
+    public dispatch<T = unknown>(type: string, payload?: T): Observable<any> {
         ActionState.changeAction(`${this._defaultStoreInstanceId}-${type}`);
         const result = this._dispatch({
             type: type,

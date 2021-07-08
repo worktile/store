@@ -1,15 +1,8 @@
 ---
-title: 快速上手
-order: 20
+title: Store
+order: 10
 ---
 
-## 安装
-
-```bash
-npm i @tethys/store --save
-// or
-yarn add @tethys/store
-```
 
 ## 定义 Store 和 State
 
@@ -106,3 +99,4 @@ export class ThyStoreCounterExampleComponent implements OnInit {
 
 ## 最简单的示例如下
 <example name="thy-store-counter-example" />
+
