@@ -20,5 +20,5 @@ jobs:
 
             - name: Test
               run: |
-                  npm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
-                  npm run report-coverage
+                  yarn test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+                  yarn run report-coverage
