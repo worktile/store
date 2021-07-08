@@ -7,11 +7,9 @@ import { ActionState } from './action-state';
 import { Action } from './action';
 import { isFunction } from '@tethys/cdk/is';
 
-interface Action {
-    type: string;
-    payload?: any;
-}
-
+/**
+ * @dynamic
+ */
 @Injectable()
 export class Store<T = unknown> implements Observer<T>, OnDestroy {
     private initialStateCache: T;
