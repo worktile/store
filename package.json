@@ -16,8 +16,12 @@
     "pretty": "pretty-quick",
     "release": "wpm release",
     "pub": "wpm publish",
-    "pub-only": "npm publish ./dist/store",
-    "preinstall": "node scripts/check-yarn.js"
+    "pub-only": "npm publish ./dist/store"
+  },
+  "engines": {
+    "node": "^12.20.0 || >=14.0.0",
+    "yarn": ">=1.22.4 <2",
+    "npm": "Please use yarn instead of NPM to install dependencies"
   },
   "private": true,
   "dependencies": {
