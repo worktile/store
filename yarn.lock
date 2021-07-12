@@ -1952,10 +1952,10 @@
     semver "7.3.4"
     semver-intersect "1.4.0"
 
-"@tethys/cdk@^11.0.3":
-  version "11.0.3"
-  resolved "https://registry.yarnpkg.com/@tethys/cdk/-/cdk-11.0.3.tgz#f1abeca4728b409904d858eafbcbea95433a85d3"
-  integrity sha512-YqEZfZxQ1OSbLhKZ4lVCEgMiuQgPe8/b+3XlfGhfmOANvc6VZ/BfeJrQ0mHt4q75x0if+X6oM8XHlrVH76qClA==
+"@tethys/cdk@^11.0.4":
+  version "11.0.4"
+  resolved "https://registry.yarnpkg.com/@tethys/cdk/-/cdk-11.0.4.tgz#8a6217ea3001650bc100ba6746de04698fd0f296"
+  integrity sha512-lFAzn0RjzG5CFAEjZC1aQUbIost6agWWh1TB9smt9SzrVES3DFTKOWmJbmJ7S5C5fF03rmqTt7MLSTLWTuEhfA==
   dependencies:
     tslib "^2.0.0"
 
