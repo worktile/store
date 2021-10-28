@@ -1,0 +1,139 @@
+<p>前端应用程序中，展示<code>Entity</code>实体列表并对<code>Entity</code>进行增删改是一个高频的场景，那么就需要存储<code>Entity</code>，可以将<code>Entity</code>存储视为数据库中的表，其中每张表表示实体的平面集合。<code>EntityStore</code>简化了流程提供了管理实体列表的功能。</p>
+
+        <h2 id="创建-entitystore" class="docs-header-link">
+          <span header-link="创建-entitystore"></span>
+          创建 EntityStore
+        </h2>
+      <p>我们创建一个<code>todos</code>的<code>EntityStore</code>管理<code>Todo</code>实体，需要继承<code>EntityStore</code>，同时传入继承泛型为<code>Todo</code>的<code>EntityState</code>。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token comment" spellcheck="true">// todos.store.ts</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> EntityState<span class="token punctuation">,</span> EntityStore <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tethys/store'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">interface</span> <span class="token class-name">Todo</span> <span class="token punctuation">{</span>
+    _id<span class="token punctuation">:</span> <span class="token keyword">number</span><span class="token punctuation">;</span>
+    title<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name">TodosState</span> <span class="token keyword">extends</span> <span class="token class-name">EntityState</span><span class="token operator">&lt;</span>Todo<span class="token operator">></span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">TodosStore</span> <span class="token keyword">extends</span> <span class="token class-name">EntityStore</span><span class="token operator">&lt;</span>TodosState<span class="token punctuation">,</span> Todo<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">{</span> entities<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></div></code></pre>
+<div class="dg-paragraph"><alert>对于实体的增删改查需要明确唯一标识的键，默认为<code>_id</code>，如果实体列表的唯一标识是<code>id</code>或者其他，那么就需要通过构造函数的第二个参数传入<code>idKey</code>进行设置</alert></div>
+<pre class="language-ts"><code class="language-ts"><div><span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">TodosStore</span> <span class="token keyword">extends</span> <span class="token class-name">EntityStore</span><span class="token operator">&lt;</span>TodosState<span class="token punctuation">,</span> Todo<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">{</span> entities<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> idKey<span class="token punctuation">:</span> <span class="token string">"id"</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></div></code></pre>
+
+        <h2 id="初始化" class="docs-header-link">
+          <span header-link="初始化"></span>
+          初始化
+        </h2>
+      <p>对于<code>EntityStore</code>的初始化，一般会增加一个<code>fetch</code>方法获取数据，并添加<code>@Action()</code>装饰器，获取完数据后，通过<code>store.initialize()</code>完成数据的初始化，如果需要分页可以传入分页相关数据。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token keyword">import</span> <span class="token punctuation">{</span> Action<span class="token punctuation">,</span> EntityState<span class="token punctuation">,</span> EntityStore <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tethys/store'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> of <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> tap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">interface</span> <span class="token class-name">Todo</span> <span class="token punctuation">{</span>
+   _id<span class="token punctuation">:</span> <span class="token keyword">number</span><span class="token punctuation">;</span>
+   title<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name">TodosState</span> <span class="token keyword">extends</span> <span class="token class-name">EntityState</span><span class="token operator">&lt;</span>Todo<span class="token operator">></span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">TodosStore</span> <span class="token keyword">extends</span> <span class="token class-name">EntityStore</span><span class="token operator">&lt;</span>TodosState<span class="token punctuation">,</span> Todo<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">{</span> entities<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">fetchTodos</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> initialTodos <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>_id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'Todo1'</span><span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token function">of</span><span class="token punctuation">(</span>initialTodos<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+            <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span>todos<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">initialize</span><span class="token punctuation">(</span>todos<span class="token punctuation">,</span> <span class="token punctuation">{</span> pageIndex<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> pageCount<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> pageSize<span class="token punctuation">:</span> <span class="token number">20</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></div></code></pre>
+
+        <h2 id="获取列表数据" class="docs-header-link">
+          <span header-link="获取列表数据"></span>
+          获取列表数据
+        </h2>
+      <p>可以通过<code>store.entities$</code>获取实体数据流，同时也可以通过<code>store.entities</code>获取实体数据快照。</p>
+
+        <h2 id="添加" class="docs-header-link">
+          <span header-link="添加"></span>
+          添加
+        </h2>
+      <p>可以通过<code>add</code>函数添加单个或者多个实体，并通过<code>addOptions</code>控制添加行为，比如：追加的位置和调整分页。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token comment" spellcheck="true">/**
+ * Add an entity or entities to the store.
+ *
+ * @example
+ * this.store.add(Entity);
+ * this.store.add([Entity, Entity]);
+ * this.store.add(Entity, { prepend: true });
+*/</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>entity<span class="token punctuation">:</span> TEntity <span class="token operator">|</span> TEntity<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> addOptions<span class="token operator">?</span><span class="token punctuation">:</span> EntityAddOptions<span class="token punctuation">)</span><span class="token punctuation">;</span></div></code></pre>
+<div class="dg-paragraph"><strong>EntityAddOptions</strong>:</div>
+<ul>
+<li><code>prepend</code>: 是否向前插入，默认在数据最后插入</li>
+<li><code>afterId</code>: 插入某个Id的后面</li>
+<li><code>autoGotoLastPage</code>: 是否自动跳转到最后一页，默认<code>false</code></li>
+</ul>
+
+        <h2 id="更新" class="docs-header-link">
+          <span header-link="更新"></span>
+          更新
+        </h2>
+      <p>使用<code>update</code>函数修改单个或者多个实体。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token comment" spellcheck="true">/**
+* @example
+* this.store.update(3, {
+*   name: 'New Name'
+* });
+*
+*  this.store.update(3, entity => {
+*    return {
+*      ...entity,
+*      name: 'New Name'
+*    }
+*  });
+*
+* this.store.update([1,2,3], {
+*   name: 'New Name'
+* });
+*/</span>
+<span class="token function">update</span><span class="token punctuation">(</span>idsOrFn<span class="token punctuation">:</span> Id <span class="token operator">|</span> Id<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span> newStateOrFn<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>entity<span class="token punctuation">:</span> Readonly<span class="token operator">&lt;</span>TEntity<span class="token operator">></span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Partial<span class="token operator">&lt;</span>TEntity<span class="token operator">></span><span class="token punctuation">)</span> <span class="token operator">|</span> Partial<span class="token operator">&lt;</span>TEntity<span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">void</span></div></code></pre>
+
+        <h2 id="移除" class="docs-header-link">
+          <span header-link="移除"></span>
+          移除
+        </h2>
+      <p>使用<code>remove</code>函数移除单个或者多个实体。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token comment" spellcheck="true">/**
+* @example
+* this.store.remove(5);
+* this.store.remove([1, 2, 3]);
+* this.store.remove(entity => entity.id === 1);
+*/</span>
+<span class="token function">remove</span><span class="token punctuation">(</span>id<span class="token punctuation">:</span> Id <span class="token operator">|</span> Id<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">void</span><span class="token punctuation">;</span>
+<span class="token function">remove</span><span class="token punctuation">(</span>predicate<span class="token punctuation">:</span> <span class="token punctuation">(</span>entity<span class="token punctuation">:</span> Readonly<span class="token operator">&lt;</span>TEntity<span class="token operator">></span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">boolean</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">void</span><span class="token punctuation">;</span>
+<span class="token function">remove</span><span class="token punctuation">(</span>idsOrFn<span class="token operator">?</span><span class="token punctuation">:</span> Id <span class="token operator">|</span> Id<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">|</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>entity<span class="token punctuation">:</span> Readonly<span class="token operator">&lt;</span>TEntity<span class="token operator">></span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">boolean</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">void</span></div></code></pre>
+
+        <h2 id="clear" class="docs-header-link">
+          <span header-link="clear"></span>
+          clear
+        </h2>
+      <p>使用<code>clear</code>函数清除所有列表数据。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token keyword">this</span><span class="token punctuation">.</span>store<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div></code></pre>
+
+        <h2 id="trackby" class="docs-header-link">
+          <span header-link="trackby"></span>
+          trackBy
+        </h2>
+      <p>提供内置的<code>trackBy</code>函数方便在模版中循环<code>entities</code>使用。</p>

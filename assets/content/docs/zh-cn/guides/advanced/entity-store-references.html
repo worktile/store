@@ -1,0 +1,254 @@
+<p>在 <a href="guides/advanced/entity-store">Entity Store</a> 章节中我们提供了<code>EntityStore</code>方便实体列表的管理，那么实体列表一般都需要引用数据，那么<code>EntityStore</code>内置了<code>References</code>功能简化真实业务场景的开发。</p>
+
+        <h2 id="api-数据格式" class="docs-header-link">
+          <span header-link="api-数据格式"></span>
+          API 数据格式
+        </h2>
+      <p>当前后端分离后，服务端只提供 RESTful API，那么对于 API 返回的 JSON 数据格式有两种类型：</p>
+<ul>
+<li>具有深度嵌套对象的 JSON 数据，引用对象嵌套在内部</li>
+<li>规范化数据结构，相当于数据库表结构，引用对象通过 References 存储，并通过外键查找</li>
+</ul>
+<p>比如我们要返回一个任务列表，每个任务有_id、标题、负责人和创建者属性。
+第一种类型返回的格式如下:</p>
+<pre class="language-js"><code class="language-js"><div><span class="token punctuation">{</span>
+    data<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span> 
+          _id<span class="token punctuation">:</span> <span class="token string">'task1'</span><span class="token punctuation">,</span>
+          title<span class="token punctuation">:</span> <span class="token string">'Task 1'</span><span class="token punctuation">,</span>
+          assignee<span class="token punctuation">:</span> <span class="token punctuation">{</span> _id<span class="token punctuation">:</span> <span class="token string">'user1'</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">'why520crazy'</span> <span class="token punctuation">}</span>，
+          created_by<span class="token punctuation">:</span> <span class="token punctuation">{</span> _id<span class="token punctuation">:</span> <span class="token string">'user1'</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">'why520crazy'</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+          _id<span class="token punctuation">:</span> <span class="token string">'task2'</span><span class="token punctuation">,</span>
+          title<span class="token punctuation">:</span> <span class="token string">'Task 2'</span><span class="token punctuation">,</span>
+          assignee<span class="token punctuation">:</span>  <span class="token punctuation">{</span> _id<span class="token punctuation">:</span> <span class="token string">'user2'</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">'peter'</span> <span class="token punctuation">}</span>，
+          created_by<span class="token punctuation">:</span> <span class="token punctuation">{</span> _id<span class="token punctuation">:</span> <span class="token string">'user1'</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">'why520crazy'</span> <span class="token punctuation">}</span> 
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></div></code></pre>
+<p>这种格式的好处是：简单、前端直接绑定到视图即可，无序组合，缺点就是数据冗余和数据更新复杂。</p>
+<p>第一种类型返回的格式如下:</p>
+<pre class="language-js"><code class="language-js"><div><span class="token punctuation">{</span>
+    data<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span> _id<span class="token punctuation">:</span> <span class="token string">'task1'</span>，title<span class="token punctuation">:</span> <span class="token string">'Task 1'</span>，assignee<span class="token punctuation">:</span> <span class="token string">'user1'</span>，created_by<span class="token punctuation">:</span> <span class="token string">'user1'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span> _id<span class="token punctuation">:</span> <span class="token string">'task2'</span>，title<span class="token punctuation">:</span> <span class="token string">'Task 2'</span>，assignee<span class="token punctuation">:</span> <span class="token string">'user2'</span>，created_by<span class="token punctuation">:</span> <span class="token string">'user1'</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    references<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        users<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span> _id<span class="token punctuation">:</span> <span class="token string">'user1'</span>，name<span class="token punctuation">:</span> <span class="token string">'why520crazy'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span> _id<span class="token punctuation">:</span> <span class="token string">'user2'</span>，name<span class="token punctuation">:</span> <span class="token string">'peter'</span> <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></div></code></pre>
+<p>用一张简单的类图表示为:
+<img src="assets/images/entity-store-references.png" width="80%" height="80%" style="padding-left: 10%;"  /></p>
+<p>这种格式解决了数据冗余的问题，同时更新数据变得更容易，缺点就是需要组合数据才可以在视图中展示，不管是 React 的任何状态管理框架还是在 Angular 中，我们推荐使用第二种格式，即使服务端返回的是嵌套对象，我们也可以通过 <a target="_blank" href="https://github.com/paularmstrong/normalizr">normalizr</a> 等工具进行转换。</p>
+
+        <h2 id="创建带-references-的-entitystore" class="docs-header-link">
+          <span header-link="创建带-references-的-entitystore"></span>
+          创建带 References 的 EntityStore
+        </h2>
+      <p>通过上述的示例可以看出，规范化数据结构的缺点是组合困难，同时增删改查都需要更新引用数据，那么<code>EntityStore</code>可以很好的帮助我们处理相关工作，首先需要定义一个<code>TasksReferences</code>，此示例中任务只有用户是引用，不管是创建者还是负责人都指向用户，和创建<code>EntityStore</code>一样，唯一要注意的就是继承<code>EntityStore</code>时需要传入<code>TasksReferences</code>的泛型。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token comment" spellcheck="true">// tasks.store.ts</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Injectable <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@angular/core'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Action，EntityState，EntityStore，OnCombineRefs，ReferencesIdDictionary <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tethys/store'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> of <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> tap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+    _id<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    name<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">Task</span> <span class="token punctuation">{</span>
+    _id<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    title<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    assignee<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    created_by<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">TasksReferences</span> <span class="token punctuation">{</span>
+    users<span class="token punctuation">:</span> User<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name">TasksState</span> <span class="token keyword">extends</span> <span class="token class-name">EntityState</span><span class="token operator">&lt;</span>Task，TasksReferences<span class="token operator">></span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+@<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">{</span> providedIn<span class="token punctuation">:</span> <span class="token string">'root'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">TasksStore</span> <span class="token keyword">extends</span> <span class="token class-name">EntityStore</span><span class="token operator">&lt;</span>TasksState<span class="token punctuation">,</span> Task<span class="token punctuation">,</span> TasksReferences<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>
+            <span class="token punctuation">{</span>
+                entities<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></div></code></pre>
+
+        <h2 id="初始化" class="docs-header-link">
+          <span header-link="初始化"></span>
+          初始化
+        </h2>
+      <p>与<code>EntityStore</code>的初始化相似，唯一区别就是获取数据后，通过<code>store.initializeWithReferences()</code>完成数据的初始化，传入任务列表和引用对象。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token keyword">import</span> <span class="token punctuation">{</span> Injectable <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@angular/core'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Action<span class="token punctuation">,</span> EntityState<span class="token punctuation">,</span> EntityStore<span class="token punctuation">,</span> OnCombineRefs<span class="token punctuation">,</span> ReferencesIdDictionary <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tethys/store'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> of <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> tap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+    _id<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    name<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">Task</span> <span class="token punctuation">{</span>
+    _id<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    title<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    assignee<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    created_by<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">TasksReferences</span> <span class="token punctuation">{</span>
+    users<span class="token punctuation">:</span> User<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name">TasksState</span> <span class="token keyword">extends</span> <span class="token class-name">EntityState</span><span class="token operator">&lt;</span>Task<span class="token punctuation">,</span> TasksReferences<span class="token operator">></span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+@<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">{</span> providedIn<span class="token punctuation">:</span> <span class="token string">'root'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">TasksStore</span> <span class="token keyword">extends</span> <span class="token class-name">EntityStore</span><span class="token operator">&lt;</span>TasksState<span class="token punctuation">,</span> Task<span class="token punctuation">,</span> TasksReferences<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>
+            <span class="token punctuation">{</span>
+                entities<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">fetchTasks</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
+            tasks<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> _id<span class="token punctuation">:</span> <span class="token string">'task1'</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'Task 1'</span><span class="token punctuation">,</span> assignee<span class="token punctuation">:</span> <span class="token string">'user1'</span><span class="token punctuation">,</span> created_by<span class="token punctuation">:</span> <span class="token string">'user1'</span> <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+            references<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+                users<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+                    <span class="token punctuation">{</span> _id<span class="token punctuation">:</span> <span class="token string">'user1'</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">'why520crazy'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                    <span class="token punctuation">{</span> _id<span class="token punctuation">:</span> <span class="token string">'user2'</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">'peter'</span> <span class="token punctuation">}</span>
+                <span class="token punctuation">]</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token function">of</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+            <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">initializeWithReferences</span><span class="token punctuation">(</span>data<span class="token punctuation">.</span>tasks<span class="token punctuation">,</span> data<span class="token punctuation">.</span>references<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</div></code></pre>
+
+        <h2 id="获取列表数据" class="docs-header-link">
+          <span header-link="获取列表数据"></span>
+          获取列表数据
+        </h2>
+      <p>可以通过<code>store.entities$</code>获取实体数据流，同时也可以通过<code>store.entities</code>获取实体数据快照，此处的实体列表是不包含引用数据的。</p>
+
+        <h2 id="获取带引用的列表数据" class="docs-header-link">
+          <span header-link="获取带引用的列表数据"></span>
+          获取带引用的列表数据
+        </h2>
+      <p>可以通过<code>store.entitiesWithRefs$</code>获取带引用实体数据流，对于本示例来说，视图需要展示任务的负责人名称而不是一个用户唯一标识，那么组合数据需要实现<code>OnCombineRefs</code>接口的<code>onCombineRefs</code>函数，把数据存放在<code>task.refs: { assignee: User; created_by: User;}</code>对象上，这样在模板中即可使用<code>task.refs.assignee.name</code>进行数据的绑定。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token keyword">import</span> <span class="token punctuation">{</span> Injectable <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@angular/core'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Action<span class="token punctuation">,</span> EntityState<span class="token punctuation">,</span> EntityStore<span class="token punctuation">,</span> OnCombineRefs<span class="token punctuation">,</span> ReferencesIdDictionary <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tethys/store'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> of <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> tap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">User</span> <span class="token punctuation">{</span>
+    _id<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    name<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">Task</span> <span class="token punctuation">{</span>
+    _id<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    title<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    assignee<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    created_by<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    refs<span class="token operator">?</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+        assignee<span class="token punctuation">:</span> User<span class="token punctuation">;</span>
+        created_by<span class="token punctuation">:</span> User<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">TasksReferences</span> <span class="token punctuation">{</span>
+    users<span class="token punctuation">:</span> User<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name">TasksState</span> <span class="token keyword">extends</span> <span class="token class-name">EntityState</span><span class="token operator">&lt;</span>Task<span class="token punctuation">,</span> TasksReferences<span class="token operator">></span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+@<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">{</span> providedIn<span class="token punctuation">:</span> <span class="token string">'root'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">TasksStore</span> <span class="token keyword">extends</span> <span class="token class-name">EntityStore</span><span class="token operator">&lt;</span>TasksState<span class="token punctuation">,</span> Task<span class="token punctuation">,</span> TasksReferences<span class="token operator">></span> <span class="token keyword">implements</span> <span class="token class-name">OnCombineRefs</span><span class="token operator">&lt;</span>Task<span class="token punctuation">,</span> TasksReferences<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>
+            <span class="token punctuation">{</span>
+                entities<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">onCombineRefs</span><span class="token punctuation">(</span>entity<span class="token punctuation">:</span> Task<span class="token punctuation">,</span> referencesIdMap<span class="token punctuation">:</span> ReferencesIdDictionary<span class="token operator">&lt;</span>TasksReferences<span class="token operator">></span><span class="token punctuation">,</span> references<span class="token operator">?</span><span class="token punctuation">:</span> TasksReferences<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">void</span> <span class="token punctuation">{</span>
+        entity<span class="token punctuation">.</span>refs<span class="token punctuation">.</span>assignee <span class="token operator">=</span> referencesIdMap<span class="token punctuation">.</span>users<span class="token punctuation">[</span>entity<span class="token punctuation">.</span>assignee<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        entity<span class="token punctuation">.</span>refs<span class="token punctuation">.</span>created_by <span class="token operator">=</span> referencesIdMap<span class="token punctuation">.</span>users<span class="token punctuation">[</span>entity<span class="token punctuation">.</span>created_by<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">fetchTasks</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token operator">...</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></div></code></pre>
+<div class="dg-paragraph"><alert>对于<code>Reference</code>的获取和查找需要明确唯一标识的键，默认为<code>_id</code>，如果用户列表的唯一标识是<code>id</code>或者<code>uid</code>，那么就需要通过构造函数的第二个参数传入<code>referencesIdKeys</code>进行设置</alert></div>
+<pre class="language-ts"><code class="language-ts"><div>@<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">{</span> providedIn<span class="token punctuation">:</span> <span class="token string">'root'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">TasksStore</span> <span class="token keyword">extends</span> <span class="token class-name">EntityStore</span><span class="token operator">&lt;</span>TasksState<span class="token punctuation">,</span> Task<span class="token punctuation">,</span> TasksReferences<span class="token operator">></span> <span class="token keyword">implements</span> <span class="token class-name">OnCombineRefs</span><span class="token operator">&lt;</span>Task<span class="token punctuation">,</span> TasksReferences<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">{</span> entities<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> referencesIdKeys<span class="token punctuation">:</span> <span class="token punctuation">{</span> users<span class="token punctuation">:</span> <span class="token string">'uid'</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token operator">...</span></div></code></pre>
+
+        <h2 id="添加" class="docs-header-link">
+          <span header-link="添加"></span>
+          添加
+        </h2>
+      <p>通过<code>addWithReferences</code>函数添加单个或者多个实体，第二个参数传入 References。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token comment" spellcheck="true">/**
+  * Add an entity or entities to the store with references.
+  *
+  * @example
+  * this.store.addWithReferences(Entity, EntityReferences);
+  * this.store.addWithReferences([Entity, Entity], EntityReferences);
+  * this.store.addWithReferences(Entity, EntityReferences, { prepend: true });
+*/</span>
+<span class="token function">addWithReferences</span><span class="token punctuation">(</span>entity<span class="token punctuation">:</span> TEntity <span class="token operator">|</span> TEntity<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> references<span class="token punctuation">:</span> Partial<span class="token operator">&lt;</span>TReferences<span class="token operator">></span><span class="token punctuation">,</span> addOptions<span class="token operator">?</span><span class="token punctuation">:</span>EntityAddOptions<span class="token punctuation">)</span></div></code></pre>
+
+        <h2 id="更新" class="docs-header-link">
+          <span header-link="更新"></span>
+          更新
+        </h2>
+      <p>使用<code>update</code>函数修改单个或者多个实体。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token comment" spellcheck="true">/**
+  *
+  * Update an entity or entities in the store with references.
+  *
+  * @example
+  * this.store.updateWithReferences(3, {
+  *   name: 'New Name'
+  * }, references);
+  *
+  *  this.store.updateWithReferences(3, entity => {
+  *    return {
+  *      ...entity,
+  *      name: 'New Name'
+  *    }
+  *  }, references);
+  *
+  * this.store.updateWithReferences([1,2,3], {
+  *   name: 'New Name'
+  * }, references);
+*/</span>
+<span class="token function">updateWithReferences</span><span class="token punctuation">(</span>idsOrFn<span class="token punctuation">:</span> Id <span class="token operator">|</span> Id<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">|</span> <span class="token keyword">null</span><span class="token punctuation">,</span> newStateOrFn<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>entity<span class="token punctuation">:</span> Readonly<span class="token operator">&lt;</span>TEntity<span class="token operator">></span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Partial<span class="token operator">&lt;</span>TEntity<span class="token operator">></span><span class="token punctuation">)</span> <span class="token operator">|</span> Partial<span class="token operator">&lt;</span>TEntity<span class="token operator">></span><span class="token punctuation">,</span> references<span class="token punctuation">:</span> TReferences<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">void</span></div></code></pre>

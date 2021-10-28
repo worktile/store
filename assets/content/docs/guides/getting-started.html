@@ -1,0 +1,55 @@
+
+        <h2 id="installation" class="docs-header-link">
+          <span header-link="installation"></span>
+          Installation
+        </h2>
+      <pre class="language-bash"><code class="language-bash"><div><span class="token function">npm</span> i @tethys/store --save
+// or
+yarn add @tethys/store</div></code></pre>
+
+        <h2 id="usage" class="docs-header-link">
+          <span header-link="usage"></span>
+          Usage
+        </h2>
+      <pre><code><div>interface CounterState {
+    count<span class="token punctuation">:</span> number<span class="token comment" spellcheck="true">;</span>
+}
+
+@<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+export class CounterStore extends Store<span class="token operator">&lt;</span>CounterState<span class="token operator">></span> {
+    <span class="token keyword">static</span> <span class="token function">countSelector</span><span class="token punctuation">(</span>state<span class="token punctuation">:</span> CounterState<span class="token punctuation">)</span> {
+        return state<span class="token punctuation">.</span>count<span class="token comment" spellcheck="true">;</span>
+    }
+
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> {
+        <span class="token function">super</span><span class="token punctuation">(</span>{
+            count<span class="token punctuation">:</span> <span class="token number">0</span>
+        }<span class="token punctuation">)</span><span class="token comment" spellcheck="true">;</span>
+    }
+
+    @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">increase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> {
+        return <span class="token function">of</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+            <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> {
+                this<span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> {
+                    return {
+                        count<span class="token punctuation">:</span> state<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span>
+                    }<span class="token comment" spellcheck="true">;</span>
+                }<span class="token punctuation">)</span><span class="token comment" spellcheck="true">;</span>
+            }<span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token comment" spellcheck="true">;</span>
+    }
+
+    @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">decrease</span><span class="token punctuation">(</span><span class="token punctuation">)</span> {
+        return <span class="token function">of</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+            <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> {
+                this<span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> {
+                    return {
+                        count<span class="token punctuation">:</span> state<span class="token punctuation">.</span>count <span class="token operator">-</span> <span class="token number">1</span>
+                    }<span class="token comment" spellcheck="true">;</span>
+                }<span class="token punctuation">)</span><span class="token comment" spellcheck="true">;</span>
+            }<span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token comment" spellcheck="true">;</span>
+    }
+}</div></code></pre>

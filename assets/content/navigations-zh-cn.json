@@ -1,0 +1,237 @@
+{
+  "navs": [
+    {
+      "id": "guides",
+      "path": "guides",
+      "channelPath": "guides",
+      "title": "文档",
+      "items": [
+        {
+          "id": "intro",
+          "path": "intro",
+          "channelPath": "guides",
+          "title": "介绍",
+          "order": 10,
+          "toc": "content",
+          "contentPath": "docs/zh-cn/guides/intro.html",
+          "originPath": "docs/zh-cn/guides/intro.md"
+        },
+        {
+          "id": "getting-started",
+          "path": "getting-started",
+          "channelPath": "guides",
+          "title": "快速上手",
+          "order": 20,
+          "toc": "content",
+          "contentPath": "docs/zh-cn/guides/getting-started.html",
+          "originPath": "docs/zh-cn/guides/getting-started.md"
+        },
+        {
+          "id": "guides/basic",
+          "path": "guides/basic",
+          "channelPath": "guides",
+          "title": "基本使用",
+          "items": [
+            {
+              "id": "store",
+              "path": "basic/store",
+              "channelPath": "guides",
+              "title": "Store",
+              "order": 10,
+              "toc": "content",
+              "contentPath": "docs/zh-cn/guides/basic/store.html",
+              "originPath": "docs/zh-cn/guides/basic/store.md"
+            },
+            {
+              "id": "action",
+              "path": "basic/action",
+              "channelPath": "guides",
+              "title": "Action",
+              "order": 20,
+              "toc": "content",
+              "contentPath": "docs/zh-cn/guides/basic/action.html",
+              "originPath": "docs/zh-cn/guides/basic/action.md"
+            },
+            {
+              "id": "selector",
+              "path": "basic/selector",
+              "channelPath": "guides",
+              "title": "Selector",
+              "order": 30,
+              "toc": "content",
+              "contentPath": "docs/zh-cn/guides/basic/selector.html",
+              "originPath": "docs/zh-cn/guides/basic/selector.md"
+            }
+          ],
+          "order": 30
+        },
+        {
+          "id": "guides/advanced",
+          "path": "guides/advanced",
+          "channelPath": "guides",
+          "title": "高级",
+          "items": [
+            {
+              "id": "entity-store",
+              "path": "advanced/entity-store",
+              "channelPath": "guides",
+              "title": "Entity Store",
+              "order": 10,
+              "toc": "content",
+              "contentPath": "docs/zh-cn/guides/advanced/entity-store.html",
+              "originPath": "docs/zh-cn/guides/advanced/entity-store.md"
+            },
+            {
+              "id": "entity-store-references",
+              "path": "advanced/entity-store-references",
+              "channelPath": "guides",
+              "title": "Entity Store with References",
+              "order": 20,
+              "toc": "content",
+              "contentPath": "docs/zh-cn/guides/advanced/entity-store-references.html",
+              "originPath": "docs/zh-cn/guides/advanced/entity-store-references.md"
+            }
+          ],
+          "order": 40
+        },
+        {
+          "id": "faq",
+          "path": "faq",
+          "channelPath": "guides",
+          "title": "常见问题",
+          "order": 200,
+          "toc": "content",
+          "contentPath": "docs/zh-cn/guides/faq.html",
+          "originPath": "docs/zh-cn/guides/faq.md"
+        }
+      ],
+      "order": 9007199254740991
+    },
+    {
+      "title": "示例",
+      "path": "examples",
+      "lib": "store",
+      "items": [
+        {
+          "id": "store",
+          "title": "Store",
+          "subtitle": "",
+          "path": "store",
+          "importSpecifier": "store/store",
+          "examples": [
+            "thy-store-counter-example",
+            "thy-store-todos-example",
+            "thy-store-tasks-example"
+          ],
+          "overview": false,
+          "api": false,
+          "order": 9007199254740991,
+          "toc": "content"
+        }
+      ]
+    },
+    {
+      "title": "GitHub",
+      "path": "https://github.com/docgeni/docgeni-template",
+      "isExternal": true
+    }
+  ],
+  "docs": [
+    {
+      "id": "entity-store-references",
+      "path": "advanced/entity-store-references",
+      "channelPath": "guides",
+      "title": "Entity Store with References",
+      "order": 20,
+      "toc": "content",
+      "contentPath": "docs/zh-cn/guides/advanced/entity-store-references.html",
+      "originPath": "docs/zh-cn/guides/advanced/entity-store-references.md"
+    },
+    {
+      "id": "entity-store",
+      "path": "advanced/entity-store",
+      "channelPath": "guides",
+      "title": "Entity Store",
+      "order": 10,
+      "toc": "content",
+      "contentPath": "docs/zh-cn/guides/advanced/entity-store.html",
+      "originPath": "docs/zh-cn/guides/advanced/entity-store.md"
+    },
+    {
+      "id": "action",
+      "path": "basic/action",
+      "channelPath": "guides",
+      "title": "Action",
+      "order": 20,
+      "toc": "content",
+      "contentPath": "docs/zh-cn/guides/basic/action.html",
+      "originPath": "docs/zh-cn/guides/basic/action.md"
+    },
+    {
+      "id": "selector",
+      "path": "basic/selector",
+      "channelPath": "guides",
+      "title": "Selector",
+      "order": 30,
+      "toc": "content",
+      "contentPath": "docs/zh-cn/guides/basic/selector.html",
+      "originPath": "docs/zh-cn/guides/basic/selector.md"
+    },
+    {
+      "id": "store",
+      "path": "basic/store",
+      "channelPath": "guides",
+      "title": "Store",
+      "order": 10,
+      "toc": "content",
+      "contentPath": "docs/zh-cn/guides/basic/store.html",
+      "originPath": "docs/zh-cn/guides/basic/store.md"
+    },
+    {
+      "id": "faq",
+      "path": "faq",
+      "channelPath": "guides",
+      "title": "常见问题",
+      "order": 200,
+      "toc": "content",
+      "contentPath": "docs/zh-cn/guides/faq.html",
+      "originPath": "docs/zh-cn/guides/faq.md"
+    },
+    {
+      "id": "getting-started",
+      "path": "getting-started",
+      "channelPath": "guides",
+      "title": "快速上手",
+      "order": 20,
+      "toc": "content",
+      "contentPath": "docs/zh-cn/guides/getting-started.html",
+      "originPath": "docs/zh-cn/guides/getting-started.md"
+    },
+    {
+      "id": "intro",
+      "path": "intro",
+      "channelPath": "guides",
+      "title": "介绍",
+      "order": 10,
+      "toc": "content",
+      "contentPath": "docs/zh-cn/guides/intro.html",
+      "originPath": "docs/zh-cn/guides/intro.md"
+    },
+    {
+      "id": "store",
+      "title": "Store",
+      "subtitle": "",
+      "path": "store",
+      "importSpecifier": "store/store",
+      "examples": [
+        "thy-store-counter-example",
+        "thy-store-todos-example",
+        "thy-store-tasks-example"
+      ],
+      "overview": false,
+      "api": false,
+      "order": 9007199254740991,
+      "toc": "content"
+    }
+  ]
+}

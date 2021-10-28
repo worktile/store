@@ -1,0 +1,99 @@
+{
+  "navs": [
+    {
+      "id": "guides",
+      "path": "guides",
+      "channelPath": "guides",
+      "title": "Docs",
+      "items": [
+        {
+          "id": "intro",
+          "path": "intro",
+          "channelPath": "guides",
+          "title": "Intro",
+          "order": 10,
+          "toc": "content",
+          "contentPath": "docs/guides/intro.html",
+          "originPath": "docs/guides/intro.md"
+        },
+        {
+          "id": "getting-started",
+          "path": "getting-started",
+          "channelPath": "guides",
+          "title": "Getting Started",
+          "order": 20,
+          "toc": "content",
+          "contentPath": "docs/guides/getting-started.html",
+          "originPath": "docs/guides/getting-started.md"
+        }
+      ],
+      "order": 9007199254740991
+    },
+    {
+      "title": "Examples",
+      "path": "examples",
+      "lib": "store",
+      "items": [
+        {
+          "id": "store",
+          "title": "Store",
+          "subtitle": "",
+          "path": "store",
+          "importSpecifier": "store/store",
+          "examples": [
+            "thy-store-counter-example",
+            "thy-store-todos-example",
+            "thy-store-tasks-example"
+          ],
+          "overview": false,
+          "api": false,
+          "order": 9007199254740991,
+          "toc": "content"
+        }
+      ]
+    },
+    {
+      "title": "GitHub",
+      "path": "https://github.com/docgeni/docgeni-template",
+      "isExternal": true
+    }
+  ],
+  "docs": [
+    {
+      "id": "getting-started",
+      "path": "getting-started",
+      "channelPath": "guides",
+      "title": "Getting Started",
+      "order": 20,
+      "toc": "content",
+      "contentPath": "docs/guides/getting-started.html",
+      "originPath": "docs/guides/getting-started.md"
+    },
+    {
+      "id": "intro",
+      "path": "intro",
+      "channelPath": "guides",
+      "title": "Intro",
+      "order": 10,
+      "toc": "content",
+      "contentPath": "docs/guides/intro.html",
+      "originPath": "docs/guides/intro.md"
+    },
+    {
+      "id": "store",
+      "title": "Store",
+      "subtitle": "",
+      "path": "store",
+      "importSpecifier": "store/store",
+      "examples": [
+        "thy-store-counter-example",
+        "thy-store-todos-example",
+        "thy-store-tasks-example"
+      ],
+      "overview": false,
+      "api": false,
+      "order": 9007199254740991,
+      "toc": "content"
+    }
+  ]
+}

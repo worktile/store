@@ -1,0 +1,369 @@
+<div><span class="token selector">button </span><span class="token punctuation">{</span>
+    <span class="token property">margin</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">border</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">background</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+    <span class="token property">font-size</span><span class="token punctuation">:</span> <span class="token number">100%</span><span class="token punctuation">;</span>
+    <span class="token property">vertical-align</span><span class="token punctuation">:</span> baseline<span class="token punctuation">;</span>
+    <span class="token property">font-family</span><span class="token punctuation">:</span> inherit<span class="token punctuation">;</span>
+    <span class="token property">font-weight</span><span class="token punctuation">:</span> inherit<span class="token punctuation">;</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> inherit<span class="token punctuation">;</span>
+    <span class="token property">-webkit-appearance</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+    <span class="token property">appearance</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+    <span class="token property">-webkit-font-smoothing</span><span class="token punctuation">:</span> antialiased<span class="token punctuation">;</span>
+    <span class="token property">-moz-osx-font-smoothing</span><span class="token punctuation">:</span> grayscale<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.hidden </span><span class="token punctuation">{</span>
+    <span class="token property">display</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todoapp </span><span class="token punctuation">{</span>
+    <span class="token property">background</span><span class="token punctuation">:</span> <span class="token hexcode">#fff</span><span class="token punctuation">;</span>
+    <span class="token property">margin</span><span class="token punctuation">:</span> <span class="token number">130</span>px <span class="token number">0</span> <span class="token number">40</span>px <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">position</span><span class="token punctuation">:</span> relative<span class="token punctuation">;</span>
+    <span class="token property">box-shadow</span><span class="token punctuation">:</span> <span class="token number">0</span> <span class="token number">2</span>px <span class="token number">4</span>px <span class="token number">0</span> <span class="token function">rgba</span><span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0.2</span><span class="token punctuation">)</span>, <span class="token number">0</span> <span class="token number">25</span>px <span class="token number">50</span>px <span class="token number">0</span> <span class="token function">rgba</span><span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0.1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todoapp input::-webkit-input-placeholder </span><span class="token punctuation">{</span>
+    <span class="token property">font-style</span><span class="token punctuation">:</span> italic<span class="token punctuation">;</span>
+    <span class="token property">font-weight</span><span class="token punctuation">:</span> <span class="token number">400</span><span class="token punctuation">;</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> <span class="token function">rgba</span><span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0.4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todoapp input::-moz-placeholder </span><span class="token punctuation">{</span>
+    <span class="token property">font-style</span><span class="token punctuation">:</span> italic<span class="token punctuation">;</span>
+    <span class="token property">font-weight</span><span class="token punctuation">:</span> <span class="token number">400</span><span class="token punctuation">;</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> <span class="token function">rgba</span><span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0.4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todoapp input::input-placeholder </span><span class="token punctuation">{</span>
+    <span class="token property">font-style</span><span class="token punctuation">:</span> italic<span class="token punctuation">;</span>
+    <span class="token property">font-weight</span><span class="token punctuation">:</span> <span class="token number">400</span><span class="token punctuation">;</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> <span class="token function">rgba</span><span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0.4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todoapp h1 </span><span class="token punctuation">{</span>
+    <span class="token property">position</span><span class="token punctuation">:</span> absolute<span class="token punctuation">;</span>
+    <span class="token property">top</span><span class="token punctuation">:</span> -<span class="token number">140</span>px<span class="token punctuation">;</span>
+    <span class="token property">width</span><span class="token punctuation">:</span> <span class="token number">100%</span><span class="token punctuation">;</span>
+    <span class="token property">font-size</span><span class="token punctuation">:</span> <span class="token number">80</span>px<span class="token punctuation">;</span>
+    <span class="token property">font-weight</span><span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">;</span>
+    <span class="token property">text-align</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> <span class="token hexcode">#b83f45</span><span class="token punctuation">;</span>
+    <span class="token property">-webkit-text-rendering</span><span class="token punctuation">:</span> optimizeLegibility<span class="token punctuation">;</span>
+    <span class="token property">-moz-text-rendering</span><span class="token punctuation">:</span> optimizeLegibility<span class="token punctuation">;</span>
+    <span class="token property">text-rendering</span><span class="token punctuation">:</span> optimizeLegibility<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.new-todo,
+.edit </span><span class="token punctuation">{</span>
+    <span class="token property">position</span><span class="token punctuation">:</span> relative<span class="token punctuation">;</span>
+    <span class="token property">margin</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">width</span><span class="token punctuation">:</span> <span class="token number">100%</span><span class="token punctuation">;</span>
+    <span class="token property">font-size</span><span class="token punctuation">:</span> <span class="token number">24</span>px<span class="token punctuation">;</span>
+    <span class="token property">font-family</span><span class="token punctuation">:</span> inherit<span class="token punctuation">;</span>
+    <span class="token property">font-weight</span><span class="token punctuation">:</span> inherit<span class="token punctuation">;</span>
+    <span class="token property">line-height</span><span class="token punctuation">:</span> <span class="token number">1.4</span>em<span class="token punctuation">;</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> inherit<span class="token punctuation">;</span>
+    <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token number">6</span>px<span class="token punctuation">;</span>
+    <span class="token property">border</span><span class="token punctuation">:</span> <span class="token number">1</span>px solid <span class="token hexcode">#999</span><span class="token punctuation">;</span>
+    <span class="token property">box-shadow</span><span class="token punctuation">:</span> inset <span class="token number">0</span> -<span class="token number">1</span>px <span class="token number">5</span>px <span class="token number">0</span> <span class="token function">rgba</span><span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0.2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token property">box-sizing</span><span class="token punctuation">:</span> border-box<span class="token punctuation">;</span>
+    <span class="token property">-webkit-font-smoothing</span><span class="token punctuation">:</span> antialiased<span class="token punctuation">;</span>
+    <span class="token property">-moz-osx-font-smoothing</span><span class="token punctuation">:</span> grayscale<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.new-todo </span><span class="token punctuation">{</span>
+    <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token number">16</span>px <span class="token number">16</span>px <span class="token number">16</span>px <span class="token number">60</span>px<span class="token punctuation">;</span>
+    <span class="token property">height</span><span class="token punctuation">:</span> <span class="token number">65</span>px<span class="token punctuation">;</span>
+    <span class="token property">border</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+    <span class="token property">background</span><span class="token punctuation">:</span> <span class="token function">rgba</span><span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0.003</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token property">box-shadow</span><span class="token punctuation">:</span> inset <span class="token number">0</span> -<span class="token number">2</span>px <span class="token number">1</span>px <span class="token function">rgba</span><span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0.03</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.main </span><span class="token punctuation">{</span>
+    <span class="token property">position</span><span class="token punctuation">:</span> relative<span class="token punctuation">;</span>
+    <span class="token property">z-index</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">;</span>
+    <span class="token property">border-top</span><span class="token punctuation">:</span> <span class="token number">1</span>px solid <span class="token hexcode">#e6e6e6</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.toggle-all </span><span class="token punctuation">{</span>
+    <span class="token property">width</span><span class="token punctuation">:</span> <span class="token number">1</span>px<span class="token punctuation">;</span>
+    <span class="token property">height</span><span class="token punctuation">:</span> <span class="token number">1</span>px<span class="token punctuation">;</span>
+    <span class="token property">border</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">/* Mobile Safari */</span>
+    <span class="token property">opacity</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">position</span><span class="token punctuation">:</span> absolute<span class="token punctuation">;</span>
+    <span class="token property">right</span><span class="token punctuation">:</span> <span class="token number">100%</span><span class="token punctuation">;</span>
+    <span class="token property">bottom</span><span class="token punctuation">:</span> <span class="token number">100%</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.toggle-all + label </span><span class="token punctuation">{</span>
+    <span class="token property">display</span><span class="token punctuation">:</span> flex<span class="token punctuation">;</span>
+    <span class="token property">align-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+    <span class="token property">justify-content</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+    <span class="token property">width</span><span class="token punctuation">:</span> <span class="token number">45</span>px<span class="token punctuation">;</span>
+    <span class="token property">height</span><span class="token punctuation">:</span> <span class="token number">65</span>px<span class="token punctuation">;</span>
+    <span class="token property">font-size</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">position</span><span class="token punctuation">:</span> absolute<span class="token punctuation">;</span>
+    <span class="token property">top</span><span class="token punctuation">:</span> -<span class="token number">65</span>px<span class="token punctuation">;</span>
+    <span class="token property">left</span><span class="token punctuation">:</span> -<span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.toggle-all + label:before </span><span class="token punctuation">{</span>
+    <span class="token property">content</span><span class="token punctuation">:</span> <span class="token string">'❯'</span><span class="token punctuation">;</span>
+    <span class="token property">display</span><span class="token punctuation">:</span> inline-block<span class="token punctuation">;</span>
+    <span class="token property">font-size</span><span class="token punctuation">:</span> <span class="token number">22</span>px<span class="token punctuation">;</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> <span class="token hexcode">#949494</span><span class="token punctuation">;</span>
+    <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token number">10</span>px <span class="token number">27</span>px <span class="token number">10</span>px <span class="token number">27</span>px<span class="token punctuation">;</span>
+    <span class="token property">-webkit-transform</span><span class="token punctuation">:</span> <span class="token function">rotate</span><span class="token punctuation">(</span><span class="token number">90</span>deg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">rotate</span><span class="token punctuation">(</span><span class="token number">90</span>deg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.toggle-all:checked + label:before </span><span class="token punctuation">{</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> <span class="token hexcode">#484848</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list </span><span class="token punctuation">{</span>
+    <span class="token property">margin</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">list-style</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li </span><span class="token punctuation">{</span>
+    <span class="token property">position</span><span class="token punctuation">:</span> relative<span class="token punctuation">;</span>
+    <span class="token property">font-size</span><span class="token punctuation">:</span> <span class="token number">24</span>px<span class="token punctuation">;</span>
+    <span class="token property">border-bottom</span><span class="token punctuation">:</span> <span class="token number">1</span>px solid <span class="token hexcode">#ededed</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li:last-child </span><span class="token punctuation">{</span>
+    <span class="token property">border-bottom</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li.editing </span><span class="token punctuation">{</span>
+    <span class="token property">border-bottom</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+    <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li.editing .edit </span><span class="token punctuation">{</span>
+    <span class="token property">display</span><span class="token punctuation">:</span> block<span class="token punctuation">;</span>
+    <span class="token property">width</span><span class="token punctuation">:</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token number">100%</span> <span class="token operator">-</span> <span class="token number">43</span>px<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token number">12</span>px <span class="token number">16</span>px<span class="token punctuation">;</span>
+    <span class="token property">margin</span><span class="token punctuation">:</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">43</span>px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li.editing .view </span><span class="token punctuation">{</span>
+    <span class="token property">display</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li .toggle </span><span class="token punctuation">{</span>
+    <span class="token property">text-align</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+    <span class="token property">width</span><span class="token punctuation">:</span> <span class="token number">40</span>px<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">/* auto, since non-WebKit browsers doesn't support input styling */</span>
+    <span class="token property">height</span><span class="token punctuation">:</span> auto<span class="token punctuation">;</span>
+    <span class="token property">position</span><span class="token punctuation">:</span> absolute<span class="token punctuation">;</span>
+    <span class="token property">top</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">bottom</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">margin</span><span class="token punctuation">:</span> auto <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">border</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">/* Mobile Safari */</span>
+    <span class="token property">-webkit-appearance</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+    <span class="token property">appearance</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li .toggle </span><span class="token punctuation">{</span>
+    <span class="token property">opacity</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li .toggle + label </span><span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">/*
+		Firefox requires `#` to be escaped - https://bugzilla.mozilla.org/show_bug.cgi?id=922433
+		IE and Edge requires *everything* to be escaped to render, so we do that instead of just the `#` - https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/7157459/
+	*/</span>
+    <span class="token property">background-image</span><span class="token punctuation">:</span> <span class="token url">url</span><span class="token punctuation">(</span><span class="token string">'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23949494%22%20stroke-width%3D%223%22/%3E%3C/svg%3E'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token property">background-repeat</span><span class="token punctuation">:</span> no-repeat<span class="token punctuation">;</span>
+    <span class="token property">background-position</span><span class="token punctuation">:</span> center left<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li .toggle:checked + label </span><span class="token punctuation">{</span>
+    <span class="token property">background-image</span><span class="token punctuation">:</span> <span class="token url">url</span><span class="token punctuation">(</span><span class="token string">'data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%2359A193%22%20stroke-width%3D%223%22%2F%3E%3Cpath%20fill%3D%22%233EA390%22%20d%3D%22M72%2025L42%2071%2027%2056l-4%204%2020%2020%2034-52z%22%2F%3E%3C%2Fsvg%3E'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li label </span><span class="token punctuation">{</span>
+    <span class="token property">word-break</span><span class="token punctuation">:</span> break-all<span class="token punctuation">;</span>
+    <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token number">15</span>px <span class="token number">15</span>px <span class="token number">15</span>px <span class="token number">60</span>px<span class="token punctuation">;</span>
+    <span class="token property">display</span><span class="token punctuation">:</span> block<span class="token punctuation">;</span>
+    <span class="token property">line-height</span><span class="token punctuation">:</span> <span class="token number">1.2</span><span class="token punctuation">;</span>
+    <span class="token property">transition</span><span class="token punctuation">:</span> color <span class="token number">0.4</span>s<span class="token punctuation">;</span>
+    <span class="token property">font-weight</span><span class="token punctuation">:</span> <span class="token number">400</span><span class="token punctuation">;</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> <span class="token hexcode">#484848</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li.completed label </span><span class="token punctuation">{</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> <span class="token hexcode">#949494</span><span class="token punctuation">;</span>
+    <span class="token property">text-decoration</span><span class="token punctuation">:</span> line-through<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li .destroy </span><span class="token punctuation">{</span>
+    <span class="token property">display</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+    <span class="token property">position</span><span class="token punctuation">:</span> absolute<span class="token punctuation">;</span>
+    <span class="token property">top</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">right</span><span class="token punctuation">:</span> <span class="token number">10</span>px<span class="token punctuation">;</span>
+    <span class="token property">bottom</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">width</span><span class="token punctuation">:</span> <span class="token number">40</span>px<span class="token punctuation">;</span>
+    <span class="token property">height</span><span class="token punctuation">:</span> <span class="token number">40</span>px<span class="token punctuation">;</span>
+    <span class="token property">margin</span><span class="token punctuation">:</span> auto <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">font-size</span><span class="token punctuation">:</span> <span class="token number">30</span>px<span class="token punctuation">;</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> <span class="token hexcode">#949494</span><span class="token punctuation">;</span>
+    <span class="token property">transition</span><span class="token punctuation">:</span> color <span class="token number">0.2</span>s ease-out<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li .destroy:hover,
+.todo-list li .destroy:focus </span><span class="token punctuation">{</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> <span class="token hexcode">#c18585</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li .destroy:after </span><span class="token punctuation">{</span>
+    <span class="token property">content</span><span class="token punctuation">:</span> <span class="token string">'×'</span><span class="token punctuation">;</span>
+    <span class="token property">display</span><span class="token punctuation">:</span> block<span class="token punctuation">;</span>
+    <span class="token property">height</span><span class="token punctuation">:</span> <span class="token number">100%</span><span class="token punctuation">;</span>
+    <span class="token property">line-height</span><span class="token punctuation">:</span> <span class="token number">1.1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li:hover .destroy </span><span class="token punctuation">{</span>
+    <span class="token property">display</span><span class="token punctuation">:</span> block<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li .edit </span><span class="token punctuation">{</span>
+    <span class="token property">display</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-list li.editing:last-child </span><span class="token punctuation">{</span>
+    <span class="token property">margin-bottom</span><span class="token punctuation">:</span> -<span class="token number">1</span>px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.footer </span><span class="token punctuation">{</span>
+    <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token number">10</span>px <span class="token number">15</span>px<span class="token punctuation">;</span>
+    <span class="token property">height</span><span class="token punctuation">:</span> <span class="token number">20</span>px<span class="token punctuation">;</span>
+    <span class="token property">text-align</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+    <span class="token property">font-size</span><span class="token punctuation">:</span> <span class="token number">15</span>px<span class="token punctuation">;</span>
+    <span class="token property">border-top</span><span class="token punctuation">:</span> <span class="token number">1</span>px solid <span class="token hexcode">#e6e6e6</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.footer:before </span><span class="token punctuation">{</span>
+    <span class="token property">content</span><span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">;</span>
+    <span class="token property">position</span><span class="token punctuation">:</span> absolute<span class="token punctuation">;</span>
+    <span class="token property">right</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">bottom</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">left</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">height</span><span class="token punctuation">:</span> <span class="token number">50</span>px<span class="token punctuation">;</span>
+    <span class="token property">overflow</span><span class="token punctuation">:</span> hidden<span class="token punctuation">;</span>
+    <span class="token property">box-shadow</span><span class="token punctuation">:</span> <span class="token number">0</span> <span class="token number">1</span>px <span class="token number">1</span>px <span class="token function">rgba</span><span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0.2</span><span class="token punctuation">)</span>, <span class="token number">0</span> <span class="token number">8</span>px <span class="token number">0</span> -<span class="token number">3</span>px <span class="token hexcode">#f6f6f6</span>, <span class="token number">0</span> <span class="token number">9</span>px <span class="token number">1</span>px -<span class="token number">3</span>px <span class="token function">rgba</span><span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0.2</span><span class="token punctuation">)</span>, <span class="token number">0</span> <span class="token number">16</span>px <span class="token number">0</span> -<span class="token number">6</span>px <span class="token hexcode">#f6f6f6</span>,
+        <span class="token number">0</span> <span class="token number">17</span>px <span class="token number">2</span>px -<span class="token number">6</span>px <span class="token function">rgba</span><span class="token punctuation">(</span><span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0</span>, <span class="token number">0.2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-count </span><span class="token punctuation">{</span>
+    <span class="token property">float</span><span class="token punctuation">:</span> left<span class="token punctuation">;</span>
+    <span class="token property">text-align</span><span class="token punctuation">:</span> left<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.todo-count strong </span><span class="token punctuation">{</span>
+    <span class="token property">font-weight</span><span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.filters </span><span class="token punctuation">{</span>
+    <span class="token property">margin</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">list-style</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+    <span class="token property">position</span><span class="token punctuation">:</span> absolute<span class="token punctuation">;</span>
+    <span class="token property">right</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">left</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.filters li </span><span class="token punctuation">{</span>
+    <span class="token property">display</span><span class="token punctuation">:</span> inline<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.filters li a </span><span class="token punctuation">{</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> inherit<span class="token punctuation">;</span>
+    <span class="token property">margin</span><span class="token punctuation">:</span> <span class="token number">3</span>px<span class="token punctuation">;</span>
+    <span class="token property">padding</span><span class="token punctuation">:</span> <span class="token number">3</span>px <span class="token number">7</span>px<span class="token punctuation">;</span>
+    <span class="token property">text-decoration</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+    <span class="token property">border</span><span class="token punctuation">:</span> <span class="token number">1</span>px solid transparent<span class="token punctuation">;</span>
+    <span class="token property">border-radius</span><span class="token punctuation">:</span> <span class="token number">3</span>px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.filters li a:hover </span><span class="token punctuation">{</span>
+    <span class="token property">border-color</span><span class="token punctuation">:</span> <span class="token hexcode">#db7676</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.filters li a.selected </span><span class="token punctuation">{</span>
+    <span class="token property">border-color</span><span class="token punctuation">:</span> <span class="token hexcode">#ce4646</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.clear-completed,
+html .clear-completed:active </span><span class="token punctuation">{</span>
+    <span class="token property">float</span><span class="token punctuation">:</span> right<span class="token punctuation">;</span>
+    <span class="token property">position</span><span class="token punctuation">:</span> relative<span class="token punctuation">;</span>
+    <span class="token property">line-height</span><span class="token punctuation">:</span> <span class="token number">19</span>px<span class="token punctuation">;</span>
+    <span class="token property">text-decoration</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+    <span class="token property">cursor</span><span class="token punctuation">:</span> pointer<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.clear-completed:hover </span><span class="token punctuation">{</span>
+    <span class="token property">text-decoration</span><span class="token punctuation">:</span> underline<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.info </span><span class="token punctuation">{</span>
+    <span class="token property">margin</span><span class="token punctuation">:</span> <span class="token number">65</span>px auto <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> <span class="token hexcode">#4d4d4d</span><span class="token punctuation">;</span>
+    <span class="token property">font-size</span><span class="token punctuation">:</span> <span class="token number">11</span>px<span class="token punctuation">;</span>
+    <span class="token property">text-shadow</span><span class="token punctuation">:</span> <span class="token number">0</span> <span class="token number">1</span>px <span class="token number">0</span> <span class="token function">rgba</span><span class="token punctuation">(</span><span class="token number">255</span>, <span class="token number">255</span>, <span class="token number">255</span>, <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token property">text-align</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.info p </span><span class="token punctuation">{</span>
+    <span class="token property">line-height</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.info a </span><span class="token punctuation">{</span>
+    <span class="token property">color</span><span class="token punctuation">:</span> inherit<span class="token punctuation">;</span>
+    <span class="token property">text-decoration</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+    <span class="token property">font-weight</span><span class="token punctuation">:</span> <span class="token number">400</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.info a:hover </span><span class="token punctuation">{</span>
+    <span class="token property">text-decoration</span><span class="token punctuation">:</span> underline<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">/*
+	Hack to remove background from Mobile Safari.
+	Can't use it globally since it destroys checkboxes in Firefox
+*/</span>
+<span class="token atrule"><span class="token rule">@media</span> screen <span class="token operator">and</span> <span class="token punctuation">(</span><span class="token property">-webkit-min-device-pixel-ratio</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">)</span></span> <span class="token punctuation">{</span>
+    <span class="token selector">.toggle-all,
+    .todo-list li .toggle </span><span class="token punctuation">{</span>
+        <span class="token property">background</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token selector">.todo-list li .toggle </span><span class="token punctuation">{</span>
+        <span class="token property">height</span><span class="token punctuation">:</span> <span class="token number">40</span>px<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token atrule"><span class="token rule">@media</span> <span class="token punctuation">(</span><span class="token property">max-width</span><span class="token punctuation">:</span> <span class="token number">430</span>px<span class="token punctuation">)</span></span> <span class="token punctuation">{</span>
+    <span class="token selector">.footer </span><span class="token punctuation">{</span>
+        <span class="token property">height</span><span class="token punctuation">:</span> <span class="token number">50</span>px<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token selector">.filters </span><span class="token punctuation">{</span>
+        <span class="token property">bottom</span><span class="token punctuation">:</span> <span class="token number">10</span>px<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">:focus,
+.toggle:focus + label,
+.toggle-all:focus + label </span><span class="token punctuation">{</span>
+    <span class="token property">box-shadow</span><span class="token punctuation">:</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">2</span>px <span class="token number">2</span>px <span class="token hexcode">#cf7d7d</span><span class="token punctuation">;</span>
+    <span class="token property">outline</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</div>

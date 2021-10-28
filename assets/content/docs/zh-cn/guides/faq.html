@@ -1,0 +1,22 @@
+
+        <h2 id="为什么采用多<code>store</code>" class="docs-header-link">
+          <span header-link="为什么采用多<code>store</code>"></span>
+          为什么采用多<code>Store</code>
+        </h2>
+      <p>我们认为多<code>Store</code>更加符合前端数据管理的思想，每个<code>Store</code>定义为一个特性领域，状态和操作应该聚合在一起，缺点就是当组件需要很多<code>Store</code>的状态时需要注入多个<code>Store</code>，同时需要开发者自己维护<code>Store</code>的依赖关系，对于这种复杂的场景我们应该通过合理划分<code>Store</code>或者加一些聚合<code>Store</code>来进行解决。</p>
+
+        <h2 id="可变数据和不可变数据如何选择" class="docs-header-link">
+          <span header-link="可变数据和不可变数据如何选择"></span>
+          可变数据和不可变数据如何选择
+        </h2>
+      <p>推荐使用不可变数据，虽然在<code>Angular</code>中通过可变数据也是可以正常运行的，但是一旦需要通过<code>OnPush</code>模式提高应用程序性能的时候需要大量重构，所以建议一开始所有的数据都是通过不可变数据进行管理，<code>@tethys/store</code>底层提供的增删改查都是基于不可变数据的，<code>@tethys/cdk</code>类库中提供了一个小型的<code>immutable</code>不可变数据操作类库。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token keyword">import</span> <span class="token punctuation">{</span> produce <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"@tethys/cdk/immutable"</span><span class="token punctuation">;</span>
+<span class="token function">produce</span><span class="token punctuation">(</span>users<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>addUserEntity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">produce</span><span class="token punctuation">(</span>users<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">produce</span><span class="token punctuation">(</span>users<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>name<span class="token punctuation">:</span> <span class="token string">"new-name"</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div></code></pre>
+
+        <h2 id="哪些产品在使用<code>@tethys/store</code>" class="docs-header-link">
+          <span header-link="哪些产品在使用<code>@tethys/store</code>"></span>
+          哪些产品在使用<code>@tethys/store</code>
+        </h2>
+      <div class="dg-paragraph"><a target="_blank" href="https://worktile.com/">Worktile</a> 和 <a target="_blank" href="https://pingcode.com/">PingCode</a> 两款 toB 的 Sass 产品都在使用，起初在组件库中的<code>store</code>模块，后期单独抽取出来独立为<code>@tethys/store</code>，目前通过使用效果来看非常理想，我们的业务对于状态管理要求较高。</div>

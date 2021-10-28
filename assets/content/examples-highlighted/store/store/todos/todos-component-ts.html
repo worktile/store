@@ -1,0 +1,55 @@
+<div><span class="token keyword">import</span> <span class="token punctuation">{</span> Component<span class="token punctuation">,</span> OnInit <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@angular/core'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Todo<span class="token punctuation">,</span> TodosStore <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./todos.store'</span><span class="token punctuation">;</span>
+
+@<span class="token function">Component</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    selector<span class="token punctuation">:</span> <span class="token string">'thy-store-todos-example'</span><span class="token punctuation">,</span>
+    templateUrl<span class="token punctuation">:</span> <span class="token string">'./todos.component.html'</span><span class="token punctuation">,</span>
+    styleUrls<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'./todos.component.scss'</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">ThyStoreTodosExampleComponent</span> <span class="token keyword">implements</span> <span class="token class-name">OnInit</span> <span class="token punctuation">{</span>
+    todos$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>todosStore<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span>TodosStore<span class="token punctuation">.</span>todosSelector<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    newTodoText<span class="token operator">!</span><span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token keyword">public</span> todosStore<span class="token punctuation">:</span> TodosStore<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token function">ngOnInit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">void</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>todosStore<span class="token punctuation">.</span><span class="token function">fetchTodos</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">addTodo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>todosStore<span class="token punctuation">.</span><span class="token function">addTodo</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>newTodoText<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>newTodoText <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">toggleCompletion</span><span class="token punctuation">(</span>todo<span class="token punctuation">:</span> Todo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>todosStore<span class="token punctuation">.</span><span class="token function">toggleCompletion</span><span class="token punctuation">(</span>todo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">editTodo</span><span class="token punctuation">(</span>todo<span class="token punctuation">:</span> Todo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        todo<span class="token punctuation">.</span>editing <span class="token operator">=</span> <span class="token keyword">true</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">remove</span><span class="token punctuation">(</span>todo<span class="token punctuation">:</span> Todo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>todosStore<span class="token punctuation">.</span><span class="token function">removeTodo</span><span class="token punctuation">(</span>todo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">update</span><span class="token punctuation">(</span>todo<span class="token punctuation">:</span> Todo<span class="token punctuation">,</span> newTitle<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>todosStore<span class="token punctuation">.</span><span class="token function">updateTodo</span><span class="token punctuation">(</span>todo<span class="token punctuation">,</span> newTitle<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">stopEditing</span><span class="token punctuation">(</span>todo<span class="token punctuation">:</span> Todo<span class="token punctuation">,</span> editedTitle<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        todo<span class="token punctuation">.</span>title <span class="token operator">=</span> editedTitle<span class="token punctuation">;</span>
+        todo<span class="token punctuation">.</span>editing <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">cancelEditing</span><span class="token punctuation">(</span>todo<span class="token punctuation">:</span> Todo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        todo<span class="token punctuation">.</span>editing <span class="token operator">=</span> <span class="token keyword">false</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">removeCompleted</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>todosStore<span class="token punctuation">.</span><span class="token function">removeCompleted</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</div>

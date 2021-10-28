@@ -1,0 +1,131 @@
+<div><span class="token keyword">import</span> <span class="token punctuation">{</span> Injectable <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@angular/core'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Action<span class="token punctuation">,</span> EntityState<span class="token punctuation">,</span> EntityStore <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tethys/store'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Observable<span class="token punctuation">,</span> of <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> tap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">Todo</span> <span class="token punctuation">{</span>
+    id<span class="token punctuation">:</span> <span class="token keyword">number</span><span class="token punctuation">;</span>
+    title<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    editing<span class="token operator">?</span><span class="token punctuation">:</span> <span class="token keyword">boolean</span><span class="token punctuation">;</span>
+    completed<span class="token operator">?</span><span class="token punctuation">:</span> <span class="token keyword">boolean</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name">TodosState</span> <span class="token keyword">extends</span> <span class="token class-name">EntityState</span><span class="token operator">&lt;</span>Todo<span class="token operator">></span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> id<span class="token punctuation">:</span> <span class="token keyword">number</span><span class="token punctuation">;</span>
+@<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">{</span> providedIn<span class="token punctuation">:</span> <span class="token string">'root'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">TodosStore</span> <span class="token keyword">extends</span> <span class="token class-name">EntityStore</span><span class="token operator">&lt;</span>TodosState<span class="token punctuation">,</span> Todo<span class="token operator">></span> <span class="token punctuation">{</span>
+    newTodoText<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">static</span> <span class="token function">todosSelector</span><span class="token punctuation">(</span>state<span class="token punctuation">:</span> TodosState<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> state<span class="token punctuation">.</span>entities<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token keyword">private</span> todosApiService<span class="token punctuation">:</span> TodosApiService<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span>
+            <span class="token punctuation">{</span>
+                entities<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span> idKey<span class="token punctuation">:</span> <span class="token string">'id'</span> <span class="token punctuation">}</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token function">getWithCompleted</span><span class="token punctuation">(</span>completed<span class="token punctuation">:</span> Boolean<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>entities<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token punctuation">(</span>todo<span class="token punctuation">:</span> Todo<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> todo<span class="token punctuation">.</span>completed <span class="token operator">===</span> completed<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">getCompleted</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getWithCompleted</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">allCompleted</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>entities<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getCompleted</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">getRemaining</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getWithCompleted</span><span class="token punctuation">(</span><span class="token keyword">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">fetchTodos</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>todosApiService<span class="token punctuation">.</span><span class="token function">fetchTodos</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+            <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span>todos<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                id <span class="token operator">=</span> todos<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">initialize</span><span class="token punctuation">(</span>todos<span class="token punctuation">,</span> <span class="token punctuation">{</span> pageIndex<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> pageCount<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> pageSize<span class="token punctuation">:</span> <span class="token number">20</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">addTodo</span><span class="token punctuation">(</span>title<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">of</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+            <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+                    id<span class="token punctuation">:</span> <span class="token operator">++</span>id<span class="token punctuation">,</span>
+                    title<span class="token punctuation">:</span> title<span class="token punctuation">,</span>
+                    completed<span class="token punctuation">:</span> <span class="token keyword">false</span>
+                <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">updateTodo</span><span class="token punctuation">(</span>todo<span class="token punctuation">:</span> Todo<span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>title<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>todo<span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>todo<span class="token punctuation">.</span>id<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+            editing<span class="token punctuation">:</span> <span class="token keyword">false</span><span class="token punctuation">,</span>
+            title<span class="token punctuation">:</span> title
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">toggleCompletion</span><span class="token punctuation">(</span>todo<span class="token punctuation">:</span> Todo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>todo<span class="token punctuation">.</span>id<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+            completed<span class="token punctuation">:</span> <span class="token operator">!</span>todo<span class="token punctuation">.</span>completed
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">removeCompleted</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> todos <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getCompleted</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>
+            todos<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span>todo<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> todo<span class="token punctuation">.</span>id<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">removeTodo</span><span class="token punctuation">(</span>todo<span class="token punctuation">:</span> Todo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span>todo<span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">setAllTo</span><span class="token punctuation">(</span>completed<span class="token punctuation">:</span> <span class="token keyword">boolean</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>entities<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span>todo<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> todo<span class="token punctuation">.</span>id<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span>
+                completed<span class="token punctuation">:</span> completed
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+@<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">{</span> providedIn<span class="token punctuation">:</span> <span class="token string">'root'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">TodosApiService</span> <span class="token punctuation">{</span>
+    <span class="token function">fetchTodos</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> Observable<span class="token operator">&lt;</span>Todo<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> initialTodos<span class="token punctuation">:</span> Todo<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span>
+                id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+                title<span class="token punctuation">:</span> <span class="token string">'Todo1'</span><span class="token punctuation">,</span>
+                completed<span class="token punctuation">:</span> <span class="token keyword">false</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token function">of</span><span class="token punctuation">(</span>initialTodos<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</div>
