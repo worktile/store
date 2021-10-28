@@ -24,12 +24,19 @@ npm install @tethys/store --save
 yarn add @tethys/store
 ```
 
+## Documentation
+
+- [Introduce](https://tethys-org.github.io/store/guides/intro)
+- [Getting Started](https://tethys-org.github.io/store/guides/getting-started)
+- [Store](https://tethys-org.github.io/store/guides/basic/store)
+- [Entity Store](https://tethys-org.github.io/store/guides/advanced/entity-store)
+- [Entity Store with References](https://tethys-org.github.io/store/guides/advanced/entity-store-references)
+- [FAQ](https://tethys-org.github.io/store/guides/faq)
+
 ## Development
 ```base
 $ git clone https://github.com/tethys-org/store
-
 $ cd store && yarn
-
 $ yarn start:docs // open http://localhost:8887
 ```
 
