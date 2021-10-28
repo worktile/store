@@ -3,7 +3,7 @@ title: Entity Store
 order: 10
 ---
 
-前端应用程序中，展示`Entity`实体列表并对`Entity`进行增删改是一个高频的场景，那么就需要存储`Entity`，可以将`Entity`存储视为数据库中的表，其中每张表表示实体的平面集合。`EntityStore`简化了流程提供了管理实体列表的功能。
+前端应用程序中，展示`Entity`实体列表并对`Entity`进行增删改是一个高频的场景，那么就需要存储`Entity`，我们可以将`Entity`存储视为数据库中的表，其中每张表表示实体的平面集合。`EntityStore`提供了管理实体列表的功能简化业务。
 
 ## 创建 EntityStore
 我们创建一个`todos`的`EntityStore`管理`Todo`实体，需要继承`EntityStore`，同时传入继承泛型为`Todo`的`EntityState`。
