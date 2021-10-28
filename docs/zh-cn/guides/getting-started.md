@@ -13,7 +13,7 @@ yarn add @tethys/store
 
 ## 定义 Store 和 State
 
-`Store`是一个包含状态和行为的单一对象，也是一个普通的服务，创建`Store`需要继承 Tethys 的`Store<TState>`，并通过泛型传入当前`Store`存储的状态类型，可以通过构造函数传入初始化状态。
+`Store`是一个包含状态和行为的单一对象，也是一个普通的服务，创建`Store`需要继承`Store<TState>`，并通过泛型传入当前`Store`存储的状态类型，同时通过构造函数传入初始化状态。
 
 ```ts
 import { Injectable } from '@angular/core';
@@ -70,7 +70,8 @@ export class CounterStore extends Store<CounterState> {
 
 ## 在组件中使用 Store
 
-在组件或者任何服务中像普通服务一样注入，注入后可以通过`store.select`选择需要的状态流，模板中通过`async`管道订阅并展示。
+在组件或者任何服务中通过依赖注入注入`Store`，注入后可以通过`select`选择需要的数据流，模板中通过`async`管道订阅并展示。
+<alert>当然也可以手动订阅保存数据到组件实例中，请一定要记得在组件销毁时取消订阅。</alert>
 
 ```ts
 import { Observable } from 'rxjs';
