@@ -239,13 +239,6 @@
   resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-9.0.0.tgz#87e0bef4c369b6cadae07e3a4295778fc93799d5"
   integrity sha512-ctjwuntPfZZT2mNj2NDIVu51t9cvbhl/16epc5xEwyzyDt76pX9UgwvY+MbXrf/C/FWwdtmNtfP698BKI+9leQ==
 
-"@angular/compiler@^12.2.9":
-  version "12.2.11"
-  resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-12.2.11.tgz#bed059f42b4290f50d6daa464102a8e2bab9dc1b"
-  integrity sha512-78b5Uf+79gOKEyF/ixFAGJANNHnhueofSxgToBmJkTTpqTX6Xzdfzw8W+ehpJADp52eBjmZ+rv7b9sgBsiJ1tg==
-  dependencies:
-    tslib "^2.2.0"
-
 "@angular/compiler@~11.2.5":
   version "11.2.14"
   resolved "https://registry.yarnpkg.com/@angular/compiler/-/compiler-11.2.14.tgz#9d3ea26b4d2d858aab935f69af9e201f53453a0f"
@@ -1363,7 +1356,7 @@
     docsearch.js "2.6.3"
     tslib "*"
 
-"@docgeni/toolkit@^1.0.2", "@docgeni/toolkit@^1.1.2":
+"@docgeni/toolkit@^1.1.0", "@docgeni/toolkit@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@docgeni/toolkit/-/toolkit-1.1.2.tgz#9cebdda231e0c588cfce27ce910693d539d092e2"
   integrity sha512-jQJput2euowd4eMZ2l5JX4Q0A0p4L6zXGKWmF1p/AJbbfPXD+/DnCE2tIAK9wJsxKOPJzAOXfFJfwmaoemM2CQ==
@@ -1904,12 +1897,12 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
-"@worktile/pkg-manager@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@worktile/pkg-manager/-/pkg-manager-0.0.1.tgz#4b19e6781db07833ae0f19fa48f2180c4bfa15ab"
-  integrity sha512-K20kH3YQeqcP7ZhEiAHsGGtr0yp9tw+2lGA5/K1JMUkqxq0LzvieDZiL06LTQJgsuf4x5LKr6U38TiXsSP5kQg==
+"@worktile/pkg-manager@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@worktile/pkg-manager/-/pkg-manager-0.0.5.tgz#e585054519e7aa64000fdc3c7f9f907dd124ed5c"
+  integrity sha512-sy/dsUG4+WnB0Dj6iJjhWd4tQKKGKIW+2pJljDmM2xr3oy0LXKLceyfm5Zvn2ut3GmXmH/Mw/31dSarVwRkdpg==
   dependencies:
-    "@docgeni/toolkit" "^1.0.2"
+    "@docgeni/toolkit" "^1.1.0"
     "@types/shelljs" "^0.8.8"
     cosmiconfig "^7.0.0"
     inquirer "^8.1.1"
@@ -3857,11 +3850,6 @@ css-what@^3.2.1:
   resolved "https://registry.yarnpkg.com/css-what/-/css-what-3.4.2.tgz#ea7026fcb01777edbde52124e21f327e7ae950e4"
   integrity sha512-ACUm3L0/jiZTqfzRM3Hi9Q8eZqd6IK37mMWPLz9PJxkLWllYeRf+EHUSHYEtFop2Eqytaq1FizFVh7XfBnXCDQ==
 
-css-what@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/css-what/-/css-what-4.0.0.tgz#35e73761cab2eeb3d3661126b23d7aa0e8432233"
-  integrity sha512-teijzG7kwYfNVsUh2H/YN62xW3KK9YhXEgSlbxMlcyjPNvdKJqFx5lrwlJgoFP1ZHlB89iGDlo/JyshKeRhv5A==
-
 css-what@^5.0.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/css-what/-/css-what-5.1.0.tgz#3f7b707aadf633baf62c2ceb8579b545bb40f7fe"
@@ -4036,16 +4024,6 @@ cyclist@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
-
-cyia-code-util@^1.0.4:
-  version "1.3.6"
-  resolved "https://registry.yarnpkg.com/cyia-code-util/-/cyia-code-util-1.3.6.tgz#030e089d39f71abd7a99ed0c4da7e9ef920c9c6f"
-  integrity sha512-mhefcRBeQ0JAxv0WSEuTXsXnnAp3DrCa5FP7nqZ8nZ2PaSz2Z73efLrXrsaw6KQuM1nl0qivr6R1Ub020iUtvw==
-  dependencies:
-    "@angular/compiler" "^12.2.9"
-    css-what "^4.0.0"
-    inquirer "^7.3.3"
-    jsonc-parser "^3.0.0"
 
 damerau-levenshtein@^1.0.4:
   version "1.0.7"
@@ -5908,7 +5886,7 @@ injection-js@^2.4.0:
   dependencies:
     tslib "^2.0.0"
 
-inquirer@7.3.3, inquirer@^7.3.3:
+inquirer@7.3.3:
   version "7.3.3"
   resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-7.3.3.tgz#04d176b2af04afc157a83fd7c100e98ee0aad003"
   integrity sha512-JG3eIAj5V9CwcGvuOmoo6LB9kbAYT8HXffUl6memuszlwDC/qvFAJw49XJ5NROSFNPxp3iQg1GqkFhaY/CR0IA==
@@ -6632,7 +6610,7 @@ jsonc-parser@2.3.0:
   resolved "https://registry.yarnpkg.com/jsonc-parser/-/jsonc-parser-2.3.0.tgz#7c7fc988ee1486d35734faaaa866fadb00fa91ee"
   integrity sha512-b0EBt8SWFNnixVdvoR2ZtEGa9ZqLhbJnOjezn+WP+8kspFm+PFYDN8Z4Bc7pRlDjvuVcADSUkroIuTWWn/YiIA==
 
-jsonc-parser@3.0.0, jsonc-parser@^3.0.0:
+jsonc-parser@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/jsonc-parser/-/jsonc-parser-3.0.0.tgz#abdd785701c7e7eaca8a9ec8cf070ca51a745a22"
   integrity sha512-fQzRfAbIBnR0IQvftw9FJveWiHp72Fg20giDrHz6TdfB12UH/uue0D3hm57UB5KgAVuniLMCaS8P1IMj9NR7cA==
@@ -7527,14 +7505,6 @@ ng-packagr@^11.0.0:
     stylus "^0.54.8"
     sync-rpc "^1.3.6"
     terser "^5.5.1"
-
-ngx-tethys@^12.0.2:
-  version "12.0.2"
-  resolved "https://registry.yarnpkg.com/ngx-tethys/-/ngx-tethys-12.0.2.tgz#dc15510bc1b0a5a10b28e734847aead38fba20cc"
-  integrity sha512-QjKzrKRTofkJwC6c9m/c0jUPMCTa5Ia7aDyhYzJSZfsQHg97to5/uxN3qxhKZJ1GTIejQDtZpnnNwZf/CwY57Q==
-  dependencies:
-    cyia-code-util "^1.0.4"
-    tslib "^2.3.0"
 
 nice-try@^1.0.4:
   version "1.0.5"
@@ -10979,7 +10949,7 @@ ts-pnp@^1.1.6:
   resolved "https://registry.yarnpkg.com/ts-pnp/-/ts-pnp-1.2.0.tgz#a500ad084b0798f1c3071af391e65912c86bca92"
   integrity sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==
 
-tslib@*, tslib@^2.0.0, tslib@^2.0.3, tslib@^2.2.0, tslib@^2.3.0:
+tslib@*, tslib@^2.0.0, tslib@^2.0.3, tslib@^2.3.0:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
