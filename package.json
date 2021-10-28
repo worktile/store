@@ -8,7 +8,7 @@
     "start:docs": "docgeni serve --port 8887",
     "build": "ng build store --prod",
     "build:docs": "docgeni build --prod",
-    "build:docs-gh-pages": "docgeni build --prod --base-href=/docgeni-template/",
+    "build:docs-gh-pages": "docgeni build --prod --base-href=/store/",
     "test": "ng test",
     "report-coverage": "cat ./coverage/store/lcov.info | coveralls",
     "lint": "ng lint",
