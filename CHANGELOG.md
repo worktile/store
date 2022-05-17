@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [12.0.0](https://github.com/tethys-org/mini-store/compare/v11.0.0...v12.0.0) (2022-05-17)
+
+
+
 # [11.0.0](https://github.com/tethys-org/mini-store/compare/v0.0.1...v11.0.0) (2021-10-28)
 
 
