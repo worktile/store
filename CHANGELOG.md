@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [13.0.0](https://github.com/tethys-org/mini-store/compare/v12.0.0...v13.0.0) (2022-05-17)
+
+
+### Features
+
+* upgrade to angular 13 ([#35](https://github.com/tethys-org/mini-store/issues/35)) ([f49da24](https://github.com/tethys-org/mini-store/commit/f49da24b2c20a681029ab8d0f338187f25fdd30b))
+
+
+
 # [12.0.0](https://github.com/tethys-org/mini-store/compare/v11.0.0...v12.0.0) (2022-05-17)
 
 
