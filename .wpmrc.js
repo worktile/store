@@ -12,8 +12,8 @@ module.exports = {
     skip: {},
     commitAll: true,
     hooks: {
-        prepublish: 'npm run build',
-        postpublish: 'npm run pub-only',
+        prepublish: 'yarn build',
+        postpublish: 'yarn pub-only',
         postreleaseBranch: 'git add .'
     }
 };
