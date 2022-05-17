@@ -14,5 +14,6 @@ jobs:
 
             - name: Test
               run: |
+                  yarn lint
                   yarn test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
                   yarn run report-coverage
