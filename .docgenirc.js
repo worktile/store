@@ -21,7 +21,7 @@ module.exports = {
         },
         {
             title: 'GitHub',
-            path: 'https://github.com/docgeni/docgeni-template',
+            path: 'https://github.com/tethys-org/store',
             isExternal: true
         }
     ],
