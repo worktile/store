@@ -34,18 +34,6 @@
             "codeCoverage": true,
             "codeCoverageExclude": ["packages/store/src/testing/**/*", "packages/store/src/test/**/*"]
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "packages/store/tsconfig.lib.json",
-              "packages/store/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     }
