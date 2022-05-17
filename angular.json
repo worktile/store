@@ -1,7 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "cli": {
-    "analytics": false
+    "analytics": false,
+    "defaultCollection": "@angular-eslint/schematics"
   },
   "version": 1,
   "newProjectRoot": "packages",
@@ -33,6 +34,12 @@
             "karmaConfig": "packages/store/karma.conf.js",
             "codeCoverage": true,
             "codeCoverageExclude": ["packages/store/src/testing/**/*", "packages/store/src/test/**/*"]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["packages/store/**/*.ts", "packages/store/**/*.html"]
           }
         }
       }

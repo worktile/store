@@ -19,6 +19,7 @@ class StringSelectStore extends Store<StringSelectState> {
 }
 
 @Component({
+    // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'my-component-0',
     template: ''
 })

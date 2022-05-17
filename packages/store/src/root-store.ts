@@ -5,6 +5,7 @@ import { map, switchMap, tap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import getReduxDevToolsPlugin, { StorePlugin } from './plugins/redux_devtools';
 import { ActionState } from './action-state';
+import { SafeAny } from './inner-types';
 
 export type StoreInstanceMap = Map<string, Store<any>>; // Map key：string，value：状态数据
 
@@ -43,7 +44,7 @@ export class RootStore {
                     return { state: state, actionName: actionName };
                 })
             )
-            .subscribe((c) => {
+            .subscribe((c: SafeAny) => {
                 this._plugin.handleNewState(c.actionName, c.state);
             });
     }
@@ -68,6 +69,7 @@ export class RootStore {
     /**
      * @internal
      */
+    // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
     ngOnDestroy() {
         this._combinedStateSubscription.unsubscribe();
     }

@@ -34,7 +34,7 @@
   </section>
   <footer class="footer" *ngIf="todos.length > 0">
     <span class="todo-count"
-      ><strong>{{ todosStore.getRemaining().length }}</strong> {{ todosStore.getRemaining().length == 1 ? 'item' : 'items' }} left</span
+      ><strong>{{ todosStore.getRemaining().length }}</strong> {{ todosStore.getRemaining().length === 1 ? 'item' : 'items' }} left</span
     >
     <button class="clear-completed" *ngIf="todosStore.getCompleted().length > 0" (click)="removeCompleted()">Clear completed</button>
   </footer>

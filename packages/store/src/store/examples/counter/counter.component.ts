@@ -12,6 +12,7 @@ export class ThyStoreCounterExampleComponent implements OnInit {
 
     constructor(public counterStore: CounterStore) {}
 
+    // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
     ngOnInit(): void {}
 
     increase() {
