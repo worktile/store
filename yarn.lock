@@ -2283,10 +2283,10 @@
     "@swc/core-win32-ia32-msvc" "1.2.185"
     "@swc/core-win32-x64-msvc" "1.2.185"
 
-"@tethys/cdk@^12.1.27":
-  version "12.1.27"
-  resolved "https://registry.yarnpkg.com/@tethys/cdk/-/cdk-12.1.27.tgz#cfa6b7978e759e32103d363640bf2642bbb409a9"
-  integrity sha512-fcXhUcHhfJBdwrxahakkMDRqe0l5VcUAB5SxhuT1N0RPBKQdtpkEtG0Um6YfY7J76r0s8yiBZZiiw8/S44PHMg==
+"@tethys/cdk@^13.0.0":
+  version "13.0.0"
+  resolved "https://registry.npmjs.org/@tethys/cdk/-/cdk-13.0.0.tgz#42203716c17d6f729e71201a6aee4a3e62192659"
+  integrity sha512-BTuzbPud/Mt4zjgTQcTehx8+nKFYAf36b3xYDPOmVnVT6EgoCxxP3fkYvlawE4KKkSEGDDEmGHMhOoMh+OLoUw==
   dependencies:
     tslib "^2.3.0"
 
