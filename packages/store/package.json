@@ -1,6 +1,6 @@
 {
   "name": "@tethys/store",
-  "version": "13.0.3",
+  "version": "13.0.4",
   "peerDependencies": {
     "@angular/common": "^13.0.0",
     "@angular/core": "^13.0.0",
