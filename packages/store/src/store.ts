@@ -6,6 +6,8 @@ import { OnDestroy, isDevMode, Injectable } from '@angular/core';
 import { ActionState } from './action-state';
 import { Action } from './action';
 import { isFunction } from '@tethys/cdk/is';
+import { StoreFactory } from './internals/store-factory';
+import { InternalDispatcher } from './internals/dispatcher';
 
 /**
  * @dynamic
@@ -21,13 +23,14 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     private _defaultStoreInstanceId: string;
 
     constructor(initialState: Partial<T>) {
-        this._defaultStoreInstanceId = this._getClassName();
+        this._defaultStoreInstanceId = this.createStoreInstanceId();
         this.state$ = new BehaviorSubject<T>(initialState as T);
         this.initialStateCache = { ...initialState } as T;
         if (this.reduxToolEnabled) {
             const rootStore: RootStore = getSingletonRootStore();
             ActionState.changeAction(`Add-${this._defaultStoreInstanceId}`);
             rootStore.registerStore(this);
+            StoreFactory.instance.register(this);
         }
     }
 
@@ -142,6 +145,14 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
             const rootStore: RootStore = getSingletonRootStore();
             rootStore.unregisterStore(this);
         }
+        this.cancelUncompleted();
+    }
+
+    /**
+     * Cancel all uncompleted actions
+     */
+    cancelUncompleted() {
+        InternalDispatcher.instance.cancel(this.getStoreInstanceId());
     }
 
     /**
@@ -152,19 +163,21 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         return this._defaultStoreInstanceId;
     }
 
-    private _getClassName(): string {
+    private createStoreInstanceId(): string {
         const name = this.constructor.name || /function (.+)\(/.exec(this.constructor + '')[1];
         if (this.reduxToolEnabled) {
-            const rootStore: RootStore = getSingletonRootStore();
-            if (!rootStore.existStoreInstanceId(name)) {
+            if (!StoreFactory.instance.get(name)) {
                 return name;
             }
             let j = 0;
-            for (let i = 1; i < 20; i++) {
-                if (!rootStore.existStoreInstanceId(`${name}-${i}`)) {
+            for (let i = 1; i <= 20; i++) {
+                if (!StoreFactory.instance.get(`${name}-${i}`)) {
                     j = i;
                     break;
                 }
+            }
+            if (j === 0) {
+                throw new Error(`the store ${name} created more than 20, please check it.`);
             }
             return `${name}-${j}`;
         }

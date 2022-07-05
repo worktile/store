@@ -1,0 +1,18 @@
+<button class="dg-btn dg-btn-primary dg-btn-sm" (click)="fetch()">Fetch</button>
+<button class="dg-btn dg-btn-primary dg-btn-sm" (click)="cancel()">Cancel</button>
+
+<div *ngIf="loadingDone; else loading">
+  <div *ngFor="let item of itemsStore.snapshot.items">
+    {{ item }}
+  </div>
+</div>
+
+<ng-template #loading>
+  <div>Loading...</div>
+</ng-template>
+
+<div class="messages">
+  <div *ngFor="let message of messages">
+    {{ message }}
+  </div>
+</div>

@@ -1,17 +1,13 @@
 export abstract class StorePlugin {
     // abstract handleNewState(state: Readonly<object>): void;
     abstract handleNewState(actionName: string, state: Readonly<object>): void;
-    abstract isConnectSuccessed(): boolean;
+    abstract isConnectSuccessful(): boolean;
 }
 /**
  * @internal
  */
 export interface ReduxDevtoolsInstance {
     send(action: string, state: object): void;
-}
-
-export function tinyStateVersion(): string {
-    return 'v0.6.0';
 }
 
 export class ReduxDevtoolsPlugin implements StorePlugin {
@@ -31,17 +27,17 @@ export class ReduxDevtoolsPlugin implements StorePlugin {
             return;
         }
         this._devTools = globalDevtools.connect({
-            name: `NgxStore ${tinyStateVersion()}`
+            name: `@tethys/store`
         });
     }
 
     handleNewState(actionName: string, state: object): void {
-        if (this.isConnectSuccessed()) {
+        if (this.isConnectSuccessful()) {
             this._devTools.send(actionName, state);
         }
     }
 
-    isConnectSuccessed(): boolean {
+    isConnectSuccessful(): boolean {
         if (this._devTools === null) {
             return false;
         }

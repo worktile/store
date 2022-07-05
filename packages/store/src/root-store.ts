@@ -10,12 +10,13 @@ import { SafeAny } from './inner-types';
 export type StoreInstanceMap = Map<string, Store<any>>; // Map key：string，value：状态数据
 
 let rootStore: RootStore;
+
 /**
  * @internal
  */
 @Injectable()
 export class RootStore {
-    private connectSuccessed = false;
+    private connectSuccessful = false;
     /**
      * 数据流 数据是一个Map，k,v键值对，关键字->状态数据
      */
@@ -24,8 +25,8 @@ export class RootStore {
     private _combinedStateSubscription: Subscription = new Subscription();
 
     constructor() {
-        if (this._plugin.isConnectSuccessed()) {
-            this.connectSuccessed = true;
+        if (this._plugin.isConnectSuccessful()) {
+            this.connectSuccessful = true;
             this._assignCombinedState(); // 最终调用handleNewState
             console.log(`是否在Angular开发环境：${isDevMode()}, 初始化root-store`);
         }
@@ -57,11 +58,8 @@ export class RootStore {
      */
     private _getCombinedState(containers: StoreInstanceMap) {
         return combineLatest(
-            ...Array.from(containers.entries()).map(([containerName, container]) => {
-                return container.state$.pipe(
-                    map((state) => ({ containerName, state })),
-                    tap((data) => {})
-                );
+            Array.from(containers.entries()).map(([containerName, container]) => {
+                return container.state$.pipe(map((state) => ({ containerName, state })));
             })
         );
     }
@@ -78,7 +76,7 @@ export class RootStore {
      * @internal
      */
     registerStore(store: Store<any>) {
-        if (!this.connectSuccessed) {
+        if (!this.connectSuccessful) {
             return;
         }
         const containers = new Map(this._containers.value);
@@ -104,7 +102,7 @@ export class RootStore {
      * @internal
      */
     unregisterStore(store: Store<any>) {
-        if (!this.connectSuccessed) {
+        if (!this.connectSuccessful) {
             return;
         }
         const containers = new Map(this._containers.value);

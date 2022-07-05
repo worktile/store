@@ -1,8 +1,10 @@
+import { Observable } from 'rxjs';
+
 /**
  * Status of a dispatched action
  */
 export const enum ActionStatus {
-    Dispatched = 'DISPATCHED',
+    Dispatching = 'DISPATCHING',
     Successful = 'SUCCESSFUL',
     Canceled = 'CANCELED',
     Errored = 'ERRORED'
@@ -10,6 +12,9 @@ export const enum ActionStatus {
 
 export interface ActionContext<T = unknown> {
     status: ActionStatus;
-    action: T;
+    storeId: string;
+    action: string;
+    result?: T;
     error?: Error;
+    originActionFn?: () => Observable<unknown> | void;
 }

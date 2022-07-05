@@ -11,7 +11,6 @@ export interface StoreMetaInfo {
     instance: any;
 }
 
-export interface ActionResult {}
 export interface Id {
     toString(): string;
 }

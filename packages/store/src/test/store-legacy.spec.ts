@@ -226,7 +226,7 @@ describe('Store: Store', () => {
             .select((state) => state.me)
             .subscribe((me) => {
                 if (timer === 2) {
-                    expect(me).toBe(null);
+                    expect(me).toEqual(null);
                 }
                 timer++;
             });

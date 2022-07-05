@@ -285,6 +285,7 @@ describe('#store', () => {
         it('should get correct InstanceId', () => {
             const store = new ZoomStore({});
             expect(store.getStoreInstanceId()).toEqual('ZoomStore');
+            store.ngOnDestroy();
         });
     });
 
