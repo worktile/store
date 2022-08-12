@@ -1,24 +1,51 @@
-# Store
+## @tethys/store
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.5.
+A mini, yet powerful state management library for Angular.
 
-## Code scaffolding
+[![GitHubActionCI](https://img.shields.io/github/workflow/status/tethys-org/store/ci-tethys-store-test)](https://github.com/tethys-org/store/actions/workflows/main.yml)
+[![Coverage Status][coveralls-image]][coveralls-url]
+![](https://img.shields.io/badge/Made%20with%20Angular-red?logo=angular)
+[![npm (scoped)](https://img.shields.io/npm/v/@tethys/store?style=flat)](https://www.npmjs.com/package/@tethys/store)
+[![npm](https://img.shields.io/npm/dm/@tethys/store)](https://www.npmjs.com/package/@tethys/store)
+[![release](https://img.shields.io/github/release-date/tethys-org/store.svg?style=flat
+)](https://github.com/atinc/ngx-tethys)
+[![docgeni](https://img.shields.io/badge/docs%20by-docgeni-348fe4)](https://github.com/docgeni/docgeni)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-Run `ng generate component component-name --project store` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project store`.
-> Note: Don't forget to add `--project store` or else it will be added to the default project in your `angular.json` file. 
 
-## Build
+[coveralls-image]: https://coveralls.io/repos/github/tethys-org/store/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/tethys-org/store
 
-Run `ng build store` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Installation
 
-## Publishing
+```
+npm install @tethys/store --save
+# or if you are using yarn
+yarn add @tethys/store
+```
 
-After building your library with `ng build store`, go to the dist folder `cd dist/store` and run `npm publish`.
+## Documentation
 
-## Running unit tests
+- [Introduce](https://tethys-org.github.io/store/guides/intro)
+- [Getting Started](https://tethys-org.github.io/store/guides/getting-started)
+- [Store](https://tethys-org.github.io/store/guides/basic/store)
+- [Entity Store](https://tethys-org.github.io/store/guides/advanced/entity-store)
+- [Entity Store with References](https://tethys-org.github.io/store/guides/advanced/entity-store-references)
+- [FAQ](https://tethys-org.github.io/store/guides/faq)
 
-Run `ng test store` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Development
+```base
+$ git clone https://github.com/tethys-org/store
+$ cd store && yarn
+$ yarn start:docs // open http://localhost:8887
+```
 
-## Further help
+## Release & Publish
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```
+yarn release
+yarn pub
+```
+## LICENSE
+
+[MIT License](https://github.com/worktile/store/blob/master/LICENSE)

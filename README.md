@@ -46,3 +46,6 @@ $ yarn start:docs // open http://localhost:8887
 yarn release
 yarn pub
 ```
+## LICENSE
+
+[MIT License](https://github.com/worktile/store/blob/master/LICENSE)

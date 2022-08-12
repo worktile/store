@@ -5,12 +5,8 @@
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "paths": {
-      "@tethys/store/*": [
-        "packages/store/src/*"
-      ],
-      "@tethys/store": [
-        "packages/store/src/index.ts"
-      ]
+      "@tethys/store/*": ["packages/store/src/*"],
+      "@tethys/store": ["packages/store/src/index.ts"]
     },
     "sourceMap": true,
     "declaration": false,
@@ -18,7 +14,7 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
+    "target": "es2020",
     "module": "es2020",
     "lib": ["es2018", "dom"]
   },
