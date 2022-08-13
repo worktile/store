@@ -28,5 +28,6 @@ export class StoreFactory implements OnDestroy {
         return this.storeInstancesMap.get(id);
     }
 
+    // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
     ngOnDestroy(): void {}
 }
