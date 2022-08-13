@@ -51,7 +51,7 @@ export class InternalDispatcher {
             // },
             (ctx) => {
                 this.cancel$.next({ storeId: storeId, action: action });
-                // this.actions$.next({ storeId: storeId, action: action, status: ActionStatus.Dispatching, originActionFn: originActionFn });
+                // this.actions$.next({ storeId: storeId, action: action, status: ActionStatus.Dispatched, originActionFn: originActionFn });
                 let result = originActionFn();
                 if (result instanceof Observable) {
                     result = result.pipe(
@@ -100,7 +100,7 @@ export class InternalDispatcher {
     //     const dispatched$ = new Subject<ActionContext>();
     //     this.actions$
     //         .pipe(
-    //             filter((ctx) => ctx.status === ActionStatus.Dispatching),
+    //             filter((ctx) => ctx.status === ActionStatus.Dispatched),
     //             mergeMap((ctx) => {
     //                 try {
     //                     this.actionResults$.next(ctx);
@@ -108,7 +108,7 @@ export class InternalDispatcher {
     //                     const originActionResult = ctx.originActionFn();
     //                     if (originActionResult instanceof Observable) {
     //                         return originActionResult.pipe(
-    //                             takeUntil(dispatched$.pipe(filter((ctx) => ctx.status === ActionStatus.Dispatching))),
+    //                             takeUntil(dispatched$.pipe(filter((ctx) => ctx.status === ActionStatus.Dispatched))),
     //                             map((result) => {
     //                                 return { storeId: ctx.storeId, action: ctx.action, status: ActionStatus.Successful, result: result };
     //                             }),
@@ -148,7 +148,7 @@ export class InternalDispatcher {
     //         // },
     //         (ctx1: PluginContext) => {
     //             const actionsResult$ = this.getActionResult$(storeId, action);
-    //             this.actions$.next({ storeId: storeId, action: action, status: ActionStatus.Dispatching, originActionFn: originActionFn });
+    //             this.actions$.next({ storeId: storeId, action: action, status: ActionStatus.Dispatched, originActionFn: originActionFn });
     //             return actionsResult$.pipe(
     //                 switchMap((ctx: ActionContext) => {
     //                     console.log(`exhaustMap`, ctx);
