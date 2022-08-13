@@ -145,6 +145,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
             const rootStore: RootStore = getSingletonRootStore();
             rootStore.unregisterStore(this);
         }
+        StoreFactory.instance.unregister(this);
         this.cancelUncompleted();
     }
 
