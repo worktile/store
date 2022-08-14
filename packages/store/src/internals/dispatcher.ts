@@ -17,7 +17,7 @@ import { CancelUncompleted } from '../action';
 import { ActionContext, ActionStatus } from '../actions-stream';
 import { SafeAny, ActionMetadata } from '../inner-types';
 import { PluginContext } from '../plugin';
-import { compose, findAndCreateStoreMetadata } from '../utils';
+import { compose, findAndCreateStoreMetadata, generateIdWithTime } from '../utils';
 import { StoreFactory } from './store-factory';
 
 @Injectable({
@@ -122,6 +122,7 @@ export class InternalDispatcher {
                                                     return ctx.storeId === cancelCtx.storeId && ctx.action === cancelCtx.action;
                                                 }
                                             }
+
                                             return false;
                                         })
                                     )
@@ -169,10 +170,9 @@ export class InternalDispatcher {
 
     public dispatch(storeId: string, action: ActionMetadata, originActionFn: () => Observable<unknown> | void) {
         const storeInstance = StoreFactory.instance.get(storeId);
-        const dispatchId = `${action.type}_${new Date().getTime()}`;
+        const dispatchId = `${action.type}-${generateIdWithTime()}`;
         const result$ = compose([
             // (ctx: PluginContext, next) => {
-            //     console.log(`dispatching`, ctx);
             //     return next(ctx).pipe(
             //         tap((state) => {
             //             console.log(`new state`, state);

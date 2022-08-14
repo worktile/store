@@ -29,13 +29,13 @@ export class ItemsStore extends Store<ItemsState> {
                 this.setState({ items: data });
             })
         );
-        return of([{ title: 'Item 1' }, { title: 'Item 2' }]).pipe(
-            // delay(1000),
-            tap((data) => {
-                // throw new Error(`sss`);
-                this.setState({ items: data });
-            })
-        );
+        // return of([{ title: 'Item 1' }, { title: 'Item 2' }]).pipe(
+        //     // delay(1000),
+        //     tap((data) => {
+        //         // throw new Error(`sss`);
+        //         this.setState({ items: data });
+        //     })
+        // );
     }
 
     @Action()

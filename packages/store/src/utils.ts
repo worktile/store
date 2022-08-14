@@ -44,3 +44,8 @@ export const compose =
         const current = funcs.shift()!;
         return current(...args, (...nextArgs: SafeAny[]) => compose(funcs)(...nextArgs));
     };
+
+// generate a unique id
+export function generateIdWithTime(): string {
+    return `${new Date().getTime()}-${Math.random().toString(36).substring(2)}`;
+}
