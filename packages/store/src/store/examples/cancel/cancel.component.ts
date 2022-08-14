@@ -85,6 +85,7 @@ export class ThyStoreSoleExampleComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: (result) => {
+                    console.log(`next`, result);
                     this.messages.push(`Items fetched ${new Date()}`);
                 },
                 error: (error: Error) => {

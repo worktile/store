@@ -1,6 +1,6 @@
 import { Observable, Observer, BehaviorSubject, from, of, PartialObserver, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
-import { META_KEY, StoreMetaInfo } from './types';
+import { META_KEY } from './types';
 import { getSingletonRootStore, RootStore } from './root-store';
 import { OnDestroy, isDevMode, Injectable } from '@angular/core';
 import { ActionState } from './action-state';
@@ -8,6 +8,7 @@ import { Action } from './action';
 import { isFunction } from '@tethys/cdk/is';
 import { StoreFactory } from './internals/store-factory';
 import { InternalDispatcher } from './internals/dispatcher';
+import { StoreMetaInfo } from './inner-types';
 
 /**
  * @dynamic
@@ -30,8 +31,8 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
             const rootStore: RootStore = getSingletonRootStore();
             ActionState.changeAction(`Add-${this._defaultStoreInstanceId}`);
             rootStore.registerStore(this);
-            StoreFactory.instance.register(this);
         }
+        StoreFactory.instance.register(this);
     }
 
     get snapshot() {
@@ -66,7 +67,6 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         if (!actionMeta) {
             throw new Error(`${action.type} is not found`);
         }
-        // let result: any = this[actionMeta.fn](this.snapshot, action.payload);
         let result: any = actionMeta.originalFn.call(this, this.snapshot, action.payload);
 
         if (result instanceof Promise) {
@@ -166,22 +166,19 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
 
     private createStoreInstanceId(): string {
         const name = this.constructor.name || /function (.+)\(/.exec(this.constructor + '')[1];
-        if (this.reduxToolEnabled) {
-            if (!StoreFactory.instance.get(name)) {
-                return name;
-            }
-            let j = 0;
-            for (let i = 1; i <= 20; i++) {
-                if (!StoreFactory.instance.get(`${name}-${i}`)) {
-                    j = i;
-                    break;
-                }
-            }
-            if (j === 0) {
-                throw new Error(`the store ${name} created more than 20, please check it.`);
-            }
-            return `${name}-${j}`;
+        if (!StoreFactory.instance.get(name)) {
+            return name;
         }
-        return name;
+        let j = 0;
+        for (let i = 1; i <= 20; i++) {
+            if (!StoreFactory.instance.get(`${name}-${i}`)) {
+                j = i;
+                break;
+            }
+        }
+        if (j === 0) {
+            throw new Error(`the store ${name} created more than 20, please check it.`);
+        }
+        return `${name}-${j}`;
     }
 }

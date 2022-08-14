@@ -1,5 +1,5 @@
-import { SafeAny } from './inner-types';
-import { StoreMetaInfo, META_KEY } from './types';
+import { SafeAny, StoreMetaInfo } from './inner-types';
+import { META_KEY } from './types';
 
 export function findAndCreateStoreMetadata(target: Object): StoreMetaInfo {
     if (!target.hasOwnProperty(META_KEY)) {

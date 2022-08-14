@@ -3,7 +3,7 @@
 
 <div *ngIf="loadingDone; else loading">
   <div *ngFor="let item of itemsStore.snapshot.items">
-    {{ item }}
+    {{ item.title }}
   </div>
 </div>
 
