@@ -1,3 +1,6 @@
+import { Observable } from 'rxjs';
+import { CancelUncompleted } from './action';
+
 /**
  * Status of a dispatched action
  */
@@ -10,6 +13,12 @@ export const enum ActionStatus {
 
 export interface ActionContext<T = unknown> {
     status: ActionStatus;
-    action: T;
+    storeId: string;
+    action: string;
+    // 每次 dispatch 的唯一 ID，根据 Action + 时间戳生成
+    dispatchId?: string;
+    cancelUncompleted?: CancelUncompleted;
+    result?: T;
     error?: Error;
+    originActionFn?: () => Observable<unknown> | void;
 }

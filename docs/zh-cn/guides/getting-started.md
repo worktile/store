@@ -33,16 +33,20 @@ export class CounterStore extends Store<CounterState> {
             count: 0
         });
     }
-
-    @Action()
-    increase() {
-        return of(true).pipe(
-            tap(() => {
-                this.setState({ count: this.snapshot.count + 1 });
-            })
-        );
-    }
 }
+```
+
+## 导入模块和 Store
+
+通过`ThyStoreModule.forRoot`函数设置`Stores`。
+
+```ts
+import { ThyStoreModule } from '@tethys/store';
+
+@NgModule({
+  imports: [ThyStoreModule.forRoot([CounterStore])]
+})
+export class AppModule {}
 ```
 
 ## 添加 Action

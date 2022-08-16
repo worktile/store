@@ -29,7 +29,7 @@ let taskIndex: number;
 @Injectable({ providedIn: 'root' })
 export class TasksStore extends EntityStore<TasksState, Task, TasksReferences> implements OnCombineRefs<Task, TasksReferences> {
     constructor() {
-        super({ entities: [] }, {});
+        super({ entities: [], references: { users: [] } }, {});
     }
 
     onCombineRefs(entity: Task, referencesIdMap: ReferencesIdDictionary<TasksReferences>, references?: TasksReferences): void {

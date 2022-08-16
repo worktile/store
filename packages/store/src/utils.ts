@@ -1,6 +1,7 @@
-import { StoreMetaInfo, META_KEY } from './types';
+import { SafeAny, StoreMetaInfo } from './inner-types';
+import { META_KEY } from './types';
 
-export function findAndCreateStoreMetadata(target: any): StoreMetaInfo {
+export function findAndCreateStoreMetadata(target: Object): StoreMetaInfo {
     if (!target.hasOwnProperty(META_KEY)) {
         const defaultMetadata: StoreMetaInfo = {
             actions: {},
@@ -33,4 +34,18 @@ export function indexKeyBy<T>(array: T[], key: T extends object ? keyof T : neve
 
 export function coerceArray<T>(value: T | T[]): T[] {
     return Array.isArray(value) ? value : [value];
+}
+
+export type StateFn = (...args: SafeAny[]) => SafeAny;
+
+export const compose =
+    (funcs: StateFn[]) =>
+    (...args: SafeAny[]) => {
+        const current = funcs.shift()!;
+        return current(...args, (...nextArgs: SafeAny[]) => compose(funcs)(...nextArgs));
+    };
+
+// generate a unique id
+export function generateIdWithTime(): string {
+    return `${new Date().getTime()}-${Math.random().toString(36).substring(2)}`;
 }
