@@ -15,8 +15,10 @@
     "prepare": "husky install",
     "pretty": "pretty-quick",
     "release": "wpm release",
-    "pub": "wpm publish",
-    "pub-only": "npm publish ./dist/store"
+    "pub": "wpm publish && npm run pub-only",
+    "pub-only": "npm publish ./dist/store",
+    "pub-next": "wpm publish && npm run pub-only-next",
+    "pub-only-next": "npm publish --dist next ./dist/store"
   },
   "engines": {
     "node": "^14.15.0 || >=16.10.0",

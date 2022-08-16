@@ -13,7 +13,6 @@ module.exports = {
     commitAll: true,
     hooks: {
         prepublish: 'yarn build',
-        postpublish: 'yarn pub-only',
         postreleaseBranch: 'git add .'
     }
 };
