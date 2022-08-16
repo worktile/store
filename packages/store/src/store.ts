@@ -152,8 +152,8 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     /**
      * Cancel all uncompleted actions
      */
-    cancelUncompleted() {
-        InternalDispatcher.instance.cancel(this.getStoreInstanceId());
+    cancelUncompleted(scope: 'store' | 'all' = 'store') {
+        InternalDispatcher.instance.cancel(this.getStoreInstanceId(), scope);
     }
 
     /**

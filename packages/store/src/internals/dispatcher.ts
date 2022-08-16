@@ -40,8 +40,8 @@ export class InternalDispatcher {
         this.setupInvokeActions();
     }
 
-    public cancel(storeId: string, action?: string) {
-        this.cancel$.next({ storeId: storeId, action: action, cancelUncompleted: 'store' });
+    public cancel(storeId: string, scope: CancelUncompleted, action?: string) {
+        this.cancel$.next({ storeId: storeId, action: action, cancelUncompleted: scope });
     }
 
     // public dispatch(storeId: string, action: string, originActionFn: () => Observable<unknown> | void) {
@@ -138,13 +138,13 @@ export class InternalDispatcher {
                                     ...ctx,
                                     status: ActionStatus.Canceled
                                 }),
-                                catchError((error) =>
-                                    of(<ActionContext>{
+                                catchError((error) => {
+                                    return of(<ActionContext>{
                                         ...ctx,
                                         status: ActionStatus.Errored,
                                         error
-                                    })
-                                )
+                                    });
+                                })
                             );
                             return result;
                         } else {
@@ -213,7 +213,12 @@ export class InternalDispatcher {
             action: action.type
         }).pipe(shareReplay());
 
-        result$.subscribe();
+        result$.subscribe({
+            error: (error: Error) => {
+                // this._errorHandler = this._errorHandler || this._injector.get(ErrorHandler);
+                // this._errorHandler.handleError(error);
+            }
+        });
         return result$;
     }
 

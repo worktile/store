@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Action } from '../action';
 import { Store } from '../store';
-import { of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { of, throwError, Observable } from 'rxjs';
+import { tap, mergeMap } from 'rxjs/operators';
 import { produce } from '@tethys/cdk/immutable';
+import { fakeAsync, tick } from '@angular/core/testing';
 
 interface Animal {
     id: number;
@@ -62,6 +63,20 @@ class ZoomStore extends Store<ZoomState> {
                 throw new Error(`add animal failed`);
             })
         );
+    }
+
+    @Action()
+    onError() {
+        return of(true).pipe(
+            mergeMap(() => {
+                return throwError(new Error('this is a test error'));
+            })
+        );
+    }
+
+    @Action()
+    onErrorDirectly() {
+        throw new Error('this is a directly test error');
     }
 }
 
@@ -295,18 +310,36 @@ describe('#store', () => {
     });
 
     describe('#error', () => {
+        it('should throw error', fakeAsync(() => {
+            store = new ZoomStore();
+            const successSpy = jasmine.createSpy('success spy');
+            const errorSpy = jasmine.createSpy('error spy');
+            const completeSpy = jasmine.createSpy('complete spy');
+            store.onError().subscribe(successSpy, errorSpy, completeSpy);
+            expect(successSpy).toHaveBeenCalledTimes(0);
+            expect(errorSpy).toHaveBeenCalledTimes(1);
+        }));
+
+        it('should throw error directly', fakeAsync(() => {
+            store = new ZoomStore();
+            const successSpy = jasmine.createSpy('success spy');
+            const errorSpy = jasmine.createSpy('error spy');
+            const completeSpy = jasmine.createSpy('complete spy');
+            (store.onErrorDirectly() as unknown as Observable<unknown>).subscribe(successSpy, errorSpy, completeSpy);
+            expect(successSpy).toHaveBeenCalledTimes(0);
+            expect(errorSpy).toHaveBeenCalledTimes(1);
+        }));
+
         it('should call once action when action throw error', () => {
             store = new ZoomStore({});
             const executeSpy = jasmine.createSpy('execute spy in action');
             const successSpy = jasmine.createSpy('success spy');
             const errorSpy = jasmine.createSpy('error spy');
-            expect(() => {
-                store.addAnimalWithError({ id: 100, name: '' }, executeSpy).subscribe(successSpy, errorSpy);
-                expect(executeSpy).toHaveBeenCalledTimes(1);
-                expect(successSpy).toHaveBeenCalledTimes(0);
-                expect(errorSpy).toHaveBeenCalledTimes(1);
-                expect(errorSpy).toHaveBeenCalledWith(new Error(`add animal failed`));
-            });
+            store.addAnimalWithError({ id: 100, name: '' }, executeSpy).subscribe(successSpy, errorSpy);
+            expect(executeSpy).toHaveBeenCalledTimes(1);
+            expect(successSpy).toHaveBeenCalledTimes(0);
+            expect(errorSpy).toHaveBeenCalledTimes(1);
+            expect(errorSpy).toHaveBeenCalledWith(new Error(`add animal failed`));
         });
     });
 });

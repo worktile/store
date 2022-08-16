@@ -11,15 +11,8 @@ interface Animal {
     name: string;
 }
 
-interface FooEntity {
-    id: number;
-    name: string;
-    description: string;
-}
-
 class ZoomState {
     animals: Animal[];
-    foo: FooEntity;
 }
 
 @Injectable()
@@ -33,8 +26,7 @@ class ZoomStore extends Store<ZoomState> {
 
     constructor() {
         super({
-            animals: [],
-            foo: null
+            animals: []
         });
     }
 

@@ -1,5 +1,9 @@
 import { findAndCreateStoreMetadata } from './utils';
 import { InternalDispatcher } from './internals/dispatcher';
+import { ActionState } from './action-state';
+// import { Observable, of, throwError } from 'rxjs';
+// import { catchError, exhaustMap, shareReplay} from 'rxjs/operators';
+// import { ActionContext, ActionStatus } from './actions-stream';
 
 export type CancelUncompleted = false | 'self' | 'store' | 'all';
 
@@ -45,7 +49,6 @@ export function Action(action?: DecoratorActionOptions | string) {
 
         const originalFn = descriptor.value;
         metadata.actions[type] = {
-            // fn: name,
             originalFn: originalFn,
             type,
             cancelUncompleted: action.cancelUncompleted
@@ -54,6 +57,7 @@ export function Action(action?: DecoratorActionOptions | string) {
         descriptor.value = function (...args: any[]) {
             const storeId = this.getStoreInstanceId();
             return InternalDispatcher.instance.dispatch(storeId, metadata.actions[type], () => {
+                ActionState.changeAction(`${target.constructor.name}-${name}`);
                 return originalFn.call(this, ...args);
             });
 
