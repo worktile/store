@@ -8,6 +8,6 @@
   },
   "dependencies": {
     "tslib": "^2.0.0",
-    "@tethys/cdk": "^13.0.0"
+    "@tethys/cdk": "^14.0.0"
   }
 }
