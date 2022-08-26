@@ -1,9 +1,9 @@
 import { findAndCreateStoreMetadata } from './utils';
 import { InternalDispatcher } from './internals/dispatcher';
 import { ActionState } from './action-state';
-// import { Observable, of, throwError } from 'rxjs';
-// import { catchError, exhaustMap, shareReplay} from 'rxjs/operators';
-// import { ActionContext, ActionStatus } from './actions-stream';
+import { ActionContext, ActionStatus } from './actions-stream';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, exhaustMap, shareReplay } from 'rxjs/operators';
 
 export type CancelUncompleted = false | 'self' | 'store' | 'all';
 
@@ -55,32 +55,34 @@ export function Action(action?: DecoratorActionOptions | string) {
         };
 
         descriptor.value = function (...args: any[]) {
-            const storeId = this.getStoreInstanceId();
-            return InternalDispatcher.instance.dispatch(storeId, metadata.actions[type], () => {
+            if (this.getStoreInstanceId) {
+                const storeId = this.getStoreInstanceId();
+                return InternalDispatcher.instance.dispatch(storeId, metadata.actions[type], () => {
+                    ActionState.changeAction(`${target.constructor.name}-${name}`);
+                    return originalFn.call(this, ...args);
+                });
+            } else {
+                // Forward compatibility, compatibility use @Action in one service without extends Store
                 ActionState.changeAction(`${target.constructor.name}-${name}`);
-                return originalFn.call(this, ...args);
-            });
-
-            // ActionState.changeAction(`${target.constructor.name}-${name}`);
-            // let result = originalFn.call(this, ...args);
-            // if (result instanceof Observable) {
-            //     result = result.pipe(
-            //         catchError((error) => {
-            //             return of({ status: ActionStatus.Errored, action: action, error: error });
-            //         }),
-            //         // shareReplay(),
-            //         exhaustMap((result: ActionContext | any) => {
-            //             if (result && result.status === ActionStatus.Errored) {
-            //                 return throwError(result.error);
-            //             } else {
-            //                 return of(result);
-            //             }
-            //         }),
-            //         shareReplay()
-            //     );
-            //     result.subscribe();
-            // }
-            // return result;
+                let result = originalFn.call(this, ...args);
+                if (result instanceof Observable) {
+                    result = result.pipe(
+                        catchError((error) => {
+                            return of({ status: ActionStatus.Errored, action: action, error: error });
+                        }),
+                        shareReplay(),
+                        exhaustMap((result: ActionContext | any) => {
+                            if (result && result.status === ActionStatus.Errored) {
+                                return throwError(result.error);
+                            } else {
+                                return of(result);
+                            }
+                        })
+                    );
+                    result.subscribe();
+                }
+                return result;
+            }
         };
     };
 }
