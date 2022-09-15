@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.1](https://github.com/worktile/store/compare/v14.0.0...v14.0.1) (2022-09-15)
+
+
+### Features
+
+* support add entity by current page size ([#48](https://github.com/worktile/store/issues/48)) ([a7555b0](https://github.com/worktile/store/commit/a7555b05ba63b46f3995f6f95f6e9efe067bf5d4))
+
+
+
 # [14.0.0](https://github.com/tethys-org/mini-store/compare/v14.0.0-next.0...v14.0.0) (2022-08-23)
 
 
