@@ -90,6 +90,7 @@ this.add(entity: TEntity | TEntity[], addOptions?: EntityAddOptions);
 - `prepend`: 是否向前插入，默认在数据最后插入
 - `afterId`: 插入某个Id的后面
 - `autoGotoLastPage`: 是否自动跳转到最后一页，默认`false`
+- `addByPagination`: 是否根据分页数量追加
 
 ## 更新
 使用`update`函数修改单个或者多个实体。

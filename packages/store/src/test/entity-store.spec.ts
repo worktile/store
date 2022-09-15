@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { EntityStore, EntityState, EntityStoreOptions } from '../entity-store';
 
 describe('Store: EntityStore', () => {
@@ -72,7 +73,6 @@ describe('Store: EntityStore', () => {
 
     describe('add', () => {
         let tasksEntityStore: TasksEntityStore;
-
         beforeEach(() => {
             tasksEntityStore = new TasksEntityStore({
                 entities: [...initialTasks],
@@ -82,6 +82,9 @@ describe('Store: EntityStore', () => {
                     count: initialTasks.length
                 }
             });
+        });
+        afterEach(() => {
+            tasksEntityStore.ngOnDestroy();
         });
 
         it('should task success for append', () => {
@@ -124,6 +127,53 @@ describe('Store: EntityStore', () => {
                 { _id: '2', name: 'task 2' }
             ]);
         });
+
+        it('should add task success for addByPagination=true', () => {
+            const addEntities = [
+                {
+                    _id: '3',
+                    name: 'task 3'
+                },
+                {
+                    _id: '4',
+                    name: 'task 4'
+                },
+                {
+                    _id: '5',
+                    name: 'task 5'
+                },
+                {
+                    _id: '6',
+                    name: 'task 6'
+                },
+                {
+                    _id: '7',
+                    name: 'task 7'
+                },
+                {
+                    _id: '8',
+                    name: 'task 8'
+                },
+                {
+                    _id: '9',
+                    name: 'task 9'
+                },
+                {
+                    _id: '10',
+                    name: 'task 10'
+                },
+                {
+                    _id: '11',
+                    name: 'task 11'
+                }
+            ];
+            tasksEntityStore.add(addEntities, {
+                addByPagination: true
+            });
+            const state = tasksEntityStore.snapshot;
+            const finalAddEntities = addEntities.slice(0, 8);
+            expect(state.entities).toEqual([...initialTasks, ...finalAddEntities]);
+        });
     });
 
     describe('remove', () => {
@@ -139,6 +189,10 @@ describe('Store: EntityStore', () => {
                     count: 2
                 }
             });
+        });
+
+        afterEach(() => {
+            tasksEntityStore.ngOnDestroy();
         });
 
         it(`remove by id`, () => {
@@ -238,6 +292,10 @@ describe('Store: EntityStore', () => {
                 entities: [...initialTasks],
                 pagination: null
             });
+        });
+
+        afterEach(() => {
+            tasksEntityStore.ngOnDestroy();
         });
 
         it(`update by id`, () => {
