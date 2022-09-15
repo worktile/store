@@ -16,6 +16,8 @@ export interface EntityAddOptions {
     afterId?: Id;
     // 如果是最后追加，自动跳转到最后一页
     autoGotoLastPage?: boolean;
+    // 根据分页数量追加
+    addByPagination?: boolean;
 }
 
 export interface EntityState<TEntity, TReferences = unknown> {
@@ -143,19 +145,27 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         if (addEntities.length === 0) {
             return;
         }
-
         const state = this.snapshot;
-        state.entities = produce(state.entities).add(addEntities, addOptions);
+        let finalAddEntities = addEntities;
+
+        if (addOptions?.addByPagination && state.pagination) {
+            finalAddEntities = addEntities.slice(0, state.pagination.pageSize - state.entities.length);
+        }
+
+        state.entities = produce(state.entities).add(finalAddEntities, addOptions);
+
         if (state.references) {
             mergeReferences(state.references, references, this.options.referencesIdKeys);
             this.buildReferencesIdMap();
         }
         if (state.pagination) {
             this.increasePagination(addEntities.length);
+
             if (addOptions && !addOptions.prepend && addOptions.autoGotoLastPage) {
                 state.pagination.pageIndex = state.pagination.pageCount;
             }
         }
+
         this.next(state);
     }
 
