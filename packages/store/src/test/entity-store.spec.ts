@@ -174,6 +174,25 @@ describe('Store: EntityStore', () => {
             const finalAddEntities = addEntities.slice(0, 8);
             expect(state.entities).toEqual([...initialTasks, ...finalAddEntities]);
         });
+        it('should not add task when initialTasks length equal page size and addByPagination=true', () => {
+            tasksEntityStore.initialize([...initialTasks], {
+                pageIndex: 1,
+                pageSize: 2,
+                count: initialTasks.length
+            });
+            const addEntities = [
+                {
+                    _id: '3',
+                    name: 'task 3'
+                }
+            ];
+            tasksEntityStore.add(addEntities, {
+                addByPagination: true
+            });
+            const state = tasksEntityStore.snapshot;
+
+            expect(state.entities).toEqual([...initialTasks]);
+        });
     });
 
     describe('remove', () => {
