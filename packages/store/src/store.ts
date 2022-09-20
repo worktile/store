@@ -165,19 +165,20 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     }
 
     private createStoreInstanceId(): string {
+        const MAX_INSTANCE_COUNT = 20;
         const name = this.constructor.name || /function (.+)\(/.exec(this.constructor + '')[1];
         if (!StoreFactory.instance.get(name)) {
             return name;
         }
         let j = 0;
-        for (let i = 1; i <= 20; i++) {
+        for (let i = 1; i <= MAX_INSTANCE_COUNT; i++) {
             if (!StoreFactory.instance.get(`${name}-${i}`)) {
                 j = i;
                 break;
             }
         }
-        if (j === 0) {
-            throw new Error(`the store ${name} created more than 20, please check it.`);
+        if (j === 0 && isDevMode()) {
+            throw new Error(`the store ${name} created more than ${MAX_INSTANCE_COUNT}, please check it.`);
         }
         return `${name}-${j}`;
     }
