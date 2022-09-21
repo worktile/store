@@ -9,6 +9,7 @@ import { isFunction } from '@tethys/cdk/is';
 
 export interface EntityStoreOptions<TEntity = unknown, TReferences = unknown> extends ProducerOptions<TEntity> {
     referencesIdKeys?: ReferenceArrayExtractAllowKeys<TReferences>;
+    name?: string;
 }
 
 export interface EntityAddOptions {
@@ -94,7 +95,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
             idKey: '_id'
         } as EntityStoreOptions<TEntity, TReferences>
     ) {
-        super(initialState as TState);
+        super(initialState as TState, options);
         this.options = { idKey: '_id', ...options } as EntityStoreOptions<TEntity, TReferences>;
         if (!this.options.idKey) {
             throw new Error(`idKey is required in EntityStore`);
