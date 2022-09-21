@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.2](https://github.com/tethys-org/mini-store/compare/v14.0.1...v14.0.2) (2022-09-21)
+
+
+### Bug Fixes
+
+* throw error when store instance count > 20 only in devMode ([9062eb5](https://github.com/tethys-org/mini-store/commit/9062eb5f65b851fa9a753ef3403d01a3d5e9d54e))
+
+
+
 ## [14.0.1](https://github.com/worktile/store/compare/v14.0.0...v14.0.1) (2022-09-15)
 
 
