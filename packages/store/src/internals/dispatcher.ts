@@ -170,17 +170,17 @@ export class InternalDispatcher {
     public dispatch(storeId: string, action: ActionMetadata, originActionFn: () => Observable<unknown> | void) {
         const storeInstance = StoreFactory.instance.get(storeId);
         const dispatchId = `${action.type}-${generateIdWithTime()}`;
-        const originActionResult = originActionFn();
-        if (originActionResult instanceof Observable) {
-            const result$ = compose([
-                // (ctx: PluginContext, next) => {
-                //     return next(ctx).pipe(
-                //         tap((state) => {
-                //             console.log(`new state`, state);
-                //         })
-                //     );
-                // },
-                (ctx: PluginContext) => {
+        const result$ = compose([
+            // (ctx: PluginContext, next) => {
+            //     return next(ctx).pipe(
+            //         tap((state) => {
+            //             console.log(`new state`, state);
+            //         })
+            //     );
+            // },
+            (ctx: PluginContext) => {
+                const originActionResult = originActionFn();
+                if (originActionResult instanceof Observable) {
                     const actionsResult$ = this.getActionResult$(storeId, dispatchId);
                     actionsResult$.subscribe((result) => {
                         this.actions$.next(result);
@@ -207,23 +207,25 @@ export class InternalDispatcher {
                         }),
                         shareReplay()
                     );
+                } else {
+                    return originActionResult;
                 }
-            ])({
-                state: StoreFactory.instance.get(storeId).getState(),
-                storeInstance: storeInstance,
-                action: action.type
-            }).pipe(shareReplay());
-
-            result$.subscribe({
+            }
+        ])({
+            state: StoreFactory.instance.get(storeId).getState(),
+            storeInstance: storeInstance,
+            action: action.type
+        });
+        if (result$ instanceof Observable) {
+            result$.pipe(shareReplay()).subscribe({
                 error: (error: Error) => {
                     // this._errorHandler = this._errorHandler || this._injector.get(ErrorHandler);
                     // this._errorHandler.handleError(error);
                 }
             });
-            return result$;
-        } else {
-            return originActionResult;
         }
+
+        return result$;
     }
 
     private getActionResult$(storeId: string, dispatchId: string): Observable<ActionContext> {
