@@ -9,12 +9,7 @@ interface GardenState {
 @Injectable()
 class GardenStore extends Store<GardenState> {
     constructor() {
-        super(
-            {
-                flowers: []
-            },
-            { name: 'garden' }
-        );
+        super(undefined, { name: 'garden' });
     }
 }
 
@@ -23,9 +18,7 @@ interface GardensState extends EntityState<string> {}
 @Injectable()
 class GardensStore extends EntityStore<GardensState, string> {
     constructor() {
-        super(undefined, {
-            name: 'gardens'
-        });
+        super(undefined, { name: 'gardens' });
     }
 }
 
