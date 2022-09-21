@@ -217,7 +217,7 @@ export class InternalDispatcher {
             action: action.type
         });
         if (result$ instanceof Observable) {
-            result$.pipe(shareReplay()).subscribe({
+            result$.subscribe({
                 error: (error: Error) => {
                     // this._errorHandler = this._errorHandler || this._injector.get(ErrorHandler);
                     // this._errorHandler.handleError(error);

@@ -286,7 +286,7 @@ describe('#store', () => {
             const animalsSpy = jasmine.createSpy('animals selector spy');
             store.select(ZoomStore.animalsSelector).subscribe(animalsSpy);
             expect(animalsSpy).toHaveBeenCalledTimes(1);
-            store.addAnimal(addAnimalMonster);
+            store.addAnimal(addAnimalMonster).subscribe();
             expect(animalsSpy).toHaveBeenCalledTimes(2);
             expect(animalsSpy).toHaveBeenCalledWith([...animals, addAnimalMonster]);
         });
