@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs';
 import { CancelUncompleted } from './action';
+import { SafeAny } from './inner-types';
 
 /**
  * Status of a dispatched action
@@ -20,5 +21,5 @@ export interface ActionContext<T = unknown> {
     cancelUncompleted?: CancelUncompleted;
     result?: T;
     error?: Error;
-    originActionFn?: () => Observable<unknown> | void;
+    originActionResult?: SafeAny;
 }

@@ -78,6 +78,14 @@ class ZoomStore extends Store<ZoomState> {
     onErrorDirectly() {
         throw new Error('this is a directly test error');
     }
+
+    @Action()
+    pureAddWithReturnValue(animal: Animal) {
+        this.setState({
+            animals: produce(this.getState().animals).add(animal)
+        });
+        return animal;
+    }
 }
 
 describe('#store', () => {
@@ -299,6 +307,17 @@ describe('#store', () => {
             expect(addAnimalSpy).toHaveBeenCalledTimes(1);
             expect(addAnimalSpy).toHaveBeenCalledWith(addAnimalMonster);
         });
+
+        it('should return value when invoke action without observable', () => {
+            const animals = createSomeAnimals();
+            const addAnimalMonster = { id: 100, name: 'monster' };
+            store = new ZoomStore({
+                animals: animals
+            });
+            const result = store.pureAddWithReturnValue(addAnimalMonster);
+            expect(result).toBe(addAnimalMonster);
+            expect(store.snapshot.animals).toEqual([...animals, addAnimalMonster]);
+        });
     });
 
     describe('#getStoreInstanceId', () => {
@@ -322,12 +341,9 @@ describe('#store', () => {
 
         it('should throw error directly', fakeAsync(() => {
             store = new ZoomStore();
-            const successSpy = jasmine.createSpy('success spy');
-            const errorSpy = jasmine.createSpy('error spy');
-            const completeSpy = jasmine.createSpy('complete spy');
-            (store.onErrorDirectly() as unknown as Observable<unknown>).subscribe(successSpy, errorSpy, completeSpy);
-            expect(successSpy).toHaveBeenCalledTimes(0);
-            expect(errorSpy).toHaveBeenCalledTimes(1);
+            expect(() => {
+                store.onErrorDirectly();
+            }).toThrowError('this is a directly test error');
         }));
 
         it('should call once action when action throw error', () => {
