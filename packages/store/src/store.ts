@@ -171,10 +171,13 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         return this.defaultStoreInstanceId;
     }
 
+    private getNameByConstructor() {
+        return this.constructor.name || /function (.+)\(/.exec(this.constructor + '')[1];
+    }
+
     private createStoreInstanceId(): string {
         const MAX_INSTANCE_COUNT = 20;
-        const name =
-            (this.storeOptions && this.storeOptions.name) || this.constructor.name || /function (.+)\(/.exec(this.constructor + '')[1];
+        const name = (this.storeOptions && this.storeOptions.name) || this.getNameByConstructor();
         if (!StoreFactory.instance.get(name)) {
             return name;
         }
