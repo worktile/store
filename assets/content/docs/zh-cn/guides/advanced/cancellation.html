@@ -1,0 +1,72 @@
+<p>如果定义了一个异步的 Action，当再次调用这个异步 Action 的时候我们希望取消之前未结束的 Observable，那么很高兴<code>@tethys/store</code>自带了此功能，只需要简单配置一下即可。</p>
+
+        <h2 id="基本使用" class="docs-header-link">
+          <span header-link="基本使用"></span>
+          基本使用
+        </h2>
+      <p>通过<code>@Action</code>装饰器设置<code>cancelUncompleted</code>参数为<code>self</code>即可，再次调用<code>fetchItems</code>函数会自动取消之前未完成的请求。</p>
+<pre class="language-ts"><code class="language-ts"><div>
+<span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">TodoInfo</span> <span class="token punctuation">{</span>
+    _id<span class="token operator">?</span><span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    title<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+    created_by<span class="token operator">?</span><span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name">TodosState</span> <span class="token punctuation">{</span>
+    items<span class="token punctuation">:</span> TodoInfo<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+@<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">TodosStore</span> <span class="token keyword">extends</span> <span class="token class-name">Store</span><span class="token operator">&lt;</span>TodosState<span class="token operator">></span> <span class="token punctuation">{</span>
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token keyword">private</span> http<span class="token punctuation">:</span> HttpClient<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+            items<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">{</span> cancelUncompleted<span class="token punctuation">:</span> <span class="token string">'self'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token function">fetchItems</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>http<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token operator">&lt;</span>TodoInfo<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token string">'https://62f70d4273b79d015352b5e5.mockapi.io/items'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+            <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> items<span class="token punctuation">:</span> data <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></div></code></pre>
+
+        <h2 id="参数说明" class="docs-header-link">
+          <span header-link="参数说明"></span>
+          参数说明
+        </h2>
+      <div class="dg-paragraph"><code>cancelUncompleted</code> 参数除了上述示例中的<code>self</code>外还有以下选项:</div>
+<ul>
+<li><code>false</code>: 什么都不做，默认值</li>
+<li><code>store</code>: 取消当前 Store 中的所有未完成 Actions</li>
+<li><code>all</code>: 取消所有 Store 中的未完成 Actions</li>
+<li><code>self</code>: 只取消当前未完成的 Action</li>
+</ul>
+
+        <h2 id="手动取消" class="docs-header-link">
+          <span header-link="手动取消"></span>
+          手动取消
+        </h2>
+      <p>一般场景下我们通过<code>@Action</code>装饰器设置参数即可，<code>Store</code>基类中提供了一个<code>cancelUncompleted</code>函数方便取消当前 Store 中所有未完成的 Actions。</p>
+<pre class="language-ts"><code class="language-ts"><div>@<span class="token function">Component</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    selector<span class="token punctuation">:</span> <span class="token string">'thy-store-cancellation'</span><span class="token punctuation">,</span>
+    templateUrl<span class="token punctuation">:</span> <span class="token string">'./cancellation.component.html'</span><span class="token punctuation">,</span>
+    styleUrls<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'./cancellation.component.scss'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    providers<span class="token punctuation">:</span> <span class="token punctuation">[</span>TodosStore<span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">ThyStoreCancellationExampleComponent</span> <span class="token keyword">implements</span> <span class="token class-name">OnInit</span><span class="token punctuation">,</span> OnDestroy <span class="token punctuation">{</span>
+
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token keyword">public</span> todosStore<span class="token punctuation">:</span> TodosStore<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token function">ngOnInit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">void</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>todosStore<span class="token punctuation">.</span><span class="token function">fetchItems</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>todosStore<span class="token punctuation">.</span><span class="token function">cancelUncompleted</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></div></code></pre>
+<div class="dg-paragraph"><alert>当 Store 实例销毁时会自动取消未完成的 Actions，此特性对于组件级别的 Store Provider 特别有用，无需在组件销毁生命周期中手动调用<code>cancelUncompleted</code>。</alert></div>

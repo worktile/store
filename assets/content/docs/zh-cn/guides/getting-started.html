@@ -29,16 +29,19 @@ yarn add @tethys/store</div></code></pre>
             count<span class="token punctuation">:</span> <span class="token number">0</span>
         <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
-
-    @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token function">increase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token function">of</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
-            <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>snapshot<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span><span class="token punctuation">)</span>
-        <span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></div></code></pre>
+
+        <h2 id="导入模块和-store" class="docs-header-link">
+          <span header-link="导入模块和-store"></span>
+          导入模块和 Store
+        </h2>
+      <p>通过<code>ThyStoreModule.forRoot</code>函数设置<code>Stores</code>。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token keyword">import</span> <span class="token punctuation">{</span> ThyStoreModule <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tethys/store'</span><span class="token punctuation">;</span>
+
+@<span class="token function">NgModule</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  imports<span class="token punctuation">:</span> <span class="token punctuation">[</span>ThyStoreModule<span class="token punctuation">.</span><span class="token function">forRoot</span><span class="token punctuation">(</span><span class="token punctuation">[</span>CounterStore<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">AppModule</span> <span class="token punctuation">{</span><span class="token punctuation">}</span></div></code></pre>
 
         <h2 id="添加-action" class="docs-header-link">
           <span header-link="添加-action"></span>

@@ -13,6 +13,14 @@
           "title": "Intro",
           "order": 10,
           "toc": "content",
+          "headings": [
+            {
+              "id": "features",
+              "name": "Features",
+              "level": 2,
+              "type": "h2"
+            }
+          ],
           "contentPath": "docs/guides/intro.html",
           "originPath": "docs/guides/intro.md"
         },
@@ -23,6 +31,20 @@
           "title": "Getting Started",
           "order": 20,
           "toc": "content",
+          "headings": [
+            {
+              "id": "installation",
+              "name": "Installation",
+              "level": 2,
+              "type": "h2"
+            },
+            {
+              "id": "usage",
+              "name": "Usage",
+              "level": 2,
+              "type": "h2"
+            }
+          ],
           "contentPath": "docs/guides/getting-started.html",
           "originPath": "docs/guides/getting-started.md"
         }
@@ -43,18 +65,20 @@
           "examples": [
             "thy-store-counter-example",
             "thy-store-todos-example",
-            "thy-store-tasks-example"
+            "thy-store-tasks-example",
+            "thy-store-cancellation-example"
           ],
           "overview": false,
           "api": false,
           "order": 9007199254740991,
-          "toc": "content"
+          "toc": "content",
+          "channelPath": "examples"
         }
       ]
     },
     {
       "title": "GitHub",
-      "path": "https://github.com/docgeni/docgeni-template",
+      "path": "https://github.com/tethys-org/store",
       "isExternal": true
     }
   ],
@@ -66,6 +90,20 @@
       "title": "Getting Started",
       "order": 20,
       "toc": "content",
+      "headings": [
+        {
+          "id": "installation",
+          "name": "Installation",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "usage",
+          "name": "Usage",
+          "level": 2,
+          "type": "h2"
+        }
+      ],
       "contentPath": "docs/guides/getting-started.html",
       "originPath": "docs/guides/getting-started.md"
     },
@@ -76,6 +114,14 @@
       "title": "Intro",
       "order": 10,
       "toc": "content",
+      "headings": [
+        {
+          "id": "features",
+          "name": "Features",
+          "level": 2,
+          "type": "h2"
+        }
+      ],
       "contentPath": "docs/guides/intro.html",
       "originPath": "docs/guides/intro.md"
     },
@@ -88,12 +134,14 @@
       "examples": [
         "thy-store-counter-example",
         "thy-store-todos-example",
-        "thy-store-tasks-example"
+        "thy-store-tasks-example",
+        "thy-store-cancellation-example"
       ],
       "overview": false,
       "api": false,
       "order": 9007199254740991,
-      "toc": "content"
+      "toc": "content",
+      "channelPath": "examples"
     }
   ]
 }

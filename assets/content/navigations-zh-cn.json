@@ -13,6 +13,20 @@
           "title": "介绍",
           "order": 10,
           "toc": "content",
+          "headings": [
+            {
+              "id": "为什么？",
+              "name": "为什么？",
+              "level": 2,
+              "type": "h2"
+            },
+            {
+              "id": "特性",
+              "name": "特性",
+              "level": 2,
+              "type": "h2"
+            }
+          ],
           "contentPath": "docs/zh-cn/guides/intro.html",
           "originPath": "docs/zh-cn/guides/intro.md"
         },
@@ -23,6 +37,44 @@
           "title": "快速上手",
           "order": 20,
           "toc": "content",
+          "headings": [
+            {
+              "id": "安装",
+              "name": "安装",
+              "level": 2,
+              "type": "h2"
+            },
+            {
+              "id": "定义-store-和-state",
+              "name": "定义 Store 和 State",
+              "level": 2,
+              "type": "h2"
+            },
+            {
+              "id": "导入模块和-store",
+              "name": "导入模块和 Store",
+              "level": 2,
+              "type": "h2"
+            },
+            {
+              "id": "添加-action",
+              "name": "添加 Action",
+              "level": 2,
+              "type": "h2"
+            },
+            {
+              "id": "在组件中使用-store",
+              "name": "在组件中使用 Store",
+              "level": 2,
+              "type": "h2"
+            },
+            {
+              "id": "最简单的示例如下",
+              "name": "最简单的示例如下",
+              "level": 2,
+              "type": "h2"
+            }
+          ],
           "contentPath": "docs/zh-cn/guides/getting-started.html",
           "originPath": "docs/zh-cn/guides/getting-started.md"
         },
@@ -39,6 +91,26 @@
               "title": "Store",
               "order": 10,
               "toc": "content",
+              "headings": [
+                {
+                  "id": "setstate",
+                  "name": "setState",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "snapshot",
+                  "name": "snapshot",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "select",
+                  "name": "select",
+                  "level": 2,
+                  "type": "h2"
+                }
+              ],
               "contentPath": "docs/zh-cn/guides/basic/store.html",
               "originPath": "docs/zh-cn/guides/basic/store.md"
             },
@@ -49,6 +121,7 @@
               "title": "Action",
               "order": 20,
               "toc": "content",
+              "headings": [],
               "contentPath": "docs/zh-cn/guides/basic/action.html",
               "originPath": "docs/zh-cn/guides/basic/action.md"
             },
@@ -59,6 +132,7 @@
               "title": "Selector",
               "order": 30,
               "toc": "content",
+              "headings": [],
               "contentPath": "docs/zh-cn/guides/basic/selector.html",
               "originPath": "docs/zh-cn/guides/basic/selector.md"
             }
@@ -78,6 +152,56 @@
               "title": "Entity Store",
               "order": 10,
               "toc": "content",
+              "headings": [
+                {
+                  "id": "创建-entitystore",
+                  "name": "创建 EntityStore",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "初始化",
+                  "name": "初始化",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "获取列表数据",
+                  "name": "获取列表数据",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "添加",
+                  "name": "添加",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "更新",
+                  "name": "更新",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "移除",
+                  "name": "移除",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "clear",
+                  "name": "clear",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "trackby",
+                  "name": "trackBy",
+                  "level": 2,
+                  "type": "h2"
+                }
+              ],
               "contentPath": "docs/zh-cn/guides/advanced/entity-store.html",
               "originPath": "docs/zh-cn/guides/advanced/entity-store.md"
             },
@@ -88,8 +212,82 @@
               "title": "Entity Store with References",
               "order": 20,
               "toc": "content",
+              "headings": [
+                {
+                  "id": "api-数据格式",
+                  "name": "API 数据格式",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "创建带-references-的-entitystore",
+                  "name": "创建带 References 的 EntityStore",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "初始化",
+                  "name": "初始化",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "获取列表数据",
+                  "name": "获取列表数据",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "获取带引用的列表数据",
+                  "name": "获取带引用的列表数据",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "添加",
+                  "name": "添加",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "更新",
+                  "name": "更新",
+                  "level": 2,
+                  "type": "h2"
+                }
+              ],
               "contentPath": "docs/zh-cn/guides/advanced/entity-store-references.html",
               "originPath": "docs/zh-cn/guides/advanced/entity-store-references.md"
+            },
+            {
+              "id": "cancellation",
+              "path": "advanced/cancellation",
+              "channelPath": "guides",
+              "title": "Cancellation",
+              "order": 30,
+              "toc": "content",
+              "headings": [
+                {
+                  "id": "基本使用",
+                  "name": "基本使用",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "参数说明",
+                  "name": "参数说明",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "手动取消",
+                  "name": "手动取消",
+                  "level": 2,
+                  "type": "h2"
+                }
+              ],
+              "contentPath": "docs/zh-cn/guides/advanced/cancellation.html",
+              "originPath": "docs/zh-cn/guides/advanced/cancellation.md"
             }
           ],
           "order": 40
@@ -101,6 +299,26 @@
           "title": "常见问题",
           "order": 200,
           "toc": "content",
+          "headings": [
+            {
+              "id": "为什么采用多<code>store</code>",
+              "name": "为什么采用多<code>Store</code>",
+              "level": 2,
+              "type": "h2"
+            },
+            {
+              "id": "可变数据和不可变数据如何选择",
+              "name": "可变数据和不可变数据如何选择",
+              "level": 2,
+              "type": "h2"
+            },
+            {
+              "id": "哪些产品在使用<code>@tethys/store</code>",
+              "name": "哪些产品在使用<code>@tethys/store</code>",
+              "level": 2,
+              "type": "h2"
+            }
+          ],
           "contentPath": "docs/zh-cn/guides/faq.html",
           "originPath": "docs/zh-cn/guides/faq.md"
         }
@@ -121,22 +339,54 @@
           "examples": [
             "thy-store-counter-example",
             "thy-store-todos-example",
-            "thy-store-tasks-example"
+            "thy-store-tasks-example",
+            "thy-store-cancellation-example"
           ],
           "overview": false,
           "api": false,
           "order": 9007199254740991,
-          "toc": "content"
+          "toc": "content",
+          "channelPath": "examples"
         }
       ]
     },
     {
       "title": "GitHub",
-      "path": "https://github.com/docgeni/docgeni-template",
+      "path": "https://github.com/tethys-org/store",
       "isExternal": true
     }
   ],
   "docs": [
+    {
+      "id": "cancellation",
+      "path": "advanced/cancellation",
+      "channelPath": "guides",
+      "title": "Cancellation",
+      "order": 30,
+      "toc": "content",
+      "headings": [
+        {
+          "id": "基本使用",
+          "name": "基本使用",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "参数说明",
+          "name": "参数说明",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "手动取消",
+          "name": "手动取消",
+          "level": 2,
+          "type": "h2"
+        }
+      ],
+      "contentPath": "docs/zh-cn/guides/advanced/cancellation.html",
+      "originPath": "docs/zh-cn/guides/advanced/cancellation.md"
+    },
     {
       "id": "entity-store-references",
       "path": "advanced/entity-store-references",
@@ -144,6 +394,50 @@
       "title": "Entity Store with References",
       "order": 20,
       "toc": "content",
+      "headings": [
+        {
+          "id": "api-数据格式",
+          "name": "API 数据格式",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "创建带-references-的-entitystore",
+          "name": "创建带 References 的 EntityStore",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "初始化",
+          "name": "初始化",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "获取列表数据",
+          "name": "获取列表数据",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "获取带引用的列表数据",
+          "name": "获取带引用的列表数据",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "添加",
+          "name": "添加",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "更新",
+          "name": "更新",
+          "level": 2,
+          "type": "h2"
+        }
+      ],
       "contentPath": "docs/zh-cn/guides/advanced/entity-store-references.html",
       "originPath": "docs/zh-cn/guides/advanced/entity-store-references.md"
     },
@@ -154,6 +448,56 @@
       "title": "Entity Store",
       "order": 10,
       "toc": "content",
+      "headings": [
+        {
+          "id": "创建-entitystore",
+          "name": "创建 EntityStore",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "初始化",
+          "name": "初始化",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "获取列表数据",
+          "name": "获取列表数据",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "添加",
+          "name": "添加",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "更新",
+          "name": "更新",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "移除",
+          "name": "移除",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "clear",
+          "name": "clear",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "trackby",
+          "name": "trackBy",
+          "level": 2,
+          "type": "h2"
+        }
+      ],
       "contentPath": "docs/zh-cn/guides/advanced/entity-store.html",
       "originPath": "docs/zh-cn/guides/advanced/entity-store.md"
     },
@@ -164,6 +508,7 @@
       "title": "Action",
       "order": 20,
       "toc": "content",
+      "headings": [],
       "contentPath": "docs/zh-cn/guides/basic/action.html",
       "originPath": "docs/zh-cn/guides/basic/action.md"
     },
@@ -174,6 +519,7 @@
       "title": "Selector",
       "order": 30,
       "toc": "content",
+      "headings": [],
       "contentPath": "docs/zh-cn/guides/basic/selector.html",
       "originPath": "docs/zh-cn/guides/basic/selector.md"
     },
@@ -184,6 +530,26 @@
       "title": "Store",
       "order": 10,
       "toc": "content",
+      "headings": [
+        {
+          "id": "setstate",
+          "name": "setState",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "snapshot",
+          "name": "snapshot",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "select",
+          "name": "select",
+          "level": 2,
+          "type": "h2"
+        }
+      ],
       "contentPath": "docs/zh-cn/guides/basic/store.html",
       "originPath": "docs/zh-cn/guides/basic/store.md"
     },
@@ -194,6 +560,26 @@
       "title": "常见问题",
       "order": 200,
       "toc": "content",
+      "headings": [
+        {
+          "id": "为什么采用多<code>store</code>",
+          "name": "为什么采用多<code>Store</code>",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "可变数据和不可变数据如何选择",
+          "name": "可变数据和不可变数据如何选择",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "哪些产品在使用<code>@tethys/store</code>",
+          "name": "哪些产品在使用<code>@tethys/store</code>",
+          "level": 2,
+          "type": "h2"
+        }
+      ],
       "contentPath": "docs/zh-cn/guides/faq.html",
       "originPath": "docs/zh-cn/guides/faq.md"
     },
@@ -204,6 +590,44 @@
       "title": "快速上手",
       "order": 20,
       "toc": "content",
+      "headings": [
+        {
+          "id": "安装",
+          "name": "安装",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "定义-store-和-state",
+          "name": "定义 Store 和 State",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "导入模块和-store",
+          "name": "导入模块和 Store",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "添加-action",
+          "name": "添加 Action",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "在组件中使用-store",
+          "name": "在组件中使用 Store",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "最简单的示例如下",
+          "name": "最简单的示例如下",
+          "level": 2,
+          "type": "h2"
+        }
+      ],
       "contentPath": "docs/zh-cn/guides/getting-started.html",
       "originPath": "docs/zh-cn/guides/getting-started.md"
     },
@@ -214,6 +638,20 @@
       "title": "介绍",
       "order": 10,
       "toc": "content",
+      "headings": [
+        {
+          "id": "为什么？",
+          "name": "为什么？",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "特性",
+          "name": "特性",
+          "level": 2,
+          "type": "h2"
+        }
+      ],
       "contentPath": "docs/zh-cn/guides/intro.html",
       "originPath": "docs/zh-cn/guides/intro.md"
     },
@@ -226,12 +664,14 @@
       "examples": [
         "thy-store-counter-example",
         "thy-store-todos-example",
-        "thy-store-tasks-example"
+        "thy-store-tasks-example",
+        "thy-store-cancellation-example"
       ],
       "overview": false,
       "api": false,
       "order": 9007199254740991,
-      "toc": "content"
+      "toc": "content",
+      "channelPath": "examples"
     }
   ]
 }
