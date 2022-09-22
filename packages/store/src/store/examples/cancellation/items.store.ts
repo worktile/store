@@ -4,18 +4,18 @@ import { Action, Store } from '@tethys/store';
 import { of } from 'rxjs';
 import { tap, delay } from 'rxjs/operators';
 
-export interface TaskInfo {
+export interface TodoInfo {
     _id?: string;
     title: string;
     created_by?: string;
 }
 
-interface ItemsState {
-    items: TaskInfo[];
+interface TodosState {
+    items: TodoInfo[];
 }
 
 @Injectable()
-export class ItemsStore extends Store<ItemsState> {
+export class TodosStore extends Store<TodosState> {
     constructor(private http: HttpClient) {
         super({
             items: []
@@ -24,7 +24,7 @@ export class ItemsStore extends Store<ItemsState> {
 
     @Action({ cancelUncompleted: 'self' })
     fetchItems() {
-        return this.http.get<TaskInfo[]>('https://62f70d4273b79d015352b5e5.mockapi.io/items').pipe(
+        return this.http.get<TodoInfo[]>('https://62f70d4273b79d015352b5e5.mockapi.io/items').pipe(
             tap((data) => {
                 this.setState({ items: data });
             })

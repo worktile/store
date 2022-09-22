@@ -15,6 +15,7 @@
 [coveralls-url]: https://coveralls.io/github/tethys-org/store
 
 一个小巧且强大的 Angular 状态管理类库.
+
 [English](https://github.com/worktile/store/blob/master/README.md) | 中文文档
 
 ## 特性
