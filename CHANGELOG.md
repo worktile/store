@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.3](https://github.com/tethys-org/mini-store/compare/v14.0.2...v14.0.3) (2022-09-22)
+
+
+### Bug Fixes
+
+* directly return value when invoke action without observable ([#54](https://github.com/tethys-org/mini-store/issues/54)) ([b78a865](https://github.com/tethys-org/mini-store/commit/b78a865496413e56b648c53b00a00f57911cf298))
+
+
+### Features
+
+* add instanceMaxCount to StoreOptions for custom max instance count ([#55](https://github.com/tethys-org/mini-store/issues/55)) ([9f8040a](https://github.com/tethys-org/mini-store/commit/9f8040af192dccadc7fc38e964583360d6f00995))
+* set store custom name via constructor options ([#52](https://github.com/tethys-org/mini-store/issues/52)) ([e48b0c5](https://github.com/tethys-org/mini-store/commit/e48b0c5c898f9c509d402b0377dc3e714a388926))
+
+
+
 ## [14.0.2](https://github.com/tethys-org/mini-store/compare/v14.0.1...v14.0.2) (2022-09-21)
 
 
