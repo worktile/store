@@ -1,7 +1,5 @@
 ## @tethys/store
 
-A mini, yet powerful state management library for Angular.
-
 [![GitHubActionCI](https://img.shields.io/github/workflow/status/tethys-org/store/ci-tethys-store-test)](https://github.com/tethys-org/store/actions/workflows/main.yml)
 [![Coverage Status][coveralls-image]][coveralls-url]
 ![](https://img.shields.io/badge/Made%20with%20Angular-red?logo=angular)
@@ -16,6 +14,14 @@ A mini, yet powerful state management library for Angular.
 [coveralls-image]: https://coveralls.io/repos/github/tethys-org/store/badge.svg?branch=master
 [coveralls-url]: https://coveralls.io/github/tethys-org/store
 
+A mini, yet powerful state management library for Angular.
+
+English | [中文文档](https://github.com/worktile/store/blob/master/README.zh-CN.md)
+## Features
+- Angular Styled, Store as a Service
+- DDD, multi-store model, each store belongs to a domain, state storage and actions are together, just property and methods of class
+- Easy to use API without excessive learning cost
+
 ## Installation
 
 ```
@@ -24,6 +30,79 @@ npm install @tethys/store --save
 yarn add @tethys/store
 ```
 
+## Simple Usage
+
+```ts
+import { Injectable } from '@angular/core';
+import { Action, Store } from '@tethys/store';
+import { of } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+interface CounterState {
+    count: number;
+}
+
+@Injectable()
+export class CounterStore extends Store<CounterState> {
+    static countSelector(state: CounterState) {
+        return state.count;
+    }
+
+    constructor() {
+        super({
+            count: 0
+        });
+    }
+
+    @Action()
+    increase() {
+        return of(true).pipe(
+            tap(() => {
+                this.setState({ count: this.snapshot.count + 1 });
+            })
+        );
+    }
+
+    @Action()
+    decrease() {
+        return of(true).pipe(
+            tap(() => {
+                this.setState((state) => {
+                    return {
+                        count: state.count - 1
+                    };
+                });
+            })
+        );
+    }
+}
+```
+
+```ts
+@Component({
+    selector: 'thy-store-counter-example',
+    template: `<div>Count: {{ count$ | async }}</div>
+               <button class="dg-btn dg-btn-primary dg-btn-sm" (click)="increase()">+</button>
+               <button class="dg-btn dg-btn-primary dg-btn-sm" (click)="decrease()">-</button>
+`,
+    styleUrls: ['./counter.component.scss']
+})
+export class ThyStoreCounterExampleComponent implements OnInit {
+    count$: Observable<number> = this.counterStore.select(CounterStore.countSelector);
+
+    constructor(public counterStore: CounterStore) {}
+
+    ngOnInit(): void {}
+
+    increase() {
+        this.counterStore.increase();
+    }
+
+    decrease() {
+        this.counterStore.decrease();
+    }
+}
+```
 ## Documentation
 
 - [Introduce](https://tethys-org.github.io/store/guides/intro)

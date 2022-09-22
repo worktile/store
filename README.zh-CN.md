@@ -14,15 +14,15 @@
 [coveralls-image]: https://coveralls.io/repos/github/tethys-org/store/badge.svg?branch=master
 [coveralls-url]: https://coveralls.io/github/tethys-org/store
 
-A mini, yet powerful state management library for Angular.
+一个小巧且强大的 Angular 状态管理类库.
+[English](https://github.com/worktile/store/blob/master/README.md) | 中文文档
 
-English | [中文文档](https://github.com/worktile/store/blob/master/README.zh-CN.md)
-## Features
-- Angular Styled, Store as a Service
-- DDD, multi-store model, each store belongs to a domain, state storage and actions are together, just property and methods of class
-- Easy to use API without excessive learning cost
+## 特性
+- 完美结合 Angular 的设计理念，`Store` 即服务
+- 领域驱动，多 Store 模型，每个 Store 属于一个领域，状态存储和操作聚合一起，
+- 简单易上手的 API，无需过多学习成本
 
-## Installation
+## 安装
 
 ```
 npm install @tethys/store --save
@@ -30,7 +30,7 @@ npm install @tethys/store --save
 yarn add @tethys/store
 ```
 
-## Simple Usage
+## 简单使用
 
 ```ts
 import { Injectable } from '@angular/core';
@@ -103,10 +103,10 @@ export class ThyStoreCounterExampleComponent implements OnInit {
     }
 }
 ```
-## Documentation
+## 文档
 
-- [Introduce](https://tethys-org.github.io/store/guides/intro)
-- [Getting Started](https://tethys-org.github.io/store/guides/getting-started)
+- [介绍](https://tethys-org.github.io/store/guides/intro)
+- [快速开始](https://tethys-org.github.io/store/guides/getting-started)
 - [Store](https://tethys-org.github.io/store/guides/basic/store)
 - [Entity Store](https://tethys-org.github.io/store/guides/advanced/entity-store)
 - [Entity Store with References](https://tethys-org.github.io/store/guides/advanced/entity-store-references)
