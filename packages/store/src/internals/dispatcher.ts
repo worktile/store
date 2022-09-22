@@ -107,9 +107,8 @@ export class InternalDispatcher {
                 mergeMap((ctx) => {
                     try {
                         this.cancel$.next(ctx);
-                        const originActionResult = ctx.originActionFn();
-                        if (originActionResult instanceof Observable) {
-                            const result = originActionResult.pipe(
+                        if (ctx.originActionResult instanceof Observable) {
+                            const result = ctx.originActionResult.pipe(
                                 takeUntil(
                                     this.cancel$.pipe(
                                         filter((cancelCtx) => {
@@ -150,7 +149,7 @@ export class InternalDispatcher {
                         } else {
                             return of(<ActionContext>{
                                 ...ctx,
-                                result: originActionResult,
+                                result: ctx.originActionResult,
                                 status: ActionStatus.Successful
                             });
                         }
@@ -180,45 +179,52 @@ export class InternalDispatcher {
             //     );
             // },
             (ctx: PluginContext) => {
-                const actionsResult$ = this.getActionResult$(storeId, dispatchId);
-                actionsResult$.subscribe((result) => {
-                    this.actions$.next(result);
-                });
-                const actionContext: ActionContext = {
-                    storeId: storeId,
-                    dispatchId: dispatchId,
-                    action: action.type,
-                    status: ActionStatus.Dispatched,
-                    cancelUncompleted: action.cancelUncompleted,
-                    originActionFn: originActionFn
-                };
-                this.actions$.next(actionContext);
-                return actionsResult$.pipe(
-                    mergeMap((ctx: ActionContext) => {
-                        switch (ctx.status) {
-                            case ActionStatus.Successful:
-                                return of(ctx.result);
-                            case ActionStatus.Errored:
-                                return throwError(ctx.error);
-                            default:
-                                return EMPTY;
-                        }
-                    }),
-                    shareReplay()
-                );
+                const originActionResult = originActionFn();
+                if (originActionResult instanceof Observable) {
+                    const actionsResult$ = this.getActionResult$(storeId, dispatchId);
+                    actionsResult$.subscribe((result) => {
+                        this.actions$.next(result);
+                    });
+                    const actionContext: ActionContext = {
+                        storeId: storeId,
+                        dispatchId: dispatchId,
+                        action: action.type,
+                        status: ActionStatus.Dispatched,
+                        cancelUncompleted: action.cancelUncompleted,
+                        originActionResult: originActionResult
+                    };
+                    this.actions$.next(actionContext);
+                    return actionsResult$.pipe(
+                        mergeMap((ctx: ActionContext) => {
+                            switch (ctx.status) {
+                                case ActionStatus.Successful:
+                                    return of(ctx.result);
+                                case ActionStatus.Errored:
+                                    return throwError(ctx.error);
+                                default:
+                                    return EMPTY;
+                            }
+                        }),
+                        shareReplay()
+                    );
+                } else {
+                    return originActionResult;
+                }
             }
         ])({
             state: StoreFactory.instance.get(storeId).getState(),
             storeInstance: storeInstance,
             action: action.type
-        }).pipe(shareReplay());
-
-        result$.subscribe({
-            error: (error: Error) => {
-                // this._errorHandler = this._errorHandler || this._injector.get(ErrorHandler);
-                // this._errorHandler.handleError(error);
-            }
         });
+        if (result$ instanceof Observable) {
+            result$.subscribe({
+                error: (error: Error) => {
+                    // this._errorHandler = this._errorHandler || this._injector.get(ErrorHandler);
+                    // this._errorHandler.handleError(error);
+                }
+            });
+        }
+
         return result$;
     }
 
