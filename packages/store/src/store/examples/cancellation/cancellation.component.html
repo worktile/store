@@ -1,8 +1,8 @@
-<button class="dg-btn dg-btn-primary dg-btn-sm" (click)="fetch()">Fetch</button>
+<button class="dg-btn dg-btn-primary dg-btn-sm" (click)="fetchItems()">Fetch Items</button>
 <button class="dg-btn dg-btn-primary dg-btn-sm" (click)="cancel()">Cancel</button>
 
 <div *ngIf="loadingDone; else loading">
-  <div *ngFor="let item of itemsStore.snapshot.items">
+  <div *ngFor="let item of todos$ | async">
     {{ item.title }}
   </div>
 </div>
