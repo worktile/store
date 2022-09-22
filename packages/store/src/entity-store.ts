@@ -2,14 +2,13 @@ import { Store } from './store';
 import { mergeReferences, buildReferencesKeyBy, ReferenceArrayExtractAllowKeys } from './references';
 import { map } from 'rxjs/operators';
 import { ReferencesIdDictionary, OnCombineRefsFn } from './references';
-import { PaginationInfo } from './types';
+import { PaginationInfo, StoreOptions } from './types';
 import { Id, produce, ProducerOptions } from '@tethys/cdk/immutable';
 import { coerceArray } from './utils';
 import { isFunction } from '@tethys/cdk/is';
 
-export interface EntityStoreOptions<TEntity = unknown, TReferences = unknown> extends ProducerOptions<TEntity> {
+export interface EntityStoreOptions<TEntity = unknown, TReferences = unknown> extends ProducerOptions<TEntity>, StoreOptions {
     referencesIdKeys?: ReferenceArrayExtractAllowKeys<TReferences>;
-    name?: string;
 }
 
 export interface EntityAddOptions {

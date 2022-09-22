@@ -1,18 +1,14 @@
 import { Observable, Observer, BehaviorSubject, from, of, PartialObserver, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
-import { META_KEY } from './types';
+import { META_KEY, StoreOptions } from './types';
 import { getSingletonRootStore, RootStore } from './root-store';
 import { OnDestroy, isDevMode, Injectable } from '@angular/core';
 import { ActionState } from './action-state';
 import { Action } from './action';
-import { isFunction } from '@tethys/cdk/is';
+import { isFunction, isNumber } from '@tethys/cdk/is';
 import { StoreFactory } from './internals/store-factory';
 import { InternalDispatcher } from './internals/dispatcher';
 import { StoreMetaInfo } from './inner-types';
-
-export interface StoreOptions {
-    name?: string;
-}
 
 /**
  * @dynamic
@@ -176,21 +172,31 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     }
 
     private createStoreInstanceId(): string {
-        const MAX_INSTANCE_COUNT = 20;
+        const instanceMaxCount = this.getInstanceMaxCount();
         const name = (this.storeOptions && this.storeOptions.name) || this.getNameByConstructor();
         if (!StoreFactory.instance.get(name)) {
             return name;
         }
         let j = 0;
-        for (let i = 1; i <= MAX_INSTANCE_COUNT; i++) {
+        for (let i = 1; i <= instanceMaxCount - 1; i++) {
             if (!StoreFactory.instance.get(`${name}-${i}`)) {
                 j = i;
                 break;
             }
         }
+
         if (j === 0 && isDevMode()) {
-            throw new Error(`the store ${name} created more than ${MAX_INSTANCE_COUNT}, please check it.`);
+            throw new Error(`store '${name}' created more than ${instanceMaxCount}, please check it.`);
         }
         return `${name}-${j}`;
+    }
+
+    private getInstanceMaxCount() {
+        const instanceMaxCount = this.storeOptions && this.storeOptions.instanceMaxCount;
+        if (isNumber(instanceMaxCount)) {
+            return instanceMaxCount <= 0 ? Number.MAX_SAFE_INTEGER : instanceMaxCount;
+        } else {
+            return 20;
+        }
     }
 }

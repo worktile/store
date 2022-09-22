@@ -22,6 +22,20 @@ class GardensStore extends EntityStore<GardensState, string> {
     }
 }
 
+@Injectable()
+class GardenStoreWithUnlimitedCount extends Store<GardenState> {
+    constructor() {
+        super(undefined, { instanceMaxCount: 0 });
+    }
+}
+
+@Injectable()
+class GardenStoreWithCustomLimitedCount extends Store<GardenState> {
+    constructor() {
+        super(undefined, { instanceMaxCount: 50 });
+    }
+}
+
 describe('store-with-options', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -40,4 +54,38 @@ describe('store-with-options', () => {
         expect(store).toBeDefined();
         expect(store.getStoreInstanceId()).toBe('gardens');
     });
+
+    it('should throw errors when store instance count > 20', () => {
+        const destroy = createStores(20, GardenStore);
+        expect(() => {
+            new GardenStore();
+        }).toThrowError(`store 'garden' created more than 20, please check it.`);
+        destroy();
+    });
+
+    it('should create store instance by custom limited count, instanceMaxCount = 50', () => {
+        const destroy = createStores(50, GardenStoreWithCustomLimitedCount);
+        expect(() => {
+            new GardenStoreWithCustomLimitedCount();
+        }).toThrowError(`store 'GardenStoreWithCustomLimitedCount' created more than 50, please check it.`);
+        destroy();
+    });
+
+    it('should create store instance without limited count, instanceMaxCount = 0', () => {
+        const destroy = createStores(500, GardenStoreWithUnlimitedCount);
+        destroy();
+    });
+
+    function createStores(count: number, store: { new (...args: any[]): Store }) {
+        const stores: Store[] = [];
+
+        for (let i = 0; i < count; i++) {
+            stores.push(new store());
+        }
+        return () => {
+            stores.forEach((store) => {
+                store.ngOnDestroy();
+            });
+        };
+    }
 });
