@@ -1,9 +1,21 @@
 <p>A mini, yet powerful state management library for Angular.</p>
 
+        <h2 id="why%EF%BC%9F" class="docs-header-link">
+          <span header-link="why%EF%BC%9F"></span>
+          Why？
+        </h2>
+      <p>We wrote an article before <a target="_blank" href="https://zhuanlan.zhihu.com/p/45121775">Does Angular need state management?</a>, Under the Angular framework, the state of front-end application can be easily managed through the <code>Service</code> and <code>Observable,</code> but <code>RxJS</code> is too abstract and difficult to learn, which makes it difficult for some developers to control <code>RxJS</code> and easy modify the state directly in components. In order to restrict the behavior of developers and provide a unified API to simplify business operations, we have encapsulated a small state management class library, It allows ordinary developers to manage the state well.</p>
+
         <h2 id="features" class="docs-header-link">
           <span header-link="features"></span>
           Features
         </h2>
       <ul>
-<li>Multiple Store</li>
+<li>Angular Styled, Store as a Service</li>
+<li>DDD, multi-store model, each store belongs to a domain, state storage and actions are together, just property and methods of class</li>
+<li>Easy to use API without excessive learning cost</li>
 </ul>
+<p>The architecture diagram is as follows:
+<img src="assets/images/overview-structure.png" alt=""></p>
+<div class="dg-paragraph"><img src="assets/images/store-structure.png" alt=""></div>
+<p>Welcome to contribute: <a target="_blank" href="https://github.com/worktile/store">https://github.com/worktile/store</a></p>

@@ -1,14 +1,14 @@
 
-        <h2 id="安装" class="docs-header-link">
-          <span header-link="安装"></span>
+        <h2 id="%E5%AE%89%E8%A3%85" class="docs-header-link">
+          <span header-link="%E5%AE%89%E8%A3%85"></span>
           安装
         </h2>
       <pre class="language-bash"><code class="language-bash"><div><span class="token function">npm</span> i @tethys/store --save
 // or
 yarn add @tethys/store</div></code></pre>
 
-        <h2 id="定义-store-和-state" class="docs-header-link">
-          <span header-link="定义-store-和-state"></span>
+        <h2 id="%E5%AE%9A%E4%B9%89-store-%E5%92%8C-state" class="docs-header-link">
+          <span header-link="%E5%AE%9A%E4%B9%89-store-%E5%92%8C-state"></span>
           定义 Store 和 State
         </h2>
       <div class="dg-paragraph"><code>Store</code>是一个包含状态和行为的单一对象，也是一个普通的服务，创建<code>Store</code>需要继承<code>Store&lt;TState&gt;</code>，并通过泛型传入当前<code>Store</code>存储的状态类型，同时通过构造函数传入初始化状态。</div>
@@ -31,8 +31,8 @@ yarn add @tethys/store</div></code></pre>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></div></code></pre>
 
-        <h2 id="导入模块和-store" class="docs-header-link">
-          <span header-link="导入模块和-store"></span>
+        <h2 id="%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%9D%97%E5%92%8C-store" class="docs-header-link">
+          <span header-link="%E5%AF%BC%E5%85%A5%E6%A8%A1%E5%9D%97%E5%92%8C-store"></span>
           导入模块和 Store
         </h2>
       <p>通过<code>ThyStoreModule.forRoot</code>函数设置<code>Stores</code>。</p>
@@ -43,8 +43,8 @@ yarn add @tethys/store</div></code></pre>
 <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">AppModule</span> <span class="token punctuation">{</span><span class="token punctuation">}</span></div></code></pre>
 
-        <h2 id="添加-action" class="docs-header-link">
-          <span header-link="添加-action"></span>
+        <h2 id="%E6%B7%BB%E5%8A%A0-action" class="docs-header-link">
+          <span header-link="%E6%B7%BB%E5%8A%A0-action"></span>
           添加 Action
         </h2>
       <p>在<code>Store</code>中添加普通的函数，并使用<code>@Action()</code>装饰器装饰即可，可以通过基类的<code>setState</code>函数修改状态。</p>
@@ -67,8 +67,8 @@ yarn add @tethys/store</div></code></pre>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></div></code></pre>
 
-        <h2 id="在组件中使用-store" class="docs-header-link">
-          <span header-link="在组件中使用-store"></span>
+        <h2 id="%E5%9C%A8%E7%BB%84%E4%BB%B6%E4%B8%AD%E4%BD%BF%E7%94%A8-store" class="docs-header-link">
+          <span header-link="%E5%9C%A8%E7%BB%84%E4%BB%B6%E4%B8%AD%E4%BD%BF%E7%94%A8-store"></span>
           在组件中使用 Store
         </h2>
       <p>在组件或者任何服务中通过依赖注入注入<code>Store</code>，注入后可以通过<code>select</code>选择需要的数据流，模板中通过<code>async</code>管道订阅并展示。
@@ -103,8 +103,8 @@ yarn add @tethys/store</div></code></pre>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></div></code></pre>
 
-        <h2 id="最简单的示例如下" class="docs-header-link">
-          <span header-link="最简单的示例如下"></span>
+        <h2 id="%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E7%A4%BA%E4%BE%8B%E5%A6%82%E4%B8%8B" class="docs-header-link">
+          <span header-link="%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84%E7%A4%BA%E4%BE%8B%E5%A6%82%E4%B8%8B"></span>
           最简单的示例如下
         </h2>
       <example name="thy-store-counter-example" ></example>

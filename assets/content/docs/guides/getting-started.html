@@ -7,49 +7,104 @@
 // or
 yarn add @tethys/store</div></code></pre>
 
-        <h2 id="usage" class="docs-header-link">
-          <span header-link="usage"></span>
-          Usage
+        <h2 id="define-store-and-state" class="docs-header-link">
+          <span header-link="define-store-and-state"></span>
+          Define Store and State
         </h2>
-      <pre><code><div>interface CounterState {
-    count<span class="token punctuation">:</span> number<span class="token comment" spellcheck="true">;</span>
-}
+      <div class="dg-paragraph"><code>Store</code>是一个包含状态和行为的单一对象，也是一个普通的服务，创建<code>Store</code>需要继承<code>Store&lt;TState&gt;</code>，并通过泛型传入当前<code>Store</code>存储的状态类型，同时通过构造函数传入初始化状态。</div>
+<pre class="language-ts"><code class="language-ts"><div><span class="token keyword">import</span> <span class="token punctuation">{</span> Injectable <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@angular/core'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Action<span class="token punctuation">,</span> Store <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tethys/store'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> of <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> tap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">interface</span> <span class="token class-name">CounterState</span> <span class="token punctuation">{</span>
+    count<span class="token punctuation">:</span> <span class="token keyword">number</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
 @<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-export class CounterStore extends Store<span class="token operator">&lt;</span>CounterState<span class="token operator">></span> {
-    <span class="token keyword">static</span> <span class="token function">countSelector</span><span class="token punctuation">(</span>state<span class="token punctuation">:</span> CounterState<span class="token punctuation">)</span> {
-        return state<span class="token punctuation">.</span>count<span class="token comment" spellcheck="true">;</span>
-    }
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">CounterStore</span> <span class="token keyword">extends</span> <span class="token class-name">Store</span><span class="token operator">&lt;</span>CounterState<span class="token operator">></span> <span class="token punctuation">{</span>
 
-    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> {
-        <span class="token function">super</span><span class="token punctuation">(</span>{
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
             count<span class="token punctuation">:</span> <span class="token number">0</span>
-        }<span class="token punctuation">)</span><span class="token comment" spellcheck="true">;</span>
-    }
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></div></code></pre>
+
+        <h2 id="import-module-with-stores" class="docs-header-link">
+          <span header-link="import-module-with-stores"></span>
+          Import module with stores
+        </h2>
+      <p>通过<code>ThyStoreModule.forRoot</code>函数设置<code>Stores</code>。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token keyword">import</span> <span class="token punctuation">{</span> ThyStoreModule <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tethys/store'</span><span class="token punctuation">;</span>
+
+@<span class="token function">NgModule</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  imports<span class="token punctuation">:</span> <span class="token punctuation">[</span>ThyStoreModule<span class="token punctuation">.</span><span class="token function">forRoot</span><span class="token punctuation">(</span><span class="token punctuation">[</span>CounterStore<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">AppModule</span> <span class="token punctuation">{</span><span class="token punctuation">}</span></div></code></pre>
+
+        <h2 id="add-action" class="docs-header-link">
+          <span header-link="add-action"></span>
+          Add Action
+        </h2>
+      <p>在<code>Store</code>中添加普通的函数，并使用<code>@Action()</code>装饰器装饰即可，可以通过基类的<code>setState</code>函数修改状态。</p>
+<pre class="language-ts"><code class="language-ts"><div>@<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">CounterStore</span> <span class="token keyword">extends</span> <span class="token class-name">Store</span><span class="token operator">&lt;</span>CounterState<span class="token operator">></span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+            count<span class="token punctuation">:</span> <span class="token number">0</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
 
     @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token function">increase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> {
-        return <span class="token function">of</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
-            <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> {
-                this<span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> {
-                    return {
-                        count<span class="token punctuation">:</span> state<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span>
-                    }<span class="token comment" spellcheck="true">;</span>
-                }<span class="token punctuation">)</span><span class="token comment" spellcheck="true">;</span>
-            }<span class="token punctuation">)</span>
-        <span class="token punctuation">)</span><span class="token comment" spellcheck="true">;</span>
-    }
+    <span class="token function">increase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">of</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+            <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>snapshot<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></div></code></pre>
 
-    @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token function">decrease</span><span class="token punctuation">(</span><span class="token punctuation">)</span> {
-        return <span class="token function">of</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
-            <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> {
-                this<span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> {
-                    return {
-                        count<span class="token punctuation">:</span> state<span class="token punctuation">.</span>count <span class="token operator">-</span> <span class="token number">1</span>
-                    }<span class="token comment" spellcheck="true">;</span>
-                }<span class="token punctuation">)</span><span class="token comment" spellcheck="true">;</span>
-            }<span class="token punctuation">)</span>
-        <span class="token punctuation">)</span><span class="token comment" spellcheck="true">;</span>
-    }
-}</div></code></pre>
+        <h2 id="use-store-in-component" class="docs-header-link">
+          <span header-link="use-store-in-component"></span>
+          Use Store in Component
+        </h2>
+      <p>在组件或者任何服务中通过依赖注入注入<code>Store</code>，注入后可以通过<code>select</code>选择需要的数据流，模板中通过<code>async</code>管道订阅并展示。
+<alert>当然也可以手动订阅保存数据到组件实例中，请一定要记得在组件销毁时取消订阅。</alert></p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token keyword">import</span> <span class="token punctuation">{</span> Observable <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Component<span class="token punctuation">,</span> OnInit <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@angular/core'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> CounterStore <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./counter.store'</span><span class="token punctuation">;</span>
+
+@<span class="token function">Component</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    selector<span class="token punctuation">:</span> <span class="token string">'thy-store-counter-example'</span><span class="token punctuation">,</span>
+    template<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`
+    &lt;div>Count: {{ count$ | async}}&lt;/div>
+      &lt;button (click)="increase()">+&lt;/button>
+      &lt;button (click)="decrease()">-&lt;/button>
+    &lt;div>
+    `</span></span><span class="token punctuation">,</span>
+    styleUrls<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'./counter.component.scss'</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">ThyStoreCounterExampleComponent</span> <span class="token keyword">implements</span> <span class="token class-name">OnInit</span> <span class="token punctuation">{</span>
+    count$<span class="token punctuation">:</span> Observable<span class="token operator">&lt;</span><span class="token keyword">number</span><span class="token operator">></span> <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>counterStore<span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span> <span class="token keyword">return</span> state<span class="token punctuation">.</span>count <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token keyword">public</span> counterStore<span class="token punctuation">:</span> CounterStore<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token function">ngOnInit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">void</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token function">increase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>counterStore<span class="token punctuation">.</span><span class="token function">increase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">decrease</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>counterStore<span class="token punctuation">.</span><span class="token function">decrease</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></div></code></pre>
+
+        <h2 id="example" class="docs-header-link">
+          <span header-link="example"></span>
+          Example
+        </h2>
+      <example name="thy-store-counter-example" ></example>
