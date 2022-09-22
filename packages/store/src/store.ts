@@ -10,6 +10,10 @@ import { StoreFactory } from './internals/store-factory';
 import { InternalDispatcher } from './internals/dispatcher';
 import { StoreMetaInfo } from './inner-types';
 
+export interface StoreOptions {
+    name?: string;
+}
+
 /**
  * @dynamic
  */
@@ -21,15 +25,18 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
 
     public reduxToolEnabled = isDevMode();
 
-    private _defaultStoreInstanceId: string;
+    private defaultStoreInstanceId: string;
 
-    constructor(initialState: Partial<T>) {
-        this._defaultStoreInstanceId = this.createStoreInstanceId();
+    private storeOptions: StoreOptions;
+
+    constructor(initialState: Partial<T>, options?: StoreOptions) {
+        this.storeOptions = options;
+        this.defaultStoreInstanceId = this.createStoreInstanceId();
         this.state$ = new BehaviorSubject<T>(initialState as T);
         this.initialStateCache = { ...initialState } as T;
         if (this.reduxToolEnabled) {
             const rootStore: RootStore = getSingletonRootStore();
-            ActionState.changeAction(`Add-${this._defaultStoreInstanceId}`);
+            ActionState.changeAction(`Add-${this.defaultStoreInstanceId}`);
             rootStore.registerStore(this);
         }
         StoreFactory.instance.register(this);
@@ -49,7 +56,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
      * @memberof Store
      */
     public dispatch<T = unknown>(type: string, payload?: T): Observable<any> {
-        ActionState.changeAction(`${this._defaultStoreInstanceId}-${type}`);
+        ActionState.changeAction(`${this.defaultStoreInstanceId}-${type}`);
         const result = this._dispatch({
             type: type,
             payload: payload
@@ -161,12 +168,16 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
      * The returned id must be unique in the application.
      */
     getStoreInstanceId(): string {
-        return this._defaultStoreInstanceId;
+        return this.defaultStoreInstanceId;
+    }
+
+    private getNameByConstructor() {
+        return this.constructor.name || /function (.+)\(/.exec(this.constructor + '')[1];
     }
 
     private createStoreInstanceId(): string {
         const MAX_INSTANCE_COUNT = 20;
-        const name = this.constructor.name || /function (.+)\(/.exec(this.constructor + '')[1];
+        const name = (this.storeOptions && this.storeOptions.name) || this.getNameByConstructor();
         if (!StoreFactory.instance.get(name)) {
             return name;
         }

@@ -120,11 +120,6 @@ describe('cancel-uncompleted', () => {
         gardenStore = TestBed.inject(GardenStore);
     });
 
-    afterEach(() => {
-        zoomStore.ngOnDestroy();
-        gardenStore.ngOnDestroy();
-    });
-
     it('should call action without cancel', () => {
         const firstSpy = jasmine.createSpy('first subscribe');
         const secondSpy = jasmine.createSpy('second subscribe');
