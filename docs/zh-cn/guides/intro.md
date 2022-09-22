@@ -14,6 +14,8 @@ order: 10
 - 简单易上手的 API，无需过多学习成本
 
 整体架构图为：
+![](assets/images/overview-structure.png)
+
 ![](assets/images/store-structure.png)
 
-欢迎参与贡献：https://github.com/tethys-org/store
+欢迎参与贡献：https://github.com/worktile/store
