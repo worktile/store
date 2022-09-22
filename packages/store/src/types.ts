@@ -16,3 +16,16 @@ export interface PaginationInfo {
 }
 
 // export type Newable<T> = { new (...args: any[]): T };
+
+export interface StoreOptions {
+    /**
+     * Define name of store, default name is generated according to the class name, e.g. class ZoomStore name is `ZoomStore`
+     */
+    name?: string;
+    /**
+     * The max number of instances of the current store, set to 0 means unlimited
+     * Note: only throw error devMode, unlimited in production environment
+     * @default 20
+     */
+    instanceMaxCount?: number;
+}
