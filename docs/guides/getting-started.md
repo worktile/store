@@ -2,7 +2,6 @@
 title: Getting Started
 order: 20
 ---
-
 ## Installation
 
 ```bash
@@ -13,7 +12,7 @@ yarn add @tethys/store
 
 ## Define Store and State
 
-`Store`是一个包含状态和行为的单一对象，也是一个普通的服务，创建`Store`需要继承`Store<TState>`，并通过泛型传入当前`Store`存储的状态类型，同时通过构造函数传入初始化状态。
+`Store` is a single object containing state and behavior, and also a common service. to create a `Store`, you need to extends the `Store<TState>`, pass in the current Store's state type definition through generics, and call the parent class constructor through `super()` to set the initialization state.
 
 ```ts
 import { Injectable } from '@angular/core';
@@ -36,9 +35,9 @@ export class CounterStore extends Store<CounterState> {
 }
 ```
 
-## Import module with stores
+## Import ThyStoreModule
 
-通过`ThyStoreModule.forRoot`函数设置`Stores`。
+Set stores through the `ThyStoreModule.forRoot` function.
 
 ```ts
 import { ThyStoreModule } from '@tethys/store';
@@ -49,8 +48,10 @@ import { ThyStoreModule } from '@tethys/store';
 export class AppModule {}
 ```
 
+<alert>The defined store can also be used normally without setting `ThyStoreModule.forRoot`. It is a common service.</alert>
+
 ## Add Action
-在`Store`中添加普通的函数，并使用`@Action()`装饰器装饰即可，可以通过基类的`setState`函数修改状态。
+Add normal functions in the `Store` and decorate them with the `@Action()` decorator. In the Action function, you can update the state by calling the `setState` function of the base class.
 ```ts
 @Injectable()
 export class CounterStore extends Store<CounterState> {
@@ -74,8 +75,9 @@ export class CounterStore extends Store<CounterState> {
 
 ## Use Store in Component
 
-在组件或者任何服务中通过依赖注入注入`Store`，注入后可以通过`select`选择需要的数据流，模板中通过`async`管道订阅并展示。
-<alert>当然也可以手动订阅保存数据到组件实例中，请一定要记得在组件销毁时取消订阅。</alert>
+Inject the required `Store` into the component or any service through the constructor. After injection, you can select the required data stream through `select`. The template is subscribed and displayed through the `async` pipeline.
+
+<alert>Of course, you can also manually subscribe to save data to the component instance. Be sure to unsubscribe when the component is destroyed.</alert>
 
 ```ts
 import { Observable } from 'rxjs';
@@ -109,5 +111,5 @@ export class ThyStoreCounterExampleComponent implements OnInit {
 }
 ```
 
-## Example
+## Simple Example
 <example name="thy-store-counter-example" />

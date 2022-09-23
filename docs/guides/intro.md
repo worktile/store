@@ -11,12 +11,13 @@ We wrote an article before [Does Angular need state management?](https://zhuanla
 
 ## Features
 - Angular Styled, Store as a Service
-- DDD, multi-store model, each store belongs to a domain, state storage and actions are together, just property and methods of class
+- DDD, multi-store model, each store belongs to a domain, state storage and actions are together
 - Easy to use API without excessive learning cost
 
-The architecture diagram is as follows:
+## Model Diagram
 ![](assets/images/overview-structure.png)
 
+## Logic Diagram
 ![](assets/images/store-structure.png)
 
 Welcome to contribute: https://github.com/worktile/store

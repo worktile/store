@@ -11,14 +11,14 @@ order: 30
 通过`@Action`装饰器设置`cancelUncompleted`参数为`self`即可，再次调用`fetchItems`函数会自动取消之前未完成的请求。
 ```ts
 
-export interface TodoInfo {
+export interface Todo {
     _id?: string;
     title: string;
     created_by?: string;
 }
 
 interface TodosState {
-    items: TodoInfo[];
+    items: Todo[];
 }
 
 @Injectable()
@@ -31,7 +31,7 @@ export class TodosStore extends Store<TodosState> {
 
     @Action({ cancelUncompleted: 'self' })
     fetchItems() {
-        return this.http.get<TodoInfo[]>('https://62f70d4273b79d015352b5e5.mockapi.io/items').pipe(
+        return this.http.get<Todo[]>('https://62f70d4273b79d015352b5e5.mockapi.io/items').pipe(
             tap((data) => {
                 this.setState({ items: data });
             })
@@ -73,3 +73,7 @@ export class ThyStoreCancellationExampleComponent implements OnInit, OnDestroy {
 ```
 
 <alert>当 Store 实例销毁时会自动取消未完成的 Actions，此特性对于组件级别的 Store Provider 特别有用，无需在组件销毁生命周期中手动调用`cancelUncompleted`。</alert>
+
+## Example
+
+<example name="thy-store-cancellation-example" />

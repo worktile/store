@@ -4,7 +4,7 @@ import { takeUntil, finalize, switchMap, catchError } from 'rxjs/operators';
 import { MonoTypeOperatorFunction, of, Subject, Observable } from 'rxjs';
 
 @Component({
-    selector: 'thy-store-cancellation',
+    selector: 'thy-store-cancellation-example',
     templateUrl: './cancellation.component.html',
     styleUrls: ['./cancellation.component.scss'],
     providers: [TodosStore]

@@ -13,8 +13,7 @@ yarn add @tethys/store
 
 ## 定义 Store 和 State
 
-`Store`是一个包含状态和行为的单一对象，也是一个普通的服务，创建`Store`需要继承`Store<TState>`，并通过泛型传入当前`Store`存储的状态类型，同时通过构造函数传入初始化状态。
-
+`Store`是一个包含状态和行为的单一对象，也是一个普通的服务，创建`Store`只需继承`Store<TState>`，并通过泛型传入当前`Store`存储的状态类型定义，同时通过`super()`调用父类构造函数设置初始化状态。
 ```ts
 import { Injectable } from '@angular/core';
 import { Action, Store } from '@tethys/store';
@@ -49,8 +48,10 @@ import { ThyStoreModule } from '@tethys/store';
 export class AppModule {}
 ```
 
+<alert>定义的 Store 不通过`ThyStoreModule.forRoot`设置也是可以正常使用，它就是一个普通的服务。</alert>
+
 ## 添加 Action
-在`Store`中添加普通的函数，并使用`@Action()`装饰器装饰即可，可以通过基类的`setState`函数修改状态。
+在`Store`中添加普通的函数，并使用`@Action()`装饰器装饰即可，Action 函数中可以通过调用基类的`setState`函数修改状态。
 ```ts
 @Injectable()
 export class CounterStore extends Store<CounterState> {
@@ -74,7 +75,7 @@ export class CounterStore extends Store<CounterState> {
 
 ## 在组件中使用 Store
 
-在组件或者任何服务中通过依赖注入注入`Store`，注入后可以通过`select`选择需要的数据流，模板中通过`async`管道订阅并展示。
+在组件或者任何服务中通过构造函数注入需要的`Store`，注入后可以通过`select`选择需要的数据流，模板中通过`async`管道订阅并展示。
 <alert>当然也可以手动订阅保存数据到组件实例中，请一定要记得在组件销毁时取消订阅。</alert>
 
 ```ts

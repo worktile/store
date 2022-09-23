@@ -19,7 +19,7 @@ A mini, yet powerful state management library for Angular.
 English | [中文文档](https://github.com/worktile/store/blob/master/README.zh-CN.md)
 ## Features
 - Angular Styled, Store as a Service
-- DDD, multi-store model, each store belongs to a domain, state storage and actions are together, just property and methods of class
+- DDD, multi-store model, each store belongs to a domain, state storage and actions are together
 - Easy to use API without excessive learning cost
 
 ## Installation

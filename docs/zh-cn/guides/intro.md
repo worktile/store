@@ -13,9 +13,10 @@ order: 10
 - 领域驱动，多`Store`模型，每个`Store`属于一个领域，状态存储和操作聚合一起
 - 简单易上手的 API，无需过多学习成本
 
-整体架构图为：
+## 模型关系图
 ![](assets/images/overview-structure.png)
 
+## 逻辑示意图
 ![](assets/images/store-structure.png)
 
 欢迎参与贡献：https://github.com/worktile/store

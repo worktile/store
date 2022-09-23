@@ -1,4 +1,4 @@
 ---
-title: Cancel Uncompleted
+title: Cancellation
 order: 40
 ---
