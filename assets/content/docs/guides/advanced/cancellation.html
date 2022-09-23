@@ -6,14 +6,14 @@
         </h2>
       <p>通过<code>@Action</code>装饰器设置<code>cancelUncompleted</code>参数为<code>self</code>即可，再次调用<code>fetchItems</code>函数会自动取消之前未完成的请求。</p>
 <pre class="language-ts"><code class="language-ts"><div>
-<span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">TodoInfo</span> <span class="token punctuation">{</span>
+<span class="token keyword">export</span> <span class="token keyword">interface</span> <span class="token class-name">Todo</span> <span class="token punctuation">{</span>
     _id<span class="token operator">?</span><span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
     title<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
     created_by<span class="token operator">?</span><span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 
 <span class="token keyword">interface</span> <span class="token class-name">TodosState</span> <span class="token punctuation">{</span>
-    items<span class="token punctuation">:</span> TodoInfo<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    items<span class="token punctuation">:</span> Todo<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 
 @<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -26,7 +26,7 @@
 
     @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">{</span> cancelUncompleted<span class="token punctuation">:</span> <span class="token string">'self'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
     <span class="token function">fetchItems</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>http<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token operator">&lt;</span>TodoInfo<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token string">'https://62f70d4273b79d015352b5e5.mockapi.io/items'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>http<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token operator">&lt;</span>Todo<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token string">'https://62f70d4273b79d015352b5e5.mockapi.io/items'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
             <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
                 <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> items<span class="token punctuation">:</span> data <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
             <span class="token punctuation">}</span><span class="token punctuation">)</span>
@@ -70,3 +70,9 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></div></code></pre>
 <div class="dg-paragraph"><alert>当 Store 实例销毁时会自动取消未完成的 Actions，此特性对于组件级别的 Store Provider 特别有用，无需在组件销毁生命周期中手动调用<code>cancelUncompleted</code>。</alert></div>
+
+        <h2 id="example" class="docs-header-link">
+          <span header-link="example"></span>
+          Example
+        </h2>
+      <example name="thy-store-cancellation-example" ></example>

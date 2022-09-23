@@ -1,4 +1,4 @@
-<div class="dg-paragraph"><code>Store</code>是一个包含状态和行为的单一对象，也是一个普通的服务，创建<code>Store</code>只需继承<code>Store&lt;TState&gt;</code>，并通过泛型传入当前<code>Store</code>存储的状态类型，同时通过构造函数传入初始化状态。</div>
+<div class="dg-paragraph"><code>Store</code> is a single object containing state and behavior, and also a common service. to create a <code>Store</code>, you need to extends the <code>Store&lt;TState&gt;</code>, pass in the current Store&#39;s state type definition through generics, and call the parent class constructor through <code>super()</code> to set the initialization state.</div>
 <pre class="language-ts"><code class="language-ts"><div><span class="token keyword">import</span> <span class="token punctuation">{</span> Injectable <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@angular/core'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> Action<span class="token punctuation">,</span> Store <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tethys/store'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> of <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span><span class="token punctuation">;</span>
@@ -20,7 +20,7 @@
           <span header-link="setstate"></span>
           setState
         </h2>
-      <p>当需要更新状态时可以通过调用<code>setState()</code>方法传入新的状态。</p>
+      <p>We can call the <code>setState()</code> method to transfer in the new state.</p>
 <pre class="language-ts"><code class="language-ts"><div>@<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">CounterStore</span> <span class="token keyword">extends</span> <span class="token class-name">Store</span><span class="token operator">&lt;</span>CounterState<span class="token operator">></span> <span class="token punctuation">{</span>
     
@@ -31,11 +31,11 @@
         <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>snapshot<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></div></code></pre>
-<div class="dg-paragraph"><code>setState</code> 可以支持多种参数类型</div>
+<div class="dg-paragraph"><code>setState</code> support multiple parameter types:</div>
 <ul>
-<li>完整的<code>State</code>新对象</li>
-<li>部分<code>State</code>更新的对象</li>
-<li>返回新<code>State</code>的函数</li>
+<li>New fully <code>State</code> object</li>
+<li>Partial <code>State</code> updated objects</li>
+<li>The function return the new <code>State</code> object</li>
 </ul>
 <pre class="language-ts"><code class="language-ts"><div>@<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">CounterStore</span> <span class="token keyword">extends</span> <span class="token class-name">Store</span><span class="token operator">&lt;</span>CounterState<span class="token operator">></span> <span class="token punctuation">{</span>
@@ -51,11 +51,13 @@
           <span header-link="snapshot"></span>
           snapshot
         </h2>
-      <p>提供当前<code>Store</code>存储状态的快照，方便在模版中通过<code>store.snapshot</code>表达式直接访问, 在用<code>snapshot</code>的时候注意:</p>
+      <p>提供存当前<code>Store</code>状态的快照，方便在模版中通过<code>store.snapshot</code>表达式直接访问, 使用<code>snapshot</code>的时候需要注意:</p>
 <ul>
-<li>尽量只在模版中使用，因为数据变化后可以通过变更检测实时响应</li>
+<li>尽量只在模版中使用，数据变化后非<code>OnPush</code>模式的组件可以通过变更检测实时响应</li>
 <li>在代码中使用时确定当前时刻一定是你需要的值, 且是一次性使用, 数据变更后不影响当前逻辑</li>
 <li>严禁在<code>Store</code>外直接修改<code>snapshot</code>中的数据</li>
+<li><code>OnPush</code>组件禁止使用<code>snapshot</code>, 否则数据变更后无法同步视图
+<alert>使用 snapshot 的时候一定要了解 Angular 数据变更机制，否则非常容易造成数据不同步的缺陷。</alert></li>
 </ul>
 
         <h2 id="select" class="docs-header-link">
@@ -79,7 +81,7 @@
 <span class="token punctuation">}</span></div></code></pre>
 <p>注意事项：</p>
 <ul>
-<li>可以不需要订阅就不订阅, 直接使用<code>select</code>返回需要的<code>Observable</code>, 在模版中使用<code>async</code>管道订阅使用, 如果模版中多处使用可以使用<code>as</code>关键字保存为临时对象</li>
-<li>一旦订阅, 一定要取消订阅, 推荐<code>takeUntil</code>操作符取消订阅</li>
-<li><code>selector</code>推荐统一定义到<code>Store</code>的静态函数中</li>
+<li>推荐使用<code>select</code>返回需要的<code>Observable</code>, 在模版中使用<code>async</code>管道订阅使用, 如果模版中多处使用可以使用<code>as</code>关键字保存为临时对象</li>
+<li>一旦在代码中订阅使用, 一定要取消订阅, 推荐<code>takeUntil</code>操作符取消订阅</li>
+<li><code>selector</code>推荐统一定义到<code>Store</code>的静态函数中, 提高性能的话在最后添加<code>shareReplay</code>管道时一个不错的好习惯</li>
 </ul>

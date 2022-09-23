@@ -1,11 +1,17 @@
-<div class="dg-paragraph"><code>Action</code>是一个函数装饰器，<code>Action</code>标识的函数调用时会自动订阅，发生错误时调用错误处理函数。</div>
+<div class="dg-paragraph"><code>Action</code>就是<code>Store</code>中的一个普通函数，通过<code>@Action()</code>函数装饰器标记，Action 函数同时支持同步和异步，异步需要返回<code>Observable</code>。</div>
+
+        <h2 id="%E8%87%AA%E5%8A%A8%E8%AE%A2%E9%98%85" class="docs-header-link">
+          <span header-link="%E8%87%AA%E5%8A%A8%E8%AE%A2%E9%98%85"></span>
+          自动订阅
+        </h2>
+      <div class="dg-paragraph"><code>Action</code>函数如果返回的是<code>Observable</code>，调用时会自动订阅，发生错误时调用错误处理函数。</div>
 <p>对于如下示例代码来说，当在组件中调用<code>todosStore.fetchTodos()</code>函数时会自动订阅并通过<code>shareReplay</code>操作符转成多播流。</p>
 <pre class="language-ts"><code class="language-ts"><div><span class="token keyword">import</span> <span class="token punctuation">{</span> Action<span class="token punctuation">,</span> EntityState<span class="token punctuation">,</span> EntityStore <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tethys/store'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> of <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> tap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span><span class="token punctuation">;</span>
 
 <span class="token keyword">interface</span> <span class="token class-name">Todo</span> <span class="token punctuation">{</span>
-   _id<span class="token punctuation">:</span> <span class="token keyword">number</span><span class="token punctuation">;</span>
+   id<span class="token punctuation">:</span> <span class="token keyword">number</span><span class="token punctuation">;</span>
    title<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 
@@ -18,7 +24,7 @@
 
     @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
     <span class="token function">fetchTodos</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">const</span> initialTodos <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>_id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'Todo1'</span><span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">const</span> initialTodos <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'Todo1'</span><span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
         <span class="token keyword">return</span> <span class="token function">of</span><span class="token punctuation">(</span>initialTodos<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
             <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span>todos<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
                 <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">initialize</span><span class="token punctuation">(</span>todos<span class="token punctuation">,</span> <span class="token punctuation">{</span> pageIndex<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> pageCount<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> pageSize<span class="token punctuation">:</span> <span class="token number">20</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -26,3 +32,10 @@
         <span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></div></code></pre>
+
+        <h2 id="%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD" class="docs-header-link">
+          <span header-link="%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD"></span>
+          高级功能
+        </h2>
+      <div class="dg-paragraph"><code>Action</code>函数除了上述的自动订阅的功能外，还会统一处理一些插件，比如 Redux Devtool, 状态流转记录等。
+其次还可以通过<code>@Action()</code>装饰器传参实现自动取消未完成流的特性，参考: <a href="guides/advanced/cancellation">Cancellation 取消未完成的流</a></div>

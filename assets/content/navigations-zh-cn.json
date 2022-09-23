@@ -25,6 +25,18 @@
               "name": "特性",
               "level": 2,
               "type": "h2"
+            },
+            {
+              "id": "%E6%A8%A1%E5%9E%8B%E5%85%B3%E7%B3%BB%E5%9B%BE",
+              "name": "模型关系图",
+              "level": 2,
+              "type": "h2"
+            },
+            {
+              "id": "%E9%80%BB%E8%BE%91%E7%A4%BA%E6%84%8F%E5%9B%BE",
+              "name": "逻辑示意图",
+              "level": 2,
+              "type": "h2"
             }
           ],
           "contentPath": "docs/zh-cn/guides/intro.html",
@@ -121,7 +133,20 @@
               "title": "Action",
               "order": 20,
               "toc": "content",
-              "headings": [],
+              "headings": [
+                {
+                  "id": "%E8%87%AA%E5%8A%A8%E8%AE%A2%E9%98%85",
+                  "name": "自动订阅",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD",
+                  "name": "高级功能",
+                  "level": 2,
+                  "type": "h2"
+                }
+              ],
               "contentPath": "docs/zh-cn/guides/basic/action.html",
               "originPath": "docs/zh-cn/guides/basic/action.md"
             },
@@ -284,6 +309,12 @@
                   "name": "手动取消",
                   "level": 2,
                   "type": "h2"
+                },
+                {
+                  "id": "%E7%A4%BA%E4%BE%8B",
+                  "name": "示例",
+                  "level": 2,
+                  "type": "h2"
                 }
               ],
               "contentPath": "docs/zh-cn/guides/advanced/cancellation.html",
@@ -380,6 +411,12 @@
         {
           "id": "%E6%89%8B%E5%8A%A8%E5%8F%96%E6%B6%88",
           "name": "手动取消",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "%E7%A4%BA%E4%BE%8B",
+          "name": "示例",
           "level": 2,
           "type": "h2"
         }
@@ -508,7 +545,20 @@
       "title": "Action",
       "order": 20,
       "toc": "content",
-      "headings": [],
+      "headings": [
+        {
+          "id": "%E8%87%AA%E5%8A%A8%E8%AE%A2%E9%98%85",
+          "name": "自动订阅",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD",
+          "name": "高级功能",
+          "level": 2,
+          "type": "h2"
+        }
+      ],
       "contentPath": "docs/zh-cn/guides/basic/action.html",
       "originPath": "docs/zh-cn/guides/basic/action.md"
     },
@@ -648,6 +698,18 @@
         {
           "id": "%E7%89%B9%E6%80%A7",
           "name": "特性",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "%E6%A8%A1%E5%9E%8B%E5%85%B3%E7%B3%BB%E5%9B%BE",
+          "name": "模型关系图",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "%E9%80%BB%E8%BE%91%E7%A4%BA%E6%84%8F%E5%9B%BE",
+          "name": "逻辑示意图",
           "level": 2,
           "type": "h2"
         }
