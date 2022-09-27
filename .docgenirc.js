@@ -4,7 +4,7 @@
 module.exports = {
     mode: 'full',
     title: '@tethys/store',
-    logoUrl: 'https://cdn.pingcode.com/open-sources/docgeni/logo.png',
+    logoUrl: 'assets/images/tethys-store-logo.png',
     docsDir: 'docs',
     repoUrl: 'https://github.com/tethys-org/store',
     navs: [
