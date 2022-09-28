@@ -12,8 +12,6 @@ export class StoreFactory implements OnDestroy {
 
     private storeInstancesMap = new Map<string, Store>();
 
-    private storeInstancesMap$ = new BehaviorSubject<Map<string, Store>>(this.storeInstancesMap);
-
     public state$ = new Subject<{ storeId: string; state: unknown }>();
 
     register(store: Store) {
@@ -26,6 +24,13 @@ export class StoreFactory implements OnDestroy {
 
     get(id: string) {
         return this.storeInstancesMap.get(id);
+    }
+
+    getAllState() {
+        return Array.from(this.storeInstancesMap.entries()).reduce((state, [storeId, store]) => {
+            state[storeId] = store.getState();
+            return state;
+        }, {});
     }
 
     // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method

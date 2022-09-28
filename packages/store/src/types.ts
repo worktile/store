@@ -1,8 +1,8 @@
 import { InjectionToken } from '@angular/core';
 
 export const META_KEY = '__THY_META__';
-export const ROOT_STATE_TOKEN = new InjectionToken<any>('ROOT_STATE_TOKEN');
-export const FEATURE_STATE_TOKEN = new InjectionToken<any>('FEATURE_STATE_TOKEN');
+export const ROOT_STORES_TOKEN = new InjectionToken<any>('ROOT_STORES_TOKEN');
+export const FEATURE_STORES_TOKEN = new InjectionToken<any>('FEATURE_STORES_TOKEN');
 
 export interface Id {
     toString(): string;
@@ -14,8 +14,6 @@ export interface PaginationInfo {
     pageIndex?: number;
     pageSize?: number;
 }
-
-// export type Newable<T> = { new (...args: any[]): T };
 
 /**
  * Store options

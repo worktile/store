@@ -16,7 +16,8 @@ import {
 import { CancelUncompleted } from '../action';
 import { ActionContext, ActionStatus } from '../actions-stream';
 import { SafeAny, ActionMetadata } from '../inner-types';
-import { PluginContext } from '../plugin';
+import { PluginContext, StorePluginFn } from '../plugin';
+import { StorePluginManager } from '../plugin-manager';
 import { compose, findAndCreateStoreMetadata, generateIdWithTime } from '../utils';
 import { StoreFactory } from './store-factory';
 
@@ -170,14 +171,9 @@ export class InternalDispatcher {
     public dispatch(storeId: string, action: ActionMetadata, originActionFn: () => Observable<unknown> | void) {
         const storeInstance = StoreFactory.instance.get(storeId);
         const dispatchId = `${action.type}-${generateIdWithTime()}`;
+        let returnResult = undefined;
         const result$ = compose([
-            // (ctx: PluginContext, next) => {
-            //     return next(ctx).pipe(
-            //         tap((state) => {
-            //             console.log(`new state`, state);
-            //         })
-            //     );
-            // },
+            ...(StorePluginManager.instance?.rootPluginHandlers || []),
             (ctx: PluginContext) => {
                 const originActionResult = originActionFn();
                 if (originActionResult instanceof Observable) {
@@ -208,24 +204,28 @@ export class InternalDispatcher {
                         shareReplay()
                     );
                 } else {
-                    return originActionResult;
+                    returnResult = originActionResult;
+                    return of(originActionResult).pipe(shareReplay());
                 }
             }
         ])({
-            state: StoreFactory.instance.get(storeId).getState(),
-            storeInstance: storeInstance,
-            action: action.type
-        });
-        if (result$ instanceof Observable) {
+            state: storeInstance.getState(),
+            getState: () => storeInstance.getState(),
+            getAllState: () => StoreFactory.instance.getAllState(),
+            store: storeInstance,
+            action: `${storeInstance.getStoreInstanceId()}@${action.type}`
+        }).pipe(shareReplay());
+        if (returnResult) {
+            return returnResult;
+        } else {
             result$.subscribe({
                 error: (error: Error) => {
                     // this._errorHandler = this._errorHandler || this._injector.get(ErrorHandler);
                     // this._errorHandler.handleError(error);
                 }
             });
+            return result$;
         }
-
-        return result$;
     }
 
     private getActionResult$(storeId: string, dispatchId: string): Observable<ActionContext> {

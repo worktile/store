@@ -1,9 +1,7 @@
 import { Observable, Observer, BehaviorSubject, from, of, PartialObserver, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { META_KEY, StoreOptions } from './types';
-import { getSingletonRootStore, RootStore } from './root-store';
 import { OnDestroy, isDevMode, Injectable } from '@angular/core';
-import { ActionState } from './action-state';
 import { Action } from './action';
 import { isFunction, isNumber } from '@tethys/cdk/is';
 import { StoreFactory } from './internals/store-factory';
@@ -19,8 +17,6 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
 
     public state$: BehaviorSubject<T>;
 
-    public reduxToolEnabled = isDevMode();
-
     private defaultStoreInstanceId: string;
 
     private storeOptions: StoreOptions;
@@ -30,12 +26,15 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         this.defaultStoreInstanceId = this.createStoreInstanceId();
         this.state$ = new BehaviorSubject<T>(initialState as T);
         this.initialStateCache = { ...initialState } as T;
-        if (this.reduxToolEnabled) {
-            const rootStore: RootStore = getSingletonRootStore();
-            ActionState.changeAction(`Add-${this.defaultStoreInstanceId}`);
-            rootStore.registerStore(this);
-        }
         StoreFactory.instance.register(this);
+        InternalDispatcher.instance.dispatch(
+            this.getStoreInstanceId(),
+            {
+                type: `INIT`,
+                originalFn: undefined
+            },
+            () => {}
+        );
     }
 
     get snapshot() {
@@ -52,7 +51,6 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
      * @memberof Store
      */
     public dispatch<T = unknown>(type: string, payload?: T): Observable<any> {
-        ActionState.changeAction(`${this.defaultStoreInstanceId}-${type}`);
         const result = this._dispatch({
             type: type,
             payload: payload
@@ -144,10 +142,6 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     }
 
     ngOnDestroy() {
-        if (this.reduxToolEnabled) {
-            const rootStore: RootStore = getSingletonRootStore();
-            rootStore.unregisterStore(this);
-        }
         StoreFactory.instance.unregister(this);
         this.cancelUncompleted();
     }

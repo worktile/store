@@ -1948,16 +1948,16 @@
   resolved "https://registry.npmjs.org/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@docgeni/cli@^1.2.0-next.25":
-  version "1.2.0-next.25"
-  resolved "https://registry.npmjs.org/@docgeni/cli/-/cli-1.2.0-next.25.tgz#a0b499db7a2be174690a8019f49c4fb56c9490b9"
-  integrity sha512-MJx8vBK/U+rrp2eDRlls7XQrBz2J2JQBUIP4sjKRxatXCbXnuzQgUHerEqvBu4VvM6SWtxkqlYqdiKTy/hm7bw==
+"@docgeni/cli@^1.2.0-next.27":
+  version "1.2.0-next.27"
+  resolved "https://registry.npmjs.org/@docgeni/cli/-/cli-1.2.0-next.27.tgz#bf996fea95f2fb09b71e1fe48d7ed52daa02f11f"
+  integrity sha512-UC42eHNHOD9n2r1GlXk0QVNe6Jl88LCHyxn9ldrPRgytvFhbub5OVSfV1A5ZKMthNlF/9p6c0ljPpG9ZmOvXlQ==
   dependencies:
     "@angular-devkit/schematics" "^12.2.18"
     "@angular-devkit/schematics-cli" "^12.2.18"
-    "@docgeni/core" "^1.2.0-next.25"
-    "@docgeni/template" "^1.2.0-next.25"
-    "@docgeni/toolkit" "^1.2.0-next.25"
+    "@docgeni/core" "^1.2.0-next.27"
+    "@docgeni/template" "^1.2.0-next.27"
+    "@docgeni/toolkit" "^1.2.0-next.27"
     "@schematics/angular" "^12.2.18"
     chokidar "^3.3.1"
     cosmiconfig "^6.0.0"
@@ -1970,15 +1970,15 @@
     yargs "15.3.1"
     zone.js "^0.10.2"
 
-"@docgeni/core@^1.2.0-next.25":
-  version "1.2.0-next.25"
-  resolved "https://registry.npmjs.org/@docgeni/core/-/core-1.2.0-next.25.tgz#2b37f75ea63e29642e53d80a6f4c192e4f4c6f6b"
-  integrity sha512-IYHhzi8vfOTj13mHTXQVIrQpUzoFojtOi0Ybn8ZJvNaIwQgEU7uB0a3R99zLyeACVd/r8yShxLh11pFL3jFGGQ==
+"@docgeni/core@^1.2.0-next.27":
+  version "1.2.0-next.27"
+  resolved "https://registry.npmjs.org/@docgeni/core/-/core-1.2.0-next.27.tgz#75d95a1d3855358c03d618d6604f22b586bd8343"
+  integrity sha512-9c/J0zhadAbOMPZ4EXK7flzN1SRbKcETIPgpbR3ZuYWxWin9ljxEtwmwd0ShanScn59ilvtlFjfWRs7fYuLzCg==
   dependencies:
     "@angular-devkit/core" "^12.2.18"
     "@angular-devkit/schematics" "^12.2.18"
-    "@docgeni/ngdoc" "^1.2.0-next.25"
-    "@docgeni/toolkit" "^1.2.0-next.25"
+    "@docgeni/ngdoc" "^1.2.0-next.27"
+    "@docgeni/toolkit" "^1.2.0-next.27"
     "@schematics/angular" "^11.2.15"
     "@types/text-table" "^0.2.2"
     ansi-colors "^4.1.1"
@@ -1999,19 +1999,19 @@
     vinyl "^2.2.0"
     vinyl-fs "^3.0.3"
 
-"@docgeni/ngdoc@^1.2.0-next.25":
-  version "1.2.0-next.25"
-  resolved "https://registry.npmjs.org/@docgeni/ngdoc/-/ngdoc-1.2.0-next.25.tgz#37232c7c9dac67e9209d861ce933c9469e0140fe"
-  integrity sha512-2/ZK0m7aj/ujaMRGyTC31zMxP2gIFYSC0KIJbVGlFSlVyKD/z+lHYB8pqf903oEygEMu+rNtrMaRE68PpB8LoQ==
+"@docgeni/ngdoc@^1.2.0-next.27":
+  version "1.2.0-next.27"
+  resolved "https://registry.npmjs.org/@docgeni/ngdoc/-/ngdoc-1.2.0-next.27.tgz#b95501a7ebac720f528699a4858ebc74c6fd317c"
+  integrity sha512-hXB39p4/qItGBnMz4TsMxDAnpOcTdp7M6GhQPrxTCfZx3hw8vgfOQfRHavjxfHwI6MB9qpFC5/dExws2K2Tdbg==
   dependencies:
-    "@docgeni/toolkit" "^1.2.0-next.25"
+    "@docgeni/toolkit" "^1.2.0-next.27"
     ts-morph "12.1.0"
     typescript "4.3.5"
 
-"@docgeni/template@^1.2.0-next.25":
-  version "1.2.0-next.25"
-  resolved "https://registry.npmjs.org/@docgeni/template/-/template-1.2.0-next.25.tgz#cbad1c65046cb94d4a95ef6d1030301d229dc826"
-  integrity sha512-s7+TAMxFvDn/SgKBOSsmI0LgewsdWO0gM05ikMFPiub9HZqBs0wWNqEyqy352Q81gT3rSbNnUn/M7MdfXlVteA==
+"@docgeni/template@^1.2.0-next.27":
+  version "1.2.0-next.27"
+  resolved "https://registry.npmjs.org/@docgeni/template/-/template-1.2.0-next.27.tgz#656b9f8fdf8a178f2f1fe9bf75aa4e37347d1db0"
+  integrity sha512-DeipBhOO1ED9+XR7+a85s/ooicMP6FzamBGmzKkvZMlrx0YQxzarPS7ofL0W8eU7We3x5WOlW4HXZ8gDIvI8Cg==
   dependencies:
     docsearch.js "2.6.3"
     tslib "^2.2.0"
@@ -2039,10 +2039,10 @@
     time-stamp "^2.2.0"
     title-case "^3.0.2"
 
-"@docgeni/toolkit@^1.2.0-next.25":
-  version "1.2.0-next.25"
-  resolved "https://registry.npmjs.org/@docgeni/toolkit/-/toolkit-1.2.0-next.25.tgz#ebf46ea25c2d5fde563665db72779fcc27ea476f"
-  integrity sha512-kzSu3IrwPkRHn7GqYvcw/vh8VxUvCKNw7zJ60RxTxOMcOUdsx8Fu/Gd8UMUXyCeSfJyBpp9gp7D9w0pkAp+OmQ==
+"@docgeni/toolkit@^1.2.0-next.27":
+  version "1.2.0-next.27"
+  resolved "https://registry.npmjs.org/@docgeni/toolkit/-/toolkit-1.2.0-next.27.tgz#49ee8addf33408814ad545096c8422e52f1c3b57"
+  integrity sha512-AOU/QIKXCdaArlC2WP1fWWbGKf9HAXP6/Io+eqNAwhV+WGCQZjeFlTwCNV468UgiFwIAPfl6IUW/5PUnrcnqZA==
   dependencies:
     "@angular-devkit/core" "^12.2.18"
     camelcase "^6.0.0"

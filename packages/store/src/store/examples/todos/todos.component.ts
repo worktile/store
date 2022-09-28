@@ -14,7 +14,7 @@ export class ThyStoreTodosExampleComponent implements OnInit {
     constructor(public todosStore: TodosStore) {}
 
     ngOnInit(): void {
-        this.todosStore.fetchTodos();
+        this.todosStore.fetchTodos().subscribe();
     }
 
     addTodo() {

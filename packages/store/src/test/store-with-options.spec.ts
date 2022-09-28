@@ -74,6 +74,7 @@ describe('store-with-options', () => {
     it('should create store instance without limited count, instanceMaxCount = 0', () => {
         const destroy = createStores(500, GardenStoreWithUnlimitedCount);
         destroy();
+        expect(true);
     });
 
     function createStores(count: number, store: { new (...args: any[]): Store }) {
