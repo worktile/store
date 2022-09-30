@@ -1,11 +1,10 @@
-import { Store } from './store';
-import { mergeReferences, buildReferencesKeyBy, ReferenceArrayExtractAllowKeys } from './references';
-import { map } from 'rxjs/operators';
-import { ReferencesIdDictionary, OnCombineRefsFn } from './references';
-import { PaginationInfo, StoreOptions } from './types';
 import { Id, produce, ProducerOptions } from '@tethys/cdk/immutable';
-import { coerceArray } from './utils';
 import { isFunction } from '@tethys/cdk/is';
+import { map } from 'rxjs/operators';
+import { buildReferencesKeyBy, mergeReferences, ReferenceArrayExtractAllowKeys, ReferencesIdDictionary } from './references';
+import { Store } from './store';
+import { PaginationInfo, StoreOptions } from './types';
+import { coerceArray } from './utils';
 
 export interface EntityStoreOptions<TEntity = unknown, TReferences = unknown> extends ProducerOptions<TEntity>, StoreOptions {
     referencesIdKeys?: ReferenceArrayExtractAllowKeys<TReferences>;
@@ -87,14 +86,14 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     }
 
     constructor(
-        initialState: EntityState<TEntity, TReferences> = {
+        initialState: TState = {
             entities: [] as TEntity[]
-        },
+        } as TState,
         options: EntityStoreOptions<TEntity, TReferences> = {
             idKey: '_id'
         } as EntityStoreOptions<TEntity, TReferences>
     ) {
-        super(initialState as TState, options);
+        super(initialState, options);
         this.options = { idKey: '_id', ...options } as EntityStoreOptions<TEntity, TReferences>;
         if (!this.options.idKey) {
             throw new Error(`idKey is required in EntityStore`);

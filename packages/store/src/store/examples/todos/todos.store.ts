@@ -10,7 +10,9 @@ export interface Todo {
     completed?: boolean;
 }
 
-interface TodosState extends EntityState<Todo> {}
+interface TodosState extends EntityState<Todo> {
+    someKey?: string;
+}
 
 let id: number;
 @Injectable({ providedIn: 'root' })
@@ -24,7 +26,8 @@ export class TodosStore extends EntityStore<TodosState, Todo> {
     constructor(private todosApiService: TodosApiService) {
         super(
             {
-                entities: []
+                entities: [],
+                someKey: '1'
             },
             { idKey: 'id' }
         );
