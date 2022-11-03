@@ -110,10 +110,11 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
      *
      */
     initialize(entities: TEntity[], pagination?: PaginationInfo) {
-        const state = this.snapshot;
-        state.entities = entities || [];
-        state.pagination = pagination;
-        this.next(state);
+        this.setState({
+            ...this.snapshot,
+            entities: entities || [],
+            pagination
+        });
     }
 
     /**
@@ -125,12 +126,16 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
      *
      */
     initializeWithReferences(entities: TEntity[], references: TReferences, pagination?: PaginationInfo) {
-        const state = this.snapshot;
-        state.entities = entities || [];
-        state.pagination = pagination;
-        state.references = references;
+        this.snapshot.references = references;
         this.buildReferencesIdMap();
-        this.next(state);
+        this.setState((state) => {
+            return {
+                ...state,
+                entities: entities || [],
+                pagination,
+                references
+            };
+        });
     }
 
     /**
@@ -165,7 +170,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
             }
         }
 
-        this.next(state);
+        this.next({ ...state });
     }
 
     /**
