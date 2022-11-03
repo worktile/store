@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.4](https://github.com/tethys-org/mini-store/compare/v14.0.3...v14.0.4) (2022-11-03)
+
+
+### Bug Fixes
+
+* entityStore initialState type change to TState ([c700d00](https://github.com/tethys-org/mini-store/commit/c700d00ddfa2afbe45f7bad70ce1f95cd1dbf871))
+
+
+
 ## [14.0.3](https://github.com/tethys-org/mini-store/compare/v14.0.2...v14.0.3) (2022-09-22)
 
 
