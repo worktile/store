@@ -19,6 +19,11 @@ export interface EntityAddOptions {
     addByPagination?: boolean;
 }
 
+export interface ActiveState<TEntity> {
+    activeId: Id;
+    activeEntity?: TEntity;
+}
+
 export interface EntityState<TEntity, TReferences = unknown> {
     pagination?: PaginationInfo;
     entities: TEntity[];
@@ -36,6 +41,22 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
 
     entities$ = this.select((state) => {
         return state.entities;
+    });
+
+    get activeId() {
+        return this.snapshot['activeId'];
+    }
+
+    activeId$ = this.select((state) => {
+        return state['activeId'];
+    });
+
+    get activeEntity() {
+        return this.snapshot['activeEntity'];
+    }
+
+    activeEntity$ = this.select((state) => {
+        return state['activeEntity'];
     });
 
     entitiesWithRefs$ = this.entities$.pipe(
@@ -330,5 +351,19 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         state.pagination = null;
         state.references = null;
         this.next(state);
+    }
+
+    private getEntityById(id: Id): TEntity {
+        return this.snapshot.entities.filter((entity) => {
+            return (entity[this.options.idKey] as any) === id;
+        })[0];
+    }
+
+    setActive(id: Id | null = null) {
+        this.setState({
+            ...this.snapshot,
+            activeId: id,
+            activeEntity: id ? this.getEntityById(id) : null
+        });
     }
 }

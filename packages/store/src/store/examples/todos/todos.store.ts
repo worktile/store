@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Action, EntityState, EntityStore } from '@tethys/store';
+import { Id } from '@tethys/cdk/immutable';
+import { Action, ActiveState, EntityState, EntityStore } from '@tethys/store';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -10,7 +11,7 @@ export interface Todo {
     completed?: boolean;
 }
 
-interface TodosState extends EntityState<Todo> {
+interface TodosState extends EntityState<Todo>, ActiveState<Todo> {
     someKey?: string;
 }
 
@@ -23,11 +24,20 @@ export class TodosStore extends EntityStore<TodosState, Todo> {
         return state.entities;
     }
 
+    static activeIdSelector(state: TodosState) {
+        return state.activeId;
+    }
+
+    static activeTodoSelector(state: TodosState) {
+        return state.activeEntity;
+    }
+
     constructor(private todosApiService: TodosApiService) {
         super(
             {
                 entities: [],
-                someKey: '1'
+                someKey: '1',
+                activeId: ''
             },
             { idKey: 'id' }
         );
@@ -115,6 +125,16 @@ export class TodosStore extends EntityStore<TodosState, Todo> {
                 completed: completed
             }
         );
+    }
+
+    @Action()
+    setActiveTodo(id: Id) {
+        this.setActive(id);
+    }
+
+    @Action()
+    clearActiveTodo() {
+        this.setActive(null);
     }
 }
 

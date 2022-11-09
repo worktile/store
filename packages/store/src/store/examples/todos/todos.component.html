@@ -14,10 +14,15 @@
       (click)="todosStore.setAllTo(toggleAll.checked)"
     />
     <ul class="todo-list">
-      <li *ngFor="let todo of todos; trackBy: todosStore.trackByFn" [class.completed]="todo.completed" [class.editing]="todo.editing">
+      <li
+        *ngFor="let todo of todos; trackBy: todosStore.trackByFn"
+        [class.completed]="todo.completed"
+        [class.editing]="todo.editing"
+        [class.active]="activeId === todo.id"
+      >
         <div class="view">
           <input class="toggle" type="checkbox" (click)="toggleCompletion(todo)" [checked]="todo.completed" />
-          <label (dblclick)="editTodo(todo)">{{ todo.title }}</label>
+          <label (dblclick)="editTodo(todo)" (click)="setActiveTodo(todo.id)">{{ todo.title }}</label>
           <button class="destroy" (click)="remove(todo)"></button>
         </div>
         <input
@@ -39,3 +44,11 @@
     <button class="clear-completed" *ngIf="todosStore.getCompleted().length > 0" (click)="removeCompleted()">Clear completed</button>
   </footer>
 </section>
+
+<button (click)="clearActiveTodo()">clearActive</button>
+<p>activeId:{{ activeId }}</p>
+<p>activeTodo:{{ activeTodo | json }}</p>
+<p>todosStore.activeId :{{ todosStore.activeId }}</p>
+<p>todosStore.activeEntity:{{ todosStore.activeEntity | json }}</p>
+<p>todosStore.activeId$:{{ todosStore.activeId$ | async }}</p>
+<p>todosStore.activeEntity$:{{ todosStore.activeEntity$ | async | json }}</p>
