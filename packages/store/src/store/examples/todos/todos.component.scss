@@ -203,13 +203,6 @@ button {
     text-decoration: line-through;
 }
 
-.todo-list li.active {
-    background-color: rgba(102, 152, 255, 0.12);
-    label {
-        color: #6698ff;
-    }
-}
-
 .todo-list li .destroy {
     display: none;
     position: absolute;

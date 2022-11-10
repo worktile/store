@@ -1,0 +1,19 @@
+<section class="item-app" *ngIf="items$ | async as items">
+  <section class="main">
+    <ul class="item-list">
+      <li *ngFor="let item of items; trackBy: activeItemsStore.trackByFn" [class.active]="activeItemsStore.activeId === item.id">
+        <div class="view">
+          <label (click)="setActiveItem(item.id)">{{ item.title }}</label>
+        </div>
+      </li>
+    </ul>
+  </section>
+  <footer class="footer">
+    <button class="clear-active" *ngIf="activeItemsStore.activeId" (click)="clearActiveItem()">Clear active</button>
+  </footer>
+</section>
+
+<p>activeItemsStore.activeId :{{ activeItemsStore.activeId }}</p>
+<p>activeItemsStore.activeEntity:{{ activeItemsStore.activeEntity | json }}</p>
+<p>activeItemsStore.activeId$:{{ activeItemsStore.activeId$ | async }}</p>
+<p>activeItemsStore.activeEntity$:{{ activeItemsStore.activeEntity$ | async | json }}</p>

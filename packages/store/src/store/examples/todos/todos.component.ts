@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Id } from '@tethys/cdk/immutable';
 import { Todo, TodosStore } from './todos.store';
 
 @Component({
@@ -12,22 +11,10 @@ export class ThyStoreTodosExampleComponent implements OnInit {
 
     newTodoText!: string;
 
-    activeId: Id;
-
-    activeTodo: Todo;
-
     constructor(public todosStore: TodosStore) {}
 
     ngOnInit(): void {
         this.todosStore.fetchTodos().subscribe();
-
-        this.todosStore.activeId$.subscribe((activeId) => {
-            this.activeId = activeId;
-        });
-
-        this.todosStore.activeEntity$.subscribe((activeEntity) => {
-            this.activeTodo = activeEntity;
-        });
     }
 
     addTodo() {
@@ -63,13 +50,5 @@ export class ThyStoreTodosExampleComponent implements OnInit {
 
     removeCompleted() {
         this.todosStore.removeCompleted();
-    }
-
-    setActiveTodo(id: number) {
-        this.todosStore.setActiveTodo(id);
-    }
-
-    clearActiveTodo() {
-        this.todosStore.clearActiveTodo();
     }
 }

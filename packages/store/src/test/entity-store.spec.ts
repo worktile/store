@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { EntityStore, EntityState, EntityStoreOptions } from '../entity-store';
+import { EntityState, EntityStore, EntityStoreOptions } from '../entity-store';
 
 describe('Store: EntityStore', () => {
     interface TaskInfo {
@@ -447,6 +446,48 @@ describe('Store: EntityStore', () => {
             assertIdKeyError(undefined);
             assertIdKeyError(null);
             assertIdKeyError('');
+        });
+    });
+
+    describe('active', () => {
+        it('should set active and get id', () => {
+            const tasksEntityStore = new TasksEntityStore({
+                entities: [...initialTasks]
+            });
+            expect(tasksEntityStore.activeId).toEqual(null);
+            tasksEntityStore.setActive('1');
+            expect(tasksEntityStore.activeId).toEqual('1');
+            tasksEntityStore.activeId$.subscribe((id) => {
+                expect(id).toEqual('1');
+            });
+        });
+
+        it('should get entity', async () => {
+            const tasksEntityStore = new TasksEntityStore({
+                entities: [...initialTasks]
+            });
+
+            tasksEntityStore.setActive('1');
+            expect(tasksEntityStore.activeEntity).toEqual({ _id: '1', name: 'task 1' });
+            tasksEntityStore.activeEntity$.subscribe((id) => {
+                expect(id).toEqual({ _id: '1', name: 'task 1' });
+            });
+        });
+
+        it('should clear active id and entity', () => {
+            const tasksEntityStore = new TasksEntityStore({
+                entities: [...initialTasks]
+            });
+            tasksEntityStore.setActive('1');
+            tasksEntityStore.setActive(null);
+            expect(tasksEntityStore.activeId).toEqual(null);
+            tasksEntityStore.activeId$.subscribe((id) => {
+                expect(id).toEqual(null);
+            });
+            expect(tasksEntityStore.activeEntity).toEqual(null);
+            tasksEntityStore.activeEntity$.subscribe((entity) => {
+                expect(entity).toEqual(null);
+            });
         });
     });
 });

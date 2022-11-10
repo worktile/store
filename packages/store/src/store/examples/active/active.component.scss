@@ -1,0 +1,105 @@
+button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: 100%;
+    vertical-align: baseline;
+    font-family: inherit;
+    font-weight: inherit;
+    color: inherit;
+    -webkit-appearance: none;
+    appearance: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.item-app {
+    background: #fff;
+    margin: 130px 0 40px 0;
+    position: relative;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+}
+
+.main {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid #e6e6e6;
+}
+
+.item-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.item-list li {
+    position: relative;
+    font-size: 24px;
+    border-bottom: 1px solid #ededed;
+}
+
+.item-list li:last-child {
+    border-bottom: none;
+}
+
+.item-list li label {
+    word-break: break-all;
+    padding: 15px 15px 15px 60px;
+    display: block;
+    line-height: 1.2;
+    transition: color 0.4s;
+    font-weight: 400;
+    color: #484848;
+}
+
+.item-list li.active {
+    background-color: rgba(102, 152, 255, 0.12);
+    label {
+        color: #6698ff;
+    }
+}
+
+.footer {
+    padding: 10px 15px;
+    height: 20px;
+    text-align: center;
+    font-size: 15px;
+    border-top: 1px solid #e6e6e6;
+}
+
+.footer:before {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 50px;
+    overflow: hidden;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #f6f6f6, 0 9px 1px -3px rgba(0, 0, 0, 0.2), 0 16px 0 -6px #f6f6f6,
+        0 17px 2px -6px rgba(0, 0, 0, 0.2);
+}
+
+.clear-active,
+html .clear-active:active {
+    float: right;
+    position: relative;
+    line-height: 19px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.clear-active:hover {
+    text-decoration: underline;
+}
+
+/*
+	Hack to remove background from Mobile Safari.
+	Can't use it globally since it destroys checkboxes in Firefox
+*/
+
+@media (max-width: 430px) {
+    .footer {
+        height: 50px;
+    }
+}
