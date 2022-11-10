@@ -1,6 +1,7 @@
 import { Id, produce, ProducerOptions } from '@tethys/cdk/immutable';
 import { isFunction } from '@tethys/cdk/is';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { buildReferencesKeyBy, mergeReferences, ReferenceArrayExtractAllowKeys, ReferencesIdDictionary } from './references';
 import { Store } from './store';
 import { PaginationInfo, StoreOptions } from './types';
@@ -19,7 +20,11 @@ export interface EntityAddOptions {
     addByPagination?: boolean;
 }
 
-export interface EntityState<TEntity, TReferences = unknown> {
+export interface ActiveState {
+    activeId?: Id;
+}
+
+export interface EntityState<TEntity, TReferences = unknown> extends ActiveState {
     pagination?: PaginationInfo;
     entities: TEntity[];
     references?: TReferences;
@@ -37,6 +42,27 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     entities$ = this.select((state) => {
         return state.entities;
     });
+
+    get activeId(): Id | null {
+        return this.snapshot.activeId || null;
+    }
+
+    activeId$: Observable<Id | null> = this.select((state) => {
+        return state.activeId || null;
+    });
+
+    get activeEntity(): TEntity | null {
+        return this.snapshot.activeId ? this.getEntityById(this.snapshot.activeId) : null;
+    }
+
+    activeEntity$: Observable<TEntity | null> = this.select((state) => {
+        return state.activeId;
+    }).pipe(
+        map((id) => {
+            return id ? this.getEntityById(id) : null;
+        }),
+        shareReplay()
+    );
 
     entitiesWithRefs$ = this.entities$.pipe(
         map((entities) => {
@@ -330,5 +356,19 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         state.pagination = null;
         state.references = null;
         this.next(state);
+    }
+
+    private getEntityById(id: Id): TEntity | null {
+        const entity = this.snapshot.entities.find((entity) => {
+            return (entity[this.options.idKey] as any) === id;
+        });
+        return entity ? entity : null;
+    }
+
+    setActive(id: Id | null = null): void {
+        this.setState({
+            ...this.snapshot,
+            activeId: id
+        });
     }
 }
