@@ -1,12 +1,12 @@
-import { Observable, Observer, BehaviorSubject, from, of, PartialObserver, Subscription } from 'rxjs';
-import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
-import { META_KEY, StoreOptions } from './types';
-import { OnDestroy, isDevMode, Injectable } from '@angular/core';
-import { Action } from './action';
+import { Injectable, isDevMode, OnDestroy } from '@angular/core';
 import { isFunction, isNumber } from '@tethys/cdk/is';
-import { StoreFactory } from './internals/store-factory';
-import { InternalDispatcher } from './internals/dispatcher';
+import { BehaviorSubject, from, Observable, Observer, Subscription } from 'rxjs';
+import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
+import { Action } from './action';
 import { StoreMetaInfo } from './inner-types';
+import { InternalDispatcher } from './internals/dispatcher';
+import { StoreFactory } from './store-factory';
+import { META_KEY, StoreOptions } from './types';
 
 /**
  * @dynamic
@@ -159,6 +159,10 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
      */
     getStoreInstanceId(): string {
         return this.defaultStoreInstanceId;
+    }
+
+    getStoreInstanceName(): string {
+        return (this.storeOptions && this.storeOptions.name) || this.getNameByConstructor();
     }
 
     private getNameByConstructor() {

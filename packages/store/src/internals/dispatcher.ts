@@ -1,25 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable, of, Subject, throwError } from 'rxjs';
-import {
-    filter,
-    take,
-    shareReplay,
-    exhaustMap,
-    switchMap,
-    takeUntil,
-    defaultIfEmpty,
-    catchError,
-    map,
-    mergeMap,
-    tap
-} from 'rxjs/operators';
+import { EMPTY, Observable, of, Subject, throwError } from 'rxjs';
+import { catchError, defaultIfEmpty, filter, map, mergeMap, shareReplay, take, takeUntil } from 'rxjs/operators';
 import { CancelUncompleted } from '../action';
 import { ActionContext, ActionStatus } from '../actions-stream';
-import { SafeAny, ActionMetadata } from '../inner-types';
-import { PluginContext, StorePluginFn } from '../plugin';
+import { ActionMetadata } from '../inner-types';
+import { PluginContext } from '../plugin';
 import { StorePluginManager } from '../plugin-manager';
-import { compose, findAndCreateStoreMetadata, generateIdWithTime } from '../utils';
-import { StoreFactory } from './store-factory';
+import { StoreFactory } from '../store-factory';
+import { compose, generateIdWithTime } from '../utils';
 
 @Injectable({
     providedIn: 'root'

@@ -89,4 +89,11 @@ export class ThyStoreCounterExampleComponent implements OnInit {
 注意事项：
 - 推荐使用`select`返回需要的`Observable`, 在模版中使用`async`管道订阅使用, 如果模版中多处使用可以使用`as`关键字保存为临时对象
 - 一旦在代码中订阅使用, 一定要取消订阅, 推荐`takeUntil`操作符取消订阅
-- `selector`推荐统一定义到`Store`的静态函数中, 提高性能的话在最后添加`shareReplay`管道时一个不错的好习惯
+- `selector`推荐统一定义到`Store`的静态函数中, 提高性能的话在最后添加`shareReplay`管道是一个不错的好习惯
+
+## storeFactory
+`StoreFactory`的`getStores(names: string | string[])`方法，可以通过`Store`名字，取到注册过的所有`Store`。
+```ts
+StoreFactory.instance.getStores(['TodosStore', 'CounterStore'])
+```
+
