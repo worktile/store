@@ -19,14 +19,14 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
 
     private defaultStoreInstanceId: string;
 
-    private defaultStoreInstanceName: string;
+    private name: string;
 
     private storeOptions: StoreOptions;
 
     constructor(initialState: Partial<T>, options?: StoreOptions) {
         this.storeOptions = options;
+        this.name = this.setName();
         this.defaultStoreInstanceId = this.createStoreInstanceId();
-        this.defaultStoreInstanceName = this.createStoreInstanceName();
         this.state$ = new BehaviorSubject<T>(initialState as T);
         this.initialStateCache = { ...initialState } as T;
         InternalStoreFactory.instance.register(this);
@@ -164,17 +164,21 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         return this.defaultStoreInstanceId;
     }
 
-    getStoreInstanceName(): string {
-        return this.defaultStoreInstanceName;
+    getName(): string {
+        return this.name;
     }
 
     private getNameByConstructor() {
         return this.constructor.name || /function (.+)\(/.exec(this.constructor + '')[1];
     }
 
+    private setName(): string {
+        return (this.storeOptions && this.storeOptions.name) || this.getNameByConstructor();
+    }
+
     private createStoreInstanceId(): string {
         const instanceMaxCount = this.getInstanceMaxCount();
-        const name = (this.storeOptions && this.storeOptions.name) || this.getNameByConstructor();
+        const name = this.getName();
         if (!InternalStoreFactory.instance.get(name)) {
             return name;
         }
@@ -199,9 +203,5 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         } else {
             return 20;
         }
-    }
-
-    private createStoreInstanceName(): string {
-        return (this.storeOptions && this.storeOptions.name) || this.getNameByConstructor();
     }
 }

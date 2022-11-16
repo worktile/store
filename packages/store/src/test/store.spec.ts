@@ -332,7 +332,7 @@ describe('#store', () => {
     describe('#getStoreInstanceName', () => {
         it('should get correct InstanceName', () => {
             store = new ZoomStore({});
-            expect(store.getStoreInstanceName()).toEqual('ZoomStore');
+            expect(store.getName()).toEqual('ZoomStore');
             store.ngOnDestroy();
         });
     });

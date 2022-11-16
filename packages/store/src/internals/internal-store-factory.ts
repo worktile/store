@@ -19,7 +19,7 @@ export class InternalStoreFactory implements OnDestroy {
 
     register(store: Store) {
         this.storeInstancesMap.set(store.getStoreInstanceId(), store);
-        const name = store.getStoreInstanceName();
+        const name = store.getName();
         if (this.storeInstancesMapByName.has(name)) {
             this.storeInstancesMapByName.set(name, [...this.storeInstancesMapByName.get(name), store]);
         } else {
@@ -29,7 +29,7 @@ export class InternalStoreFactory implements OnDestroy {
 
     unregister(store: Store) {
         this.storeInstancesMap.delete(store.getStoreInstanceId());
-        this.storeInstancesMapByName.delete(store.getStoreInstanceName());
+        this.storeInstancesMapByName.delete(store.getName());
     }
 
     get(id: string) {
