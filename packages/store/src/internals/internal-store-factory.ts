@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Store } from '../store';
-import { coerceArray, flatten } from '../utils';
+import { coerceArray } from '../utils';
 
 @Injectable()
 export class InternalStoreFactory implements OnDestroy {
@@ -13,23 +13,14 @@ export class InternalStoreFactory implements OnDestroy {
 
     private storeInstancesMap = new Map<string, Store>();
 
-    private storeInstancesMapByName = new Map<string, Store[]>();
-
     public state$ = new Subject<{ storeId: string; state: unknown }>();
 
     register(store: Store) {
         this.storeInstancesMap.set(store.getStoreInstanceId(), store);
-        const name = store.getName();
-        if (this.storeInstancesMapByName.has(name)) {
-            this.storeInstancesMapByName.set(name, [...this.storeInstancesMapByName.get(name), store]);
-        } else {
-            this.storeInstancesMapByName.set(name, [store]);
-        }
     }
 
     unregister(store: Store) {
         this.storeInstancesMap.delete(store.getStoreInstanceId());
-        this.storeInstancesMapByName.delete(store.getName());
     }
 
     get(id: string) {
@@ -37,10 +28,9 @@ export class InternalStoreFactory implements OnDestroy {
     }
 
     getStores(names: string | string[]) {
-        const stores = coerceArray(names).map((name) => {
-            return this.storeInstancesMapByName.get(name);
+        return Array.from(this.storeInstancesMap.values()).filter((store) => {
+            return coerceArray(names).includes(store.getName());
         });
-        return flatten(stores, []);
     }
 
     getAllState() {
