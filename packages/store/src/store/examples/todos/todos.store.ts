@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action, EntityState, EntityStore } from '@tethys/store';
+import { Action, EntityState, EntityStore, StoreFactoryService } from '@tethys/store';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -19,11 +19,13 @@ let id: number;
 export class TodosStore extends EntityStore<TodosState, Todo> {
     newTodoText: string;
 
+    stores = [];
+
     static todosSelector(state: TodosState) {
         return state.entities;
     }
 
-    constructor(private todosApiService: TodosApiService) {
+    constructor(private todosApiService: TodosApiService, private storeFactory: StoreFactoryService) {
         super(
             {
                 entities: [],
@@ -31,6 +33,7 @@ export class TodosStore extends EntityStore<TodosState, Todo> {
             },
             { idKey: 'id' }
         );
+        this.stores = this.storeFactory.getStores(['ItemsStore', 'AnotherItemsStore']);
     }
 
     private getWithCompleted(completed: Boolean) {

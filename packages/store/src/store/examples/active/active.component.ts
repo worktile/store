@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActiveItemsStore } from './avtive.store';
+import { ActiveItemsStore } from './active.store';
 
 @Component({
     selector: 'thy-store-active-example',

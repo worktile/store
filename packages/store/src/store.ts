@@ -1,12 +1,12 @@
-import { Observable, Observer, BehaviorSubject, from, of, PartialObserver, Subscription } from 'rxjs';
-import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
-import { META_KEY, StoreOptions } from './types';
-import { OnDestroy, isDevMode, Injectable } from '@angular/core';
-import { Action } from './action';
+import { Injectable, isDevMode, OnDestroy } from '@angular/core';
 import { isFunction, isNumber } from '@tethys/cdk/is';
-import { StoreFactory } from './internals/store-factory';
-import { InternalDispatcher } from './internals/dispatcher';
+import { BehaviorSubject, from, Observable, Observer, Subscription } from 'rxjs';
+import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
+import { Action } from './action';
 import { StoreMetaInfo } from './inner-types';
+import { InternalDispatcher } from './internals/dispatcher';
+import { InternalStoreFactory } from './internals/internal-store-factory';
+import { META_KEY, StoreOptions } from './types';
 
 /**
  * @dynamic
@@ -19,14 +19,17 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
 
     private defaultStoreInstanceId: string;
 
+    private name: string;
+
     private storeOptions: StoreOptions;
 
     constructor(initialState: Partial<T>, options?: StoreOptions) {
         this.storeOptions = options;
+        this.name = this.setName();
         this.defaultStoreInstanceId = this.createStoreInstanceId();
         this.state$ = new BehaviorSubject<T>(initialState as T);
         this.initialStateCache = { ...initialState } as T;
-        StoreFactory.instance.register(this);
+        InternalStoreFactory.instance.register(this);
         InternalDispatcher.instance.dispatch(
             this.getStoreInstanceId(),
             {
@@ -142,7 +145,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     }
 
     ngOnDestroy() {
-        StoreFactory.instance.unregister(this);
+        InternalStoreFactory.instance.unregister(this);
         this.cancelUncompleted();
     }
 
@@ -161,19 +164,27 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         return this.defaultStoreInstanceId;
     }
 
+    getName(): string {
+        return this.name;
+    }
+
     private getNameByConstructor() {
         return this.constructor.name || /function (.+)\(/.exec(this.constructor + '')[1];
     }
 
+    private setName(): string {
+        return (this.storeOptions && this.storeOptions.name) || this.getNameByConstructor();
+    }
+
     private createStoreInstanceId(): string {
         const instanceMaxCount = this.getInstanceMaxCount();
-        const name = (this.storeOptions && this.storeOptions.name) || this.getNameByConstructor();
-        if (!StoreFactory.instance.get(name)) {
+        const name = this.getName();
+        if (!InternalStoreFactory.instance.get(name)) {
             return name;
         }
         let j = 0;
         for (let i = 1; i <= instanceMaxCount - 1; i++) {
-            if (!StoreFactory.instance.get(`${name}-${i}`)) {
+            if (!InternalStoreFactory.instance.get(`${name}-${i}`)) {
                 j = i;
                 break;
             }

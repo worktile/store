@@ -1,10 +1,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Store } from '../store';
+import { coerceArray } from '../utils';
 
 @Injectable()
-export class StoreFactory implements OnDestroy {
-    private static factory = new StoreFactory();
+export class InternalStoreFactory implements OnDestroy {
+    private static factory = new InternalStoreFactory();
 
     static get instance() {
         return this.factory;
@@ -24,6 +25,12 @@ export class StoreFactory implements OnDestroy {
 
     get(id: string) {
         return this.storeInstancesMap.get(id);
+    }
+
+    getStores(names: string | string[]) {
+        return Array.from(this.storeInstancesMap.values()).filter((store) => {
+            return coerceArray(names).includes(store.getName());
+        });
     }
 
     getAllState() {

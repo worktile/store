@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
+import { fakeAsync, TestBed } from '@angular/core/testing';
+import { produce } from '@tethys/cdk/immutable';
+import { of, throwError } from 'rxjs';
+import { mergeMap, tap } from 'rxjs/operators';
 import { Action } from '../action';
 import { Store } from '../store';
-import { of, throwError, Observable } from 'rxjs';
-import { tap, mergeMap } from 'rxjs/operators';
-import { produce } from '@tethys/cdk/immutable';
-import { fakeAsync, tick } from '@angular/core/testing';
+import { StoreFactoryService } from '../store-factory';
 
 interface Animal {
     id: number;
@@ -328,6 +329,14 @@ describe('#store', () => {
         });
     });
 
+    describe('#getStoreInstanceName', () => {
+        it('should get correct InstanceName', () => {
+            store = new ZoomStore({});
+            expect(store.getName()).toEqual('ZoomStore');
+            store.ngOnDestroy();
+        });
+    });
+
     describe('#error', () => {
         it('should throw error', fakeAsync(() => {
             store = new ZoomStore();
@@ -356,6 +365,15 @@ describe('#store', () => {
             expect(successSpy).toHaveBeenCalledTimes(0);
             expect(errorSpy).toHaveBeenCalledTimes(1);
             expect(errorSpy).toHaveBeenCalledWith(new Error(`add animal failed`));
+        });
+    });
+
+    describe('#storeFactory', () => {
+        it('should get stores by name', () => {
+            store = new ZoomStore({});
+            const storeFactory = TestBed.inject(StoreFactoryService);
+            const stores = storeFactory.getStores('ZoomStore');
+            expect(stores[0]).toEqual(store);
         });
     });
 });
