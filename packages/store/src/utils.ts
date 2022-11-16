@@ -49,3 +49,15 @@ export const compose =
 export function generateIdWithTime(): string {
     return `${new Date().getTime()}-${Math.random().toString(36).substring(2)}`;
 }
+
+export function flatten<T>(array: T[], result) {
+    for (let i = 0; i < array.length; i++) {
+        let value = array[i];
+        if (Array.isArray(value)) {
+            flatten(value, result);
+        } else {
+            result.push(value);
+        }
+    }
+    return result;
+}

@@ -91,9 +91,13 @@ export class ThyStoreCounterExampleComponent implements OnInit {
 - 一旦在代码中订阅使用, 一定要取消订阅, 推荐`takeUntil`操作符取消订阅
 - `selector`推荐统一定义到`Store`的静态函数中, 提高性能的话在最后添加`shareReplay`管道是一个不错的好习惯
 
-## storeFactory
-`StoreFactory`的`getStores(names: string | string[])`方法，可以通过`Store`名字，取到注册过的所有`Store`。
+## getStores
+`StoreFactoryService`的`getStores(names: string | string[])`方法，可以通过`Store`名字，取到注册过的所有`Store`。
 ```ts
-StoreFactory.instance.getStores(['TodosStore', 'CounterStore'])
+import { StoreFactoryService } from '@tethys/store';
+
+constructor(private storeFactory: StoreFactoryService) {
+    stores = this.storeFactory.getStores(['ItemsStore', 'AnotherItemsStore']);
+}
 ```
 

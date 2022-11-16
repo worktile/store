@@ -5,7 +5,7 @@ import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { Action } from './action';
 import { StoreMetaInfo } from './inner-types';
 import { InternalDispatcher } from './internals/dispatcher';
-import { StoreFactory } from './store-factory';
+import { InternalStoreFactory } from './internals/internal-store-factory';
 import { META_KEY, StoreOptions } from './types';
 
 /**
@@ -19,14 +19,17 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
 
     private defaultStoreInstanceId: string;
 
+    private defaultStoreInstanceName: string;
+
     private storeOptions: StoreOptions;
 
     constructor(initialState: Partial<T>, options?: StoreOptions) {
         this.storeOptions = options;
         this.defaultStoreInstanceId = this.createStoreInstanceId();
+        this.defaultStoreInstanceName = this.createStoreInstanceName();
         this.state$ = new BehaviorSubject<T>(initialState as T);
         this.initialStateCache = { ...initialState } as T;
-        StoreFactory.instance.register(this);
+        InternalStoreFactory.instance.register(this);
         InternalDispatcher.instance.dispatch(
             this.getStoreInstanceId(),
             {
@@ -142,7 +145,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     }
 
     ngOnDestroy() {
-        StoreFactory.instance.unregister(this);
+        InternalStoreFactory.instance.unregister(this);
         this.cancelUncompleted();
     }
 
@@ -162,7 +165,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     }
 
     getStoreInstanceName(): string {
-        return (this.storeOptions && this.storeOptions.name) || this.getNameByConstructor();
+        return this.defaultStoreInstanceName;
     }
 
     private getNameByConstructor() {
@@ -172,12 +175,12 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     private createStoreInstanceId(): string {
         const instanceMaxCount = this.getInstanceMaxCount();
         const name = (this.storeOptions && this.storeOptions.name) || this.getNameByConstructor();
-        if (!StoreFactory.instance.get(name)) {
+        if (!InternalStoreFactory.instance.get(name)) {
             return name;
         }
         let j = 0;
         for (let i = 1; i <= instanceMaxCount - 1; i++) {
-            if (!StoreFactory.instance.get(`${name}-${i}`)) {
+            if (!InternalStoreFactory.instance.get(`${name}-${i}`)) {
                 j = i;
                 break;
             }
@@ -196,5 +199,9 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         } else {
             return 20;
         }
+    }
+
+    private createStoreInstanceName(): string {
+        return (this.storeOptions && this.storeOptions.name) || this.getNameByConstructor();
     }
 }

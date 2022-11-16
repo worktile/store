@@ -1,45 +1,11 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
-import { Store } from './store';
-import { coerceArray } from './utils';
+import { Injectable } from '@angular/core';
+import { InternalStoreFactory } from './internals/internal-store-factory';
 
-@Injectable()
-export class StoreFactory implements OnDestroy {
-    private static factory = new StoreFactory();
-
-    static get instance() {
-        return this.factory;
-    }
-
-    private storeInstancesMap = new Map<string, Store>();
-
-    public state$ = new Subject<{ storeId: string; state: unknown }>();
-
-    register(store: Store) {
-        this.storeInstancesMap.set(store.getStoreInstanceId(), store);
-    }
-
-    unregister(store: Store) {
-        this.storeInstancesMap.delete(store.getStoreInstanceId());
-    }
-
-    get(id: string) {
-        return this.storeInstancesMap.get(id);
-    }
+@Injectable({ providedIn: 'root' })
+export class StoreFactoryService {
+    constructor() {}
 
     getStores(names: string | string[]) {
-        return Array.from(this.storeInstancesMap.values()).filter((store) => {
-            return coerceArray(names).includes(store.getStoreInstanceName());
-        });
+        return InternalStoreFactory.instance.getStores(names);
     }
-
-    getAllState() {
-        return Array.from(this.storeInstancesMap.entries()).reduce((state, [storeId, store]) => {
-            state[storeId] = store.getState();
-            return state;
-        }, {});
-    }
-
-    // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
-    ngOnDestroy(): void {}
 }

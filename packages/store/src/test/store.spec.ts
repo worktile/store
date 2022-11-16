@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { fakeAsync } from '@angular/core/testing';
+import { fakeAsync, TestBed } from '@angular/core/testing';
 import { produce } from '@tethys/cdk/immutable';
 import { of, throwError } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
 import { Action } from '../action';
 import { Store } from '../store';
-import { StoreFactory } from '../store-factory';
+import { StoreFactoryService } from '../store-factory';
 
 interface Animal {
     id: number;
@@ -371,7 +371,8 @@ describe('#store', () => {
     describe('#storeFactory', () => {
         it('should get stores by name', () => {
             store = new ZoomStore({});
-            const stores = StoreFactory.instance.getStores('ZoomStore');
+            const storeFactory = TestBed.inject(StoreFactoryService);
+            const stores = storeFactory.getStores('ZoomStore');
             expect(stores[0]).toEqual(store);
         });
     });

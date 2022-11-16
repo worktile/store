@@ -6,8 +6,8 @@ import { ActionContext, ActionStatus } from '../actions-stream';
 import { ActionMetadata } from '../inner-types';
 import { PluginContext } from '../plugin';
 import { StorePluginManager } from '../plugin-manager';
-import { StoreFactory } from '../store-factory';
 import { compose, generateIdWithTime } from '../utils';
+import { InternalStoreFactory } from './internal-store-factory';
 
 @Injectable({
     providedIn: 'root'
@@ -157,7 +157,7 @@ export class InternalDispatcher {
     }
 
     public dispatch(storeId: string, action: ActionMetadata, originActionFn: () => Observable<unknown> | void) {
-        const storeInstance = StoreFactory.instance.get(storeId);
+        const storeInstance = InternalStoreFactory.instance.get(storeId);
         const dispatchId = `${action.type}-${generateIdWithTime()}`;
         let returnResult = undefined;
         const result$ = compose([
@@ -199,7 +199,7 @@ export class InternalDispatcher {
         ])({
             state: storeInstance.getState(),
             getState: () => storeInstance.getState(),
-            getAllState: () => StoreFactory.instance.getAllState(),
+            getAllState: () => InternalStoreFactory.instance.getAllState(),
             store: storeInstance,
             action: `${storeInstance.getStoreInstanceId()}@${action.type}`
         }).pipe(shareReplay());

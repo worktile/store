@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EntityStore, StoreFactory } from '@tethys/store';
+import { EntityStore, StoreFactoryService } from '@tethys/store';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Item } from './items.store';
@@ -16,8 +16,8 @@ let stores: StoreUpdatable[] = [];
 
 @Injectable({ providedIn: 'root' })
 export class StoreDispatcher {
-    constructor() {
-        stores = StoreFactory.instance.getStores(['ItemsStore', 'AnotherItemsStore']) as StoreUpdatable[];
+    constructor(private storeFactory: StoreFactoryService) {
+        stores = this.storeFactory.getStores(['ItemsStore', 'AnotherItemsStore']) as StoreUpdatable[];
     }
 
     addItem(title: string) {
