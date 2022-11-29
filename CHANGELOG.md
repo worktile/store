@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [14.1.0-next.0](https://github.com/tethys-org/mini-store/compare/v14.0.4...v14.1.0-next.0) (2022-11-29)
+
+
+### Features
+
+* add plugin and refactor ReduxDevtoolsPlugin ([3192f46](https://github.com/tethys-org/mini-store/commit/3192f46eb9faf1dcd59b54877698cf61334c0ddb))
+* entityStore support active ([#77](https://github.com/tethys-org/mini-store/issues/77)) ([6ecd967](https://github.com/tethys-org/mini-store/commit/6ecd967408fb1fa95608fd561f8b8defe2da9757))
+* public storeFactory and add getStores ([#79](https://github.com/tethys-org/mini-store/issues/79)) ([fb2bb0b](https://github.com/tethys-org/mini-store/commit/fb2bb0b9a1df1bca48787e1da075c590a7ea06ae))
+
+
+
 ## [14.0.4](https://github.com/tethys-org/mini-store/compare/v14.0.3...v14.0.4) (2022-11-03)
 
 
