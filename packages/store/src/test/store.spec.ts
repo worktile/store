@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 import { mergeMap, tap } from 'rxjs/operators';
 import { Action } from '../action';
 import { Store } from '../store';
-import { StoreFactoryService } from '../store-factory';
+import { StoreFactory } from '../store-factory';
 
 interface Animal {
     id: number;
@@ -371,7 +371,7 @@ describe('#store', () => {
     describe('#storeFactory', () => {
         it('should get stores by name', () => {
             store = new ZoomStore({});
-            const storeFactory = TestBed.inject(StoreFactoryService);
+            const storeFactory = TestBed.inject(StoreFactory);
             const stores = storeFactory.getStores('ZoomStore');
             expect(stores[0]).toEqual(store);
         });

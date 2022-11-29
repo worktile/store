@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action, EntityState, EntityStore, StoreFactoryService } from '@tethys/store';
+import { Action, EntityState, EntityStore, StoreFactory } from '@tethys/store';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -25,7 +25,7 @@ export class TodosStore extends EntityStore<TodosState, Todo> {
         return state.entities;
     }
 
-    constructor(private todosApiService: TodosApiService, private storeFactory: StoreFactoryService) {
+    constructor(private todosApiService: TodosApiService, private storeFactory: StoreFactory) {
         super(
             {
                 entities: [],
