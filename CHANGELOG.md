@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [14.1.0-next.1](https://github.com/tethys-org/mini-store/compare/v14.1.0-next.0...v14.1.0-next.1) (2022-11-29)
+
+
+### Bug Fixes
+
+* rename StoreFactoryService to StoreFactory ([626c193](https://github.com/tethys-org/mini-store/commit/626c193731d49a02fb4788629998eb3518333cb2))
+
+
+
 # [14.1.0-next.0](https://github.com/tethys-org/mini-store/compare/v14.0.4...v14.1.0-next.0) (2022-11-29)
 
 
