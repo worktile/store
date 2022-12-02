@@ -10,7 +10,7 @@
     "store": {
       "projectType": "library",
       "root": "packages/store",
-      "sourceRoot": "packages/store/src",
+      "sourceRoot": "packages/store",
       "prefix": "lib",
       "architect": {
         "build": {
@@ -28,11 +28,11 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "packages/store/src/test.ts",
+            "main": "packages/store/test.ts",
             "tsConfig": "packages/store/tsconfig.spec.json",
             "karmaConfig": "packages/store/karma.conf.js",
             "codeCoverage": true,
-            "codeCoverageExclude": ["packages/store/src/testing/**/*", "packages/store/src/test/**/*"]
+            "codeCoverageExclude": ["packages/store/testing/**/*", "packages/store/test/**/*"]
           }
         },
         "lint": {

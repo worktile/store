@@ -2387,10 +2387,10 @@
   resolved "https://registry.yarnpkg.com/@socket.io/base64-arraybuffer/-/base64-arraybuffer-1.0.2.tgz#568d9beae00b0d835f4f8c53fd55714986492e61"
   integrity sha512-dOlCBKnDw4iShaIsH/bxujKTM18+2TOAsYz+KSc11Am38H4q5Xw8Bbz97ZYdrVNM+um3p7w86Bvvmcn9q+5+eQ==
 
-"@tethys/cdk@^14.0.0-next.0":
-  version "14.0.0-next.0"
-  resolved "https://registry.npmjs.org/@tethys/cdk/-/cdk-14.0.0-next.0.tgz#d4c40f250134a4340a11ac2d3dec115732677bcc"
-  integrity sha512-J6vbx7TBFPVCZq145ZSslBAIC5IZhP4gu+qh3hAuHeYaytjPLbjLWTaczgL6AUWkeDnLQPxJ1Rj4wesFdsHZ1A==
+"@tethys/cdk@^14.1.0":
+  version "14.1.9"
+  resolved "https://registry.npmjs.org/@tethys/cdk/-/cdk-14.1.9.tgz#074df7bf339af953cd4416a302628c2211eada19"
+  integrity sha512-q8b+rGRGX9MOJ2lO7mOoH41xA3dqRR1Ehba2UfjqUBqazjCV5xW6q8cTLaAfJQ7JH0csnWarWjE/Rz610T91Sw==
   dependencies:
     tslib "^2.3.0"
 
