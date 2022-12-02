@@ -15,6 +15,7 @@ export class ThyStoreFormExampleComponent implements OnInit {
 
     constructor(public userFormStore: UserFormStore) {}
 
+    // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
     ngOnInit(): void {}
 
     onSubmit() {
