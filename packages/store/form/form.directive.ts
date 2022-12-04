@@ -76,7 +76,7 @@ export class StoreFormDirective implements OnInit, OnDestroy {
         return this.formGroup.form;
     }
 
-    private getStateStream(path: string) {
-        // return this.store.select(state => getValue(state, path)).pipe(takeUntil(thisdestroy$));
-    }
+    // private getStateStream(path: string) {
+    //     return this.store.select(state => getValue(state, path)).pipe(takeUntil(this.destroy$));
+    // }
 }
