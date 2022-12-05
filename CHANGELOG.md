@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [14.1.0-next.2](https://github.com/worktile/store/compare/v14.1.0-next.1...v14.1.0-next.2) (2022-12-05)
+
+
+### Features
+
+* add compatible for entity-store use mutable data for snapshot ([f0e641d](https://github.com/worktile/store/commit/f0e641deecdb085146584529642acf9efd044491))
+
+
+
 # [14.1.0-next.1](https://github.com/tethys-org/mini-store/compare/v14.1.0-next.0...v14.1.0-next.1) (2022-11-29)
 
 
