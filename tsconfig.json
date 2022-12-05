@@ -5,8 +5,8 @@
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "paths": {
-      "@tethys/store/*": ["packages/store/src/*"],
-      "@tethys/store": ["packages/store/src/index.ts"]
+      "@tethys/store/*": ["packages/store/*"],
+      "@tethys/store": ["packages/store/index.ts"]
     },
     "sourceMap": true,
     "declaration": false,
