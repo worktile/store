@@ -39,16 +39,6 @@ export class ActiveItemsStore extends EntityStore<ActiveItemsState, ActiveItem> 
             })
         );
     }
-
-    @Action()
-    setActiveItem(id: Id) {
-        this.setActive(id);
-    }
-
-    @Action()
-    clearActiveItem() {
-        this.setActive(null);
-    }
 }
 
 @Injectable({ providedIn: 'root' })

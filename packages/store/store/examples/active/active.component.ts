@@ -11,17 +11,19 @@ export class ThyStoreActiveItemsExampleComponent implements OnInit {
 
     activeId$ = this.activeItemsStore.select(ActiveItemsStore.activeIdSelector);
 
+    activeEntity$ = this.activeItemsStore.activeEntity$;
+
     constructor(public activeItemsStore: ActiveItemsStore) {}
 
     ngOnInit(): void {
-        this.activeItemsStore.fetchItems().subscribe();
+        this.activeItemsStore.fetchItems();
     }
 
     setActiveItem(id: number) {
-        this.activeItemsStore.setActiveItem(id);
+        this.activeItemsStore.setActive(id);
     }
 
     clearActiveItem() {
-        this.activeItemsStore.clearActiveItem();
+        this.activeItemsStore.setActive();
     }
 }

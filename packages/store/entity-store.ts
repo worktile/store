@@ -2,6 +2,7 @@ import { Id, produce, ProducerOptions } from '@tethys/cdk/immutable';
 import { isFunction } from '@tethys/cdk/is';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { Action } from './action';
 import { buildReferencesKeyBy, mergeReferences, ReferenceArrayExtractAllowKeys, ReferencesIdDictionary } from './references';
 import { Store } from './store';
 import { PaginationInfo, StoreOptions } from './types';
@@ -358,6 +359,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         return entity ? entity : null;
     }
 
+    @Action()
     setActive(id: Id | null = null): void {
         this.setState({
             ...this.snapshot,
