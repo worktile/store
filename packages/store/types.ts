@@ -4,9 +4,7 @@ export const META_KEY = '__THY_META__';
 export const ROOT_STORES_TOKEN = new InjectionToken<any>('ROOT_STORES_TOKEN');
 export const FEATURE_STORES_TOKEN = new InjectionToken<any>('FEATURE_STORES_TOKEN');
 
-export interface Id {
-    toString(): string;
-}
+export type Id = string;
 
 export interface PaginationInfo {
     count?: number;
