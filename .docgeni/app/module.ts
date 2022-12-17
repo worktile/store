@@ -1,10 +1,10 @@
-import { isDevMode } from '@angular/core';
 import { ThyStoreModule, ReduxDevtoolsPlugin } from '@tethys/store';
+import { environment } from '../environments/environment';
 
 export default {
     imports: [
         ThyStoreModule.forRoot([], {
-            plugins: isDevMode() ? [ReduxDevtoolsPlugin] : []
+            plugins: environment.production ? [] : [ReduxDevtoolsPlugin]
         })
     ]
 };
