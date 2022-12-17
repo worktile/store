@@ -1,10 +1,11 @@
 import { InjectionToken } from '@angular/core';
+import { Id as CDKId } from '@tethys/cdk';
 
 export const META_KEY = '__THY_META__';
 export const ROOT_STORES_TOKEN = new InjectionToken<any>('ROOT_STORES_TOKEN');
 export const FEATURE_STORES_TOKEN = new InjectionToken<any>('FEATURE_STORES_TOKEN');
 
-export type Id = string;
+export type Id = CDKId;
 
 export interface PaginationInfo {
     count?: number;
