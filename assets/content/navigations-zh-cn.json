@@ -121,6 +121,12 @@
                   "name": "select",
                   "level": 2,
                   "type": "h2"
+                },
+                {
+                  "id": "getstores",
+                  "name": "getStores",
+                  "level": 2,
+                  "type": "h2"
                 }
               ],
               "contentPath": "docs/zh-cn/guides/basic/store.html",
@@ -225,6 +231,12 @@
                   "name": "trackBy",
                   "level": 2,
                   "type": "h2"
+                },
+                {
+                  "id": "active",
+                  "name": "active",
+                  "level": 2,
+                  "type": "h2"
                 }
               ],
               "contentPath": "docs/zh-cn/guides/advanced/entity-store.html",
@@ -257,14 +269,14 @@
                   "type": "h2"
                 },
                 {
-                  "id": "%E8%8E%B7%E5%8F%96%E5%88%97%E8%A1%A8%E6%95%B0%E6%8D%AE",
-                  "name": "获取列表数据",
+                  "id": "%E8%8E%B7%E5%8F%96%E5%B8%A6%E5%BC%95%E7%94%A8%E7%9A%84%E5%88%97%E8%A1%A8%E6%95%B0%E6%8D%AE",
+                  "name": "获取带引用的列表数据",
                   "level": 2,
                   "type": "h2"
                 },
                 {
-                  "id": "%E8%8E%B7%E5%8F%96%E5%B8%A6%E5%BC%95%E7%94%A8%E7%9A%84%E5%88%97%E8%A1%A8%E6%95%B0%E6%8D%AE",
-                  "name": "获取带引用的列表数据",
+                  "id": "%E5%BC%95%E7%94%A8%E6%95%B0%E6%8D%AE-id-key-%E8%AE%BE%E7%BD%AE",
+                  "name": "引用数据 Id Key 设置",
                   "level": 2,
                   "type": "h2"
                 },
@@ -319,6 +331,36 @@
               ],
               "contentPath": "docs/zh-cn/guides/advanced/cancellation.html",
               "originPath": "docs/zh-cn/guides/advanced/cancellation.md"
+            },
+            {
+              "id": "devtool",
+              "path": "advanced/devtool",
+              "channelPath": "guides",
+              "title": "开发工具",
+              "order": 100,
+              "toc": "content",
+              "headings": [
+                {
+                  "id": "%E5%AE%89%E8%A3%85-redux-devtools-%E6%8F%92%E4%BB%B6",
+                  "name": "安装 redux-devtools 插件",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "%E5%BC%95%E5%85%A5-reduxdevtoolsplugin-%E6%8F%92%E4%BB%B6",
+                  "name": "引入 ReduxDevtoolsPlugin 插件",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "%E6%89%93%E5%BC%80%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7",
+                  "name": "打开调试工具",
+                  "level": 2,
+                  "type": "h2"
+                }
+              ],
+              "contentPath": "docs/zh-cn/guides/advanced/devtool.html",
+              "originPath": "docs/zh-cn/guides/advanced/devtool.md"
             }
           ],
           "order": 40
@@ -363,19 +405,22 @@
       "items": [
         {
           "id": "store",
-          "title": "Store",
-          "subtitle": "",
+          "title": "Examples",
+          "subtitle": "示例",
           "path": "store",
           "importSpecifier": "store/store",
           "examples": [
             "thy-store-counter-example",
             "thy-store-todos-example",
             "thy-store-tasks-example",
-            "thy-store-cancellation-example"
+            "thy-store-cancellation-example",
+            "thy-store-active-example",
+            "thy-store-form-example"
           ],
           "overview": false,
           "api": false,
           "order": 9007199254740991,
+          "originPath": "packages/store/store/doc/zh-cn.md",
           "toc": "content",
           "channelPath": "examples"
         }
@@ -425,6 +470,36 @@
       "originPath": "docs/zh-cn/guides/advanced/cancellation.md"
     },
     {
+      "id": "devtool",
+      "path": "advanced/devtool",
+      "channelPath": "guides",
+      "title": "开发工具",
+      "order": 100,
+      "toc": "content",
+      "headings": [
+        {
+          "id": "%E5%AE%89%E8%A3%85-redux-devtools-%E6%8F%92%E4%BB%B6",
+          "name": "安装 redux-devtools 插件",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "%E5%BC%95%E5%85%A5-reduxdevtoolsplugin-%E6%8F%92%E4%BB%B6",
+          "name": "引入 ReduxDevtoolsPlugin 插件",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "%E6%89%93%E5%BC%80%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7",
+          "name": "打开调试工具",
+          "level": 2,
+          "type": "h2"
+        }
+      ],
+      "contentPath": "docs/zh-cn/guides/advanced/devtool.html",
+      "originPath": "docs/zh-cn/guides/advanced/devtool.md"
+    },
+    {
       "id": "entity-store-references",
       "path": "advanced/entity-store-references",
       "channelPath": "guides",
@@ -451,14 +526,14 @@
           "type": "h2"
         },
         {
-          "id": "%E8%8E%B7%E5%8F%96%E5%88%97%E8%A1%A8%E6%95%B0%E6%8D%AE",
-          "name": "获取列表数据",
+          "id": "%E8%8E%B7%E5%8F%96%E5%B8%A6%E5%BC%95%E7%94%A8%E7%9A%84%E5%88%97%E8%A1%A8%E6%95%B0%E6%8D%AE",
+          "name": "获取带引用的列表数据",
           "level": 2,
           "type": "h2"
         },
         {
-          "id": "%E8%8E%B7%E5%8F%96%E5%B8%A6%E5%BC%95%E7%94%A8%E7%9A%84%E5%88%97%E8%A1%A8%E6%95%B0%E6%8D%AE",
-          "name": "获取带引用的列表数据",
+          "id": "%E5%BC%95%E7%94%A8%E6%95%B0%E6%8D%AE-id-key-%E8%AE%BE%E7%BD%AE",
+          "name": "引用数据 Id Key 设置",
           "level": 2,
           "type": "h2"
         },
@@ -533,6 +608,12 @@
           "name": "trackBy",
           "level": 2,
           "type": "h2"
+        },
+        {
+          "id": "active",
+          "name": "active",
+          "level": 2,
+          "type": "h2"
         }
       ],
       "contentPath": "docs/zh-cn/guides/advanced/entity-store.html",
@@ -596,6 +677,12 @@
         {
           "id": "select",
           "name": "select",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "getstores",
+          "name": "getStores",
           "level": 2,
           "type": "h2"
         }
@@ -719,19 +806,22 @@
     },
     {
       "id": "store",
-      "title": "Store",
-      "subtitle": "",
+      "title": "Examples",
+      "subtitle": "示例",
       "path": "store",
       "importSpecifier": "store/store",
       "examples": [
         "thy-store-counter-example",
         "thy-store-todos-example",
         "thy-store-tasks-example",
-        "thy-store-cancellation-example"
+        "thy-store-cancellation-example",
+        "thy-store-active-example",
+        "thy-store-form-example"
       ],
       "overview": false,
       "api": false,
       "order": 9007199254740991,
+      "originPath": "packages/store/store/doc/zh-cn.md",
       "toc": "content",
       "channelPath": "examples"
     }

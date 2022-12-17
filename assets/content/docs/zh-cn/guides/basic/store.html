@@ -83,5 +83,16 @@
 <ul>
 <li>推荐使用<code>select</code>返回需要的<code>Observable</code>, 在模版中使用<code>async</code>管道订阅使用, 如果模版中多处使用可以使用<code>as</code>关键字保存为临时对象</li>
 <li>一旦在代码中订阅使用, 一定要取消订阅, 推荐<code>takeUntil</code>操作符取消订阅</li>
-<li><code>selector</code>推荐统一定义到<code>Store</code>的静态函数中, 提高性能的话在最后添加<code>shareReplay</code>管道时一个不错的好习惯</li>
+<li><code>selector</code>推荐统一定义到<code>Store</code>的静态函数中, 提高性能的话在最后添加<code>shareReplay</code>管道是一个不错的好习惯</li>
 </ul>
+
+        <h2 id="getstores" class="docs-header-link">
+          <span header-link="getstores"></span>
+          getStores
+        </h2>
+      <div class="dg-paragraph"><code>StoreFactory</code>的<code>getStores(names: string | string[])</code>方法，可以通过<code>Store</code>名字，取到注册过的所有<code>Store</code>。</div>
+<pre class="language-ts"><code class="language-ts"><div><span class="token keyword">import</span> <span class="token punctuation">{</span> StoreFactory <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tethys/store'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token keyword">private</span> storeFactory<span class="token punctuation">:</span> StoreFactory<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    stores <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>storeFactory<span class="token punctuation">.</span><span class="token function">getStores</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'ItemsStore'</span><span class="token punctuation">,</span> <span class="token string">'AnotherItemsStore'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></div></code></pre>

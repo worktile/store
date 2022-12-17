@@ -1,5 +1,5 @@
 <div><span class="token keyword">import</span> <span class="token punctuation">{</span> Injectable <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@angular/core'</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> Action<span class="token punctuation">,</span> EntityState<span class="token punctuation">,</span> EntityStore <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tethys/store'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Action<span class="token punctuation">,</span> EntityState<span class="token punctuation">,</span> EntityStore<span class="token punctuation">,</span> StoreFactory <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tethys/store'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> Observable<span class="token punctuation">,</span> of <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> tap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span><span class="token punctuation">;</span>
 
@@ -10,24 +10,30 @@
     completed<span class="token operator">?</span><span class="token punctuation">:</span> <span class="token keyword">boolean</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 
-<span class="token keyword">interface</span> <span class="token class-name">TodosState</span> <span class="token keyword">extends</span> <span class="token class-name">EntityState</span><span class="token operator">&lt;</span>Todo<span class="token operator">></span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">interface</span> <span class="token class-name">TodosState</span> <span class="token keyword">extends</span> <span class="token class-name">EntityState</span><span class="token operator">&lt;</span>Todo<span class="token operator">></span> <span class="token punctuation">{</span>
+    someKey<span class="token operator">?</span><span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
 <span class="token keyword">let</span> id<span class="token punctuation">:</span> <span class="token keyword">number</span><span class="token punctuation">;</span>
 @<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">{</span> providedIn<span class="token punctuation">:</span> <span class="token string">'root'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">TodosStore</span> <span class="token keyword">extends</span> <span class="token class-name">EntityStore</span><span class="token operator">&lt;</span>TodosState<span class="token punctuation">,</span> Todo<span class="token operator">></span> <span class="token punctuation">{</span>
     newTodoText<span class="token punctuation">:</span> <span class="token keyword">string</span><span class="token punctuation">;</span>
 
+    stores <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
     <span class="token keyword">static</span> <span class="token function">todosSelector</span><span class="token punctuation">(</span>state<span class="token punctuation">:</span> TodosState<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">return</span> state<span class="token punctuation">.</span>entities<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
-    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token keyword">private</span> todosApiService<span class="token punctuation">:</span> TodosApiService<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token keyword">private</span> todosApiService<span class="token punctuation">:</span> TodosApiService<span class="token punctuation">,</span> <span class="token keyword">private</span> storeFactory<span class="token punctuation">:</span> StoreFactory<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">super</span><span class="token punctuation">(</span>
             <span class="token punctuation">{</span>
-                entities<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+                entities<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                someKey<span class="token punctuation">:</span> <span class="token string">'1'</span>
             <span class="token punctuation">}</span><span class="token punctuation">,</span>
             <span class="token punctuation">{</span> idKey<span class="token punctuation">:</span> <span class="token string">'id'</span> <span class="token punctuation">}</span>
         <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>stores <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>storeFactory<span class="token punctuation">.</span><span class="token function">getStores</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'ItemsStore'</span><span class="token punctuation">,</span> <span class="token string">'AnotherItemsStore'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
     <span class="token keyword">private</span> <span class="token function">getWithCompleted</span><span class="token punctuation">(</span>completed<span class="token punctuation">:</span> Boolean<span class="token punctuation">)</span> <span class="token punctuation">{</span>

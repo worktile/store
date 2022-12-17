@@ -1,1 +1,36 @@
-<p>WIP.</p>
+<p>Store 提供了和<code>ReduxDevtools</code>开发工具的集成，只需要根据 isDevMode 设置<code>ReduxDevtoolsPlugin</code>即可。</p>
+
+        <h2 id="%E5%AE%89%E8%A3%85-redux-devtools-%E6%8F%92%E4%BB%B6" class="docs-header-link">
+          <span header-link="%E5%AE%89%E8%A3%85-redux-devtools-%E6%8F%92%E4%BB%B6"></span>
+          安装 redux-devtools 插件
+        </h2>
+      <p>点击 <a target="_blank" href="https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd">redux-devtools</a> 安装 Chrome 插件。</p>
+
+        <h2 id="%E5%BC%95%E5%85%A5-reduxdevtoolsplugin-%E6%8F%92%E4%BB%B6" class="docs-header-link">
+          <span header-link="%E5%BC%95%E5%85%A5-reduxdevtoolsplugin-%E6%8F%92%E4%BB%B6"></span>
+          引入 ReduxDevtoolsPlugin 插件
+        </h2>
+      <p>在<code>AppModule</code>通过<code>ThyStoreModule.forRoot</code>参数<code>plugins</code>引入<code>ReduxDevtoolsPlugin</code>，一般建议通过<code>isDevMode()</code>只在开发环境开启此插件。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token keyword">import</span> <span class="token punctuation">{</span> NgModule <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@angular/core'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> CommonModule <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@angular/common'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ThyStoreModule<span class="token punctuation">,</span> ReduxDevtoolsPlugin <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'@tethys/store'</span><span class="token punctuation">;</span>
+
+@<span class="token function">NgModule</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    declarations<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    imports<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+        CommonModule<span class="token punctuation">,</span>
+        ThyStoreModule<span class="token punctuation">.</span><span class="token function">forRoot</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+            plugins<span class="token punctuation">:</span> <span class="token function">isDevMode</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token punctuation">[</span>ReduxDevtoolsPlugin<span class="token punctuation">]</span> <span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    exports<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    providers<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">AppModule</span> <span class="token punctuation">{</span><span class="token punctuation">}</span></div></code></pre>
+
+        <h2 id="%E6%89%93%E5%BC%80%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7" class="docs-header-link">
+          <span header-link="%E6%89%93%E5%BC%80%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7"></span>
+          打开调试工具
+        </h2>
+      <p>右击查看元素，选择 Redux 标签页即可查看应用当前的状态，左侧菜单为每次调用的 Action，右侧为应用的当前状态。
+<img src="assets/images/redux-devtools.png" alt=""></p>

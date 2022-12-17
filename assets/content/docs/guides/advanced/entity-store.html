@@ -138,3 +138,12 @@
           trackBy
         </h2>
       <p>提供内置的<code>trackBy</code>函数方便在模版中循环<code>entities</code>使用。</p>
+
+        <h2 id="active" class="docs-header-link">
+          <span header-link="active"></span>
+          active
+        </h2>
+      <p>可以通过<code>store.activeId$</code>获取当前选中的实体 Id 流，通过<code>store.activeId</code>获取当前选中的实体 Id 快照。</p>
+<p>也可以通过<code>store.activeEntity$</code>获取当前选中的实体数据流，通过<code>store.activeEntity</code>获取当前选中的实体数据快照。</p>
+<p>使用<code>setActive</code>函数设置/清空当前选中实体数据。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setActive</span><span class="token punctuation">(</span>id<span class="token punctuation">:</span> Id｜<span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword">void</span><span class="token punctuation">;</span></div></code></pre>
