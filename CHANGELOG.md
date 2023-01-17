@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.1.1](https://github.com/worktile/store/compare/v14.1.0...v14.1.1) (2023-01-17)
+
+
+### Features
+
+* **store:** add options with strategy param for mergeReferences ([#95](https://github.com/worktile/store/issues/95)) ([06aedee](https://github.com/worktile/store/commit/06aedee27eeb870b519507ae877dd812a772bbfb))
+
+
+
 # [14.1.0](https://github.com/worktile/store/compare/v14.1.0-next.3...v14.1.0) (2022-12-30)
 
 
