@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EntityStore, EntityState, EntityStoreOptions } from '../entity-store';
-import { OnCombineRefs, ReferencesIdDictionary } from '../references';
+import { MergeReferencesStrategy, OnCombineRefs, ReferencesIdDictionary } from '../references';
 
 describe('Store: EntityStore with refs', () => {
     interface UserInfo {
@@ -23,6 +23,7 @@ describe('Store: EntityStore with refs', () => {
             group?: GroupInfo;
             created_by: UserInfo;
             project?: { _id: string; name: string };
+            parents: string[];
         };
     }
 
@@ -30,6 +31,7 @@ describe('Store: EntityStore with refs', () => {
         groups?: GroupInfo[];
         users?: UserInfo[];
         project?: { _id: string; name: string };
+        parents?: string[];
     }
 
     interface TasksState extends EntityState<TaskInfo, TaskReferences> {}
@@ -233,7 +235,8 @@ describe('Store: EntityStore with refs', () => {
                 {
                     referencesIdKeys: {
                         users: 'uid'
-                    }
+                    },
+                    mergeReferencesStrategy: MergeReferencesStrategy.Ignore
                 }
             );
         });
@@ -343,6 +346,68 @@ describe('Store: EntityStore with refs', () => {
             expect(state.references).toEqual({
                 groups: [...initialGroups, newGroup],
                 users: initialUsers
+            });
+        });
+
+        it('should not append new reference when mergeReferencesStrategy is Ignore', () => {
+            const newTaskEntity = {
+                _id: '3',
+                name: 'user 3',
+                created_by: '1'
+            };
+            const newProject = {
+                _id: '1',
+                name: 'project'
+            };
+            tasksStore.addWithReferences(newTaskEntity, {
+                project: newProject
+            });
+            expect(tasksStore.snapshot.references).toEqual({
+                groups: initialGroups,
+                users: initialUsers
+            });
+        });
+
+        fit('should append new reference when mergeReferencesStrategy is Append', () => {
+            tasksStore = new TasksStore(
+                {
+                    entities: [...initialTasks],
+                    pagination: {
+                        pageIndex: 1,
+                        pageSize: 10,
+                        count: initialTasks.length
+                    },
+                    references: {
+                        groups: [...initialGroups],
+                        users: [...initialUsers]
+                    }
+                },
+                {
+                    referencesIdKeys: {
+                        users: 'uid'
+                    },
+                    mergeReferencesStrategy: MergeReferencesStrategy.Append
+                }
+            );
+            const newTaskEntity = {
+                _id: '3',
+                name: 'user 3',
+                created_by: '1'
+            };
+            const newProject = {
+                _id: '1',
+                name: 'project'
+            };
+            const newParents = ['001', '002'];
+            tasksStore.addWithReferences(newTaskEntity, {
+                project: newProject,
+                parents: newParents
+            });
+            expect(tasksStore.snapshot.references).toEqual({
+                groups: initialGroups,
+                users: initialUsers,
+                project: newProject,
+                parents: newParents
             });
         });
     });

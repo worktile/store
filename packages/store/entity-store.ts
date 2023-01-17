@@ -3,13 +3,20 @@ import { isFunction } from '@tethys/cdk/is';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Action } from './action';
-import { buildReferencesKeyBy, mergeReferences, ReferenceArrayExtractAllowKeys, ReferencesIdDictionary } from './references';
+import {
+    buildReferencesKeyBy,
+    mergeReferences,
+    MergeReferencesStrategy,
+    ReferenceArrayExtractAllowKeys,
+    ReferencesIdDictionary
+} from './references';
 import { Store } from './store';
 import { PaginationInfo, StoreOptions } from './types';
 import { coerceArray } from './utils';
 
 export interface EntityStoreOptions<TEntity = unknown, TReferences = unknown> extends ProducerOptions<TEntity>, StoreOptions {
     referencesIdKeys?: ReferenceArrayExtractAllowKeys<TReferences>;
+    mergeReferencesStrategy?: MergeReferencesStrategy;
 }
 
 export interface EntityAddOptions {
@@ -179,7 +186,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         state.entities = produce(state.entities).add(finalAddEntities, addOptions);
 
         if (state.references) {
-            mergeReferences(state.references, references, this.options.referencesIdKeys);
+            mergeReferences(state.references, references, this.options.referencesIdKeys, this.options.mergeReferencesStrategy);
             this.buildReferencesIdMap();
         }
         if (state.pagination) {
@@ -257,7 +264,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         }
         state.entities = [...state.entities];
         if (state.references) {
-            mergeReferences(state.references, references, this.options.referencesIdKeys);
+            mergeReferences(state.references, references, this.options.referencesIdKeys, this.options.mergeReferencesStrategy);
             this.buildReferencesIdMap();
         }
         this.next(state);
