@@ -18,6 +18,12 @@ export type ReferenceArrayExtractAllowNames<T> = {
     [key in ReferenceArrayExtractNames<T>[keyof T]]: ReferenceExtractNames<T>[key];
 };
 
+export enum MergeReferencesStrategy {
+    ThrowError = 'THROW_ERROR',
+    Ignore = 'IGNORE',
+    Append = 'APPEND'
+}
+
 /**
  * 根据 ReferenceExtractAllowKeys 抽取出的 Object Keys 组合新的对象
  * @example ReferenceExtractAllowKeys<{
@@ -54,54 +60,67 @@ function getReferenceIdKey<TReferences>(referenceKey: string, idKeys: ReferenceA
  * @example
  * mergeReferences({departments: [{ _id: '1', name: 'name-1'}]}, {departments: [{ _id: '3', name: 'name-3'}]})
  * mergeReferences({users: [{ uid: '1', name: 'name-1'}]}, {users: [{ uid: '3', name: 'name-3'}]}, { users: "uid" })
+ * mergeReferences({users: [{ uid: '1', name: 'name-1'}]}, {users: [{ uid: '3', name: 'name-3'}]}, { users: "uid" }, { strategy: MergeReferencesStrategy.Ignore })
  * @param originalReferences original references
  * @param references append references
  * @param idKeys references 's id key, default is '_id'
+ * @param options merge configuration. Contains strategy by default, value is 'ThrowError'.
  *
  * @returns TReferences
  */
 export function mergeReferences<TReferences>(
     originalReferences: TReferences,
     references: Partial<TReferences>,
-    idKeys?: ReferenceArrayExtractAllowKeys<TReferences>
+    idKeys?: ReferenceArrayExtractAllowKeys<TReferences>,
+    options: { strategy: MergeReferencesStrategy } = {
+        strategy: MergeReferencesStrategy.ThrowError
+    }
 ): TReferences {
     for (const key in references) {
         if (references.hasOwnProperty(key)) {
             const reference = references[key];
             const referenceIdKey = getReferenceIdKey<TReferences>(key, idKeys);
-            const originalReference = originalReferences[key];
+            let originalReference = originalReferences[key];
             if (!originalReference) {
-                throw new Error(`original reference must exist when append new reference: ${key}`);
-            }
-            if (originalReference instanceof Array) {
-                // original reference id index map
-                const originalReferenceIdIndexMap = indexKeyBy<ReferenceExtractAllowKeys<TReferences>>(
-                    originalReferences[key] as any,
-                    referenceIdKey
-                );
-                // append reference is array
-                if (reference instanceof Array) {
-                    reference.forEach((item: TReferences[Extract<keyof TReferences, string>]) => {
-                        const itemId = item[referenceIdKey];
-                        const index = originalReferenceIdIndexMap[itemId];
-                        if (index >= 0) {
-                            originalReference[index] = { ...originalReference[index], ...item };
-                        } else {
-                            (originalReferences as any)[key] = [...(originalReferences[key] as any), item];
-                        }
-                    });
-                } else {
-                    // append reference is not array, support append signal object to array reference
-                    const itemId = reference[referenceIdKey];
-                    const index = originalReferenceIdIndexMap[itemId];
-                    if (itemId >= 0) {
-                        originalReference[index] = { ...originalReference[index], ...reference };
-                    } else {
-                        (originalReferences as any)[key] = [...(originalReferences[key] as any), reference];
-                    }
+                if (options.strategy === MergeReferencesStrategy.ThrowError) {
+                    throw new Error(`original reference must exist when append new reference: ${key}`);
                 }
-            } else {
-                originalReferences[key] = { ...originalReferences[key], ...reference };
+                if (options.strategy === MergeReferencesStrategy.Append) {
+                    originalReferences[key] = reference;
+                    originalReference = originalReferences[key];
+                }
+            }
+            if (originalReference) {
+                if (originalReference instanceof Array) {
+                    // original reference id index map
+                    const originalReferenceIdIndexMap = indexKeyBy<ReferenceExtractAllowKeys<TReferences>>(
+                        originalReferences[key] as any,
+                        referenceIdKey
+                    );
+                    // append reference is array
+                    if (reference instanceof Array) {
+                        reference.forEach((item: TReferences[Extract<keyof TReferences, string>]) => {
+                            const itemId = item[referenceIdKey];
+                            const index = originalReferenceIdIndexMap[itemId];
+                            if (index >= 0) {
+                                originalReference[index] = { ...originalReference[index], ...item };
+                            } else {
+                                (originalReferences as any)[key] = [...(originalReferences[key] as any), item];
+                            }
+                        });
+                    } else {
+                        // append reference is not array, support append signal object to array reference
+                        const itemId = reference[referenceIdKey];
+                        const index = originalReferenceIdIndexMap[itemId];
+                        if (itemId >= 0) {
+                            originalReference[index] = { ...originalReference[index], ...reference };
+                        } else {
+                            (originalReferences as any)[key] = [...(originalReferences[key] as any), reference];
+                        }
+                    }
+                } else {
+                    originalReferences[key] = { ...originalReferences[key], ...reference };
+                }
             }
         }
     }
