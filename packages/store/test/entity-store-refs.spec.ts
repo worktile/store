@@ -368,7 +368,7 @@ describe('Store: EntityStore with refs', () => {
             });
         });
 
-        fit('should append new reference when mergeReferencesStrategy is Append', () => {
+        it('should append new reference when mergeReferencesStrategy is Append', () => {
             tasksStore = new TasksStore(
                 {
                     entities: [...initialTasks],
