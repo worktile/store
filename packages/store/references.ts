@@ -60,10 +60,11 @@ function getReferenceIdKey<TReferences>(referenceKey: string, idKeys: ReferenceA
  * @example
  * mergeReferences({departments: [{ _id: '1', name: 'name-1'}]}, {departments: [{ _id: '3', name: 'name-3'}]})
  * mergeReferences({users: [{ uid: '1', name: 'name-1'}]}, {users: [{ uid: '3', name: 'name-3'}]}, { users: "uid" })
+ * mergeReferences({users: [{ uid: '1', name: 'name-1'}]}, {users: [{ uid: '3', name: 'name-3'}]}, { users: "uid" }, { strategy: MergeReferencesStrategy.Ignore })
  * @param originalReferences original references
  * @param references append references
  * @param idKeys references 's id key, default is '_id'
- * @param strategy  references merge strategy , default is 'ThrowError'
+ * @param options merge configuration. Contains strategy by default, value is 'ThrowError'.
  *
  * @returns TReferences
  */
@@ -71,7 +72,9 @@ export function mergeReferences<TReferences>(
     originalReferences: TReferences,
     references: Partial<TReferences>,
     idKeys?: ReferenceArrayExtractAllowKeys<TReferences>,
-    strategy = MergeReferencesStrategy.ThrowError
+    options: { strategy: MergeReferencesStrategy } = {
+        strategy: MergeReferencesStrategy.ThrowError
+    }
 ): TReferences {
     for (const key in references) {
         if (references.hasOwnProperty(key)) {
@@ -79,10 +82,10 @@ export function mergeReferences<TReferences>(
             const referenceIdKey = getReferenceIdKey<TReferences>(key, idKeys);
             let originalReference = originalReferences[key];
             if (!originalReference) {
-                if (strategy === MergeReferencesStrategy.ThrowError) {
+                if (options.strategy === MergeReferencesStrategy.ThrowError) {
                     throw new Error(`original reference must exist when append new reference: ${key}`);
                 }
-                if (strategy === MergeReferencesStrategy.Append) {
+                if (options.strategy === MergeReferencesStrategy.Append) {
                     originalReferences[key] = reference;
                     originalReference = originalReferences[key];
                 }

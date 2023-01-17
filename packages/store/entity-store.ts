@@ -186,7 +186,9 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         state.entities = produce(state.entities).add(finalAddEntities, addOptions);
 
         if (state.references) {
-            mergeReferences(state.references, references, this.options.referencesIdKeys, this.options.mergeReferencesStrategy);
+            mergeReferences(state.references, references, this.options.referencesIdKeys, {
+                strategy: this.options.mergeReferencesStrategy
+            });
             this.buildReferencesIdMap();
         }
         if (state.pagination) {
@@ -264,7 +266,9 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         }
         state.entities = [...state.entities];
         if (state.references) {
-            mergeReferences(state.references, references, this.options.referencesIdKeys, this.options.mergeReferencesStrategy);
+            mergeReferences(state.references, references, this.options.referencesIdKeys, {
+                strategy: this.options.mergeReferencesStrategy
+            });
             this.buildReferencesIdMap();
         }
         this.next(state);
