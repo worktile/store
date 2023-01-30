@@ -28,7 +28,10 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         this.name = this.setName();
         this.defaultStoreInstanceId = this.createStoreInstanceId();
         this.state$ = new BehaviorSubject<T>(initialState as T);
-        this.initialStateCache = { ...initialState } as T;
+        // use json format function to deep clone an object, but it can't clone something correctly, such as NaN, function, Date and so on
+        // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
+        // https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+        this.initialStateCache = this.cloneInitialState(initialState);
         InternalStoreFactory.instance.register(this);
         InternalDispatcher.instance.dispatch(
             this.getStoreInstanceId(),
@@ -203,5 +206,19 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         } else {
             return 20;
         }
+    }
+
+    private cloneInitialState(initialState: Partial<T>):T {
+        /**
+         * use replacer callback function to avoid "SyntaxError: "undefined" is not valid JSON"
+         * and if we need an init value, null is better then undefined.
+         * undefined means nothing, null means its value is null
+         */
+        return JSON.parse(JSON.stringify(initialState, function(key, value) {
+            if(value === undefined) {
+                return null
+            }
+            return value
+        }))
     }
 }

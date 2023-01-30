@@ -254,6 +254,28 @@ describe('#store', () => {
             });
         });
 
+        it('should clear state success after only change an animal name', () => {
+            const animals = createSomeAnimals();
+            const _animals = createSomeAnimals();
+            const foo = { id: 1, name: 'foo name', description: 'foo description' };
+            store = new ZoomStore({
+                animals: animals,
+                foo: foo
+            });
+            store.setState(state => {
+                const catIndex = state.animals.findIndex(animal => animal.name === 'cat')
+                state.animals[catIndex] = { name: 'cat', id: 100 }
+                state.animals = [...state.animals]
+                return state
+            });
+            expect(store.getState().animals.find(animal => animal.name === 'cat').id).toEqual(100);
+            store.clearState();
+            expect(store.getState()).toEqual({
+                animals: _animals,
+                foo: foo
+            });
+        })
+
         it('should get correct snapshot', () => {
             const animals = createSomeAnimals();
             const foo = { id: 1, name: 'foo name', description: 'foo description' };
