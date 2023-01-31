@@ -141,9 +141,9 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
      * Mutated the state of store
      *
      * @example
-     * this.patch(newState);
-     * this.patch({ users: produce(this.snapshot.users).add(user) });
-     * this.patch((state) => {
+     * this.update(newState);
+     * this.update({ users: produce(this.snapshot.users).add(user) });
+     * this.update((state) => {
      *    return {
      *        users: produce(state.users).add(user)
      *    }
@@ -175,7 +175,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
 
     @Action()
     clearState() {
-        this.setState(this.initialStateCache);
+        this.update(this.initialStateCache);
     }
 
     ngOnDestroy() {

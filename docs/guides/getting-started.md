@@ -51,7 +51,7 @@ export class AppModule {}
 <alert>The defined store can also be used normally without setting `ThyStoreModule.forRoot`. It is a common service.</alert>
 
 ## Add Action
-Add normal functions in the `Store` and decorate them with the `@Action()` decorator. In the Action function, you can update the state by calling the `setState` function of the base class.
+Add normal functions in the `Store` and decorate them with the `@Action()` decorator. In the Action function, you can update the state by calling the `update` function of the base class.
 ```ts
 @Injectable()
 export class CounterStore extends Store<CounterState> {
@@ -66,7 +66,7 @@ export class CounterStore extends Store<CounterState> {
     increase() {
         return of(true).pipe(
             tap(() => {
-                this.setState({ count: this.snapshot.count + 1 });
+                this.update({ count: this.snapshot.count + 1 });
             })
         );
     }

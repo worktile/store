@@ -15,14 +15,14 @@ class CounterStore extends Store<{ count: number }> {
     }
     @Action()
     increment() {
-        this.setState((state) => {
+        this.update((state) => {
             return { count: state.count + 1 };
         });
     }
 
     @Action()
     decrement(value: number = 1) {
-        this.setState((state) => {
+        this.update((state) => {
             return { count: state.count - value };
         });
     }

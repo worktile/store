@@ -48,7 +48,7 @@ export class StoreFormDirective implements OnInit, OnDestroy {
 
         this.updating = true;
 
-        this.store.setState((state) => {
+        this.store.update((state) => {
             return {
                 [`${this.thyStateKey}`]: {
                     ...state[this.thyStateKey],

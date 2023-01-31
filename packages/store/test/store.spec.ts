@@ -45,7 +45,7 @@ class ZoomStore extends Store<ZoomState> {
     addAnimal(animal: Animal) {
         return of(animal).pipe(
             tap(() => {
-                this.setState({
+                this.update({
                     animals: produce(this.getState().animals).add(animal)
                 });
             })
@@ -54,7 +54,7 @@ class ZoomStore extends Store<ZoomState> {
 
     @Action()
     removeAnimal(id: number) {
-        this.setState({
+        this.update({
             animals: produce(this.getState().animals).remove(id as any)
         });
     }

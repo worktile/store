@@ -38,7 +38,7 @@ class ZoomStore extends EntityStore<ZoomState, unknown> {
                 const snapshot = this.snapshot;
                 this.initialize(animals);
                 snapshot.name = 'new name';
-                this.setState(snapshot);
+                this.update(snapshot);
             })
         );
     }
@@ -50,7 +50,7 @@ class ZoomStore extends EntityStore<ZoomState, unknown> {
                 const snapshot = this.snapshot;
                 this.initializeWithReferences(animals, {});
                 snapshot.name = 'new name';
-                this.setState(snapshot);
+                this.update(snapshot);
             })
         );
     }

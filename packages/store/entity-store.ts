@@ -383,7 +383,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
 
     @Action()
     setActive(id: Id | null = null): void {
-        this.setState({
+        this.update({
             ...this.snapshot,
             activeId: id
         });
