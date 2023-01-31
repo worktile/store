@@ -23,7 +23,7 @@ export class CounterStore extends Store<CounterState> {
     increase() {
         return of(true).pipe(
             tap(() => {
-                this.setState({ count: this.snapshot.count + 1 });
+                this.update({ count: this.snapshot.count + 1 });
             })
         );
     }
@@ -32,7 +32,7 @@ export class CounterStore extends Store<CounterState> {
     decrease() {
         return of(true).pipe(
             tap(() => {
-                this.setState((state) => {
+                this.update((state) => {
                     return {
                         count: state.count - 1
                     };

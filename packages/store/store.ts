@@ -1,12 +1,12 @@
 import { Injectable, isDevMode, OnDestroy } from '@angular/core';
-import { isFunction, isNumber } from '@tethys/cdk/is';
+import { isFunction, isNumber, isObject } from '@tethys/cdk/is';
 import { BehaviorSubject, from, Observable, Observer, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { Action } from './action';
 import { StoreMetaInfo } from './inner-types';
 import { InternalDispatcher } from './internals/dispatcher';
 import { InternalStoreFactory } from './internals/internal-store-factory';
-import { META_KEY, StoreOptions } from './types';
+import { META_KEY, StoreOptions, UpdateStatePredicate } from './types';
 
 /**
  * @dynamic
@@ -122,19 +122,50 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
      *        users: produce(state.users).add(user)
      *    }
      * });
-     * @param fn
+     *
+     * @deprecated please use update
      */
-    setState(fn: Partial<T> | ((newState: T) => Partial<T>)): void {
-        if (isFunction(fn)) {
+    setState(state: Partial<T>): void;
+    /**
+     * @deprecated please use update
+     */
+    setState(predicate: UpdateStatePredicate<T>): void;
+    /**
+     * @deprecated please use update
+     */
+    setState(fnOrState: Partial<T> | UpdateStatePredicate<T>): void {
+        this.update(fnOrState as Partial<T>);
+    }
+
+    /**
+     * Mutated the state of store
+     *
+     * @example
+     * this.patch(newState);
+     * this.patch({ users: produce(this.snapshot.users).add(user) });
+     * this.patch((state) => {
+     *    return {
+     *        users: produce(state.users).add(user)
+     *    }
+     * });
+     */
+    update(state: Partial<T>): void;
+    update(predicate: UpdateStatePredicate<T>): void;
+    update(fnOrState: Partial<T> | UpdateStatePredicate<T>): void {
+        if (isFunction(fnOrState)) {
             this.next({
                 ...this.snapshot,
-                ...(fn as any)(this.snapshot)
+                ...(fnOrState as any)(this.snapshot)
             });
         } else {
-            this.next({
-                ...this.snapshot,
-                ...(fn as T)
-            });
+            if (isObject(fnOrState)) {
+                this.next({
+                    ...this.snapshot,
+                    ...(fnOrState as T)
+                });
+            } else {
+                this.next(fnOrState);
+            }
         }
     }
 
@@ -208,17 +239,19 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         }
     }
 
-    private cloneInitialState(initialState: Partial<T>):T {
+    private cloneInitialState(initialState: Partial<T>): T {
         /**
          * use replacer callback function to avoid "SyntaxError: "undefined" is not valid JSON"
          * and if we need an init value, null is better then undefined.
          * undefined means nothing, null means its value is null
          */
-        return JSON.parse(JSON.stringify(initialState, function(key, value) {
-            if(value === undefined) {
-                return null
-            }
-            return value
-        }))
+        return JSON.parse(
+            JSON.stringify(initialState, function (key, value) {
+                if (value === undefined) {
+                    return null;
+                }
+                return value;
+            })
+        );
     }
 }
