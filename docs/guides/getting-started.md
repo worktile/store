@@ -28,9 +28,7 @@ interface CounterState {
 export class CounterStore extends Store<CounterState> {
 
     constructor() {
-        super({
-            count: 0
-        });
+        super({ count: 0 });
     }
 }
 ```
@@ -57,9 +55,7 @@ Add normal functions in the `Store` and decorate them with the `@Action()` decor
 export class CounterStore extends Store<CounterState> {
 
     constructor() {
-        super({
-            count: 0
-        });
+        super({ count: 0 });
     }
 
     @Action()

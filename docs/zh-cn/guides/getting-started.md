@@ -28,9 +28,7 @@ interface CounterState {
 export class CounterStore extends Store<CounterState> {
 
     constructor() {
-        super({
-            count: 0
-        });
+        super({ count: 0 });
     }
 }
 ```
@@ -48,7 +46,7 @@ import { ThyStoreModule } from '@tethys/store';
 export class AppModule {}
 ```
 
-<alert>定义的 Store 不通过`ThyStoreModule.forRoot`设置也是可以正常使用，它就是一个普通的服务。</alert>
+<alert>定义的 Store 不通过`ThyStoreModule.forRoot`设置也是可以正常使用，它就是一个普通的服务，需要和服务一样提供 provider 并在任何可以注入的地方注入。</alert>
 
 ## 添加 Action
 在`Store`中添加普通的函数，并使用`@Action()`装饰器装饰即可，Action 函数中可以通过调用基类的`update`函数修改状态。
@@ -57,9 +55,7 @@ export class AppModule {}
 export class CounterStore extends Store<CounterState> {
 
     constructor() {
-        super({
-            count: 0
-        });
+        super({ count: 0 });
     }
 
     @Action()

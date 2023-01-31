@@ -49,9 +49,7 @@ export class CounterStore extends Store<CounterState> {
     }
 
     constructor() {
-        super({
-            count: 0
-        });
+        super({ count: 0 });
     }
 
     @Action()
