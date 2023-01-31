@@ -1,7 +1,8 @@
 import { Store, Action } from '../index';
 import { of, Observable } from 'rxjs';
 import { map, tap, skip, reduce } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { injectStoreForTest, StoreInitialStateToken } from './inject-store';
 
 interface UserInfo {
     uid?: string;
@@ -26,7 +27,7 @@ describe('Store: Store', () => {
 
     @Injectable()
     class AppStateStore extends Store<AppState> {
-        constructor(initialState?: AppState) {
+        constructor(@Inject(StoreInitialStateToken) initialState?: AppState) {
             super(
                 initialState
                     ? initialState
@@ -89,7 +90,7 @@ describe('Store: Store', () => {
     }
 
     it('should get default null value when store initialized', () => {
-        const appStore = new AppStateStore();
+        const appStore = injectStoreForTest(AppStateStore);
         appStore.subscribe((state) => {
             expect(state.me).toBe(null);
             expect(state.team).toBe(null);
@@ -97,7 +98,7 @@ describe('Store: Store', () => {
     });
 
     it('should get default value when store initialized with data', () => {
-        const appStore = new AppStateStore({
+        const appStore = injectStoreForTest(AppStateStore, {
             team: {
                 _id: '1',
                 name: 'team 1'
@@ -114,7 +115,7 @@ describe('Store: Store', () => {
     });
 
     it('should get value when store dispatch an action without type', () => {
-        const appStore = new AppStateStore();
+        const appStore = injectStoreForTest(AppStateStore);
         let timer = 0;
         appStore
             .select((state: AppState) => {
@@ -136,7 +137,7 @@ describe('Store: Store', () => {
     });
 
     it('should get value when store dispatch an action with type', () => {
-        const appStore = new AppStateStore();
+        const appStore = injectStoreForTest(AppStateStore);
         let timer = 0;
         appStore
             .select((state: AppState) => {
@@ -158,7 +159,7 @@ describe('Store: Store', () => {
     });
 
     it('should get value when store dispatch an action that return observable', () => {
-        const appStore = new AppStateStore();
+        const appStore = injectStoreForTest(AppStateStore);
         appStore
             .select((state: AppState) => {
                 return state.team;
@@ -177,7 +178,7 @@ describe('Store: Store', () => {
     });
 
     it('should get value when directly call action method dispatch', () => {
-        const appStore = new AppStateStore();
+        const appStore = injectStoreForTest(AppStateStore);
         let timer = 0;
         appStore
             .select((state: AppState) => {
@@ -199,7 +200,7 @@ describe('Store: Store', () => {
     });
 
     it('should get default value when directly call action', () => {
-        const appStore = new AppStateStore();
+        const appStore = injectStoreForTest(AppStateStore);
         let timer = 0;
         appStore
             .select((state: AppState) => {
@@ -220,7 +221,7 @@ describe('Store: Store', () => {
     });
 
     it('should recover initialState when call clearState action', () => {
-        const appStore = new AppStateStore();
+        const appStore = injectStoreForTest(AppStateStore);
         let timer = 0;
         appStore
             .select((state) => state.me)

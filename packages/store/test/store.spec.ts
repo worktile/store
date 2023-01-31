@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, Optional, InjectionToken } from '@angular/core';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { produce } from '@tethys/cdk/immutable';
 import { of, throwError } from 'rxjs';
@@ -6,6 +6,7 @@ import { mergeMap, tap } from 'rxjs/operators';
 import { Action } from '../action';
 import { Store } from '../store';
 import { StoreFactory } from '../store-factory';
+import { injectStoreForTest, StoreInitialStateToken } from './inject-store';
 
 interface Animal {
     id: number;
@@ -30,6 +31,8 @@ class ZoomStore extends Store<ZoomState> {
     };
 
     constructor(
+        @Optional()
+        @Inject(StoreInitialStateToken)
         initialState: Partial<ZoomState> = {
             animals: [],
             foo: null
@@ -100,18 +103,14 @@ describe('#store', () => {
         });
     }
 
-    afterEach(() => {
-        store && store.ngOnDestroy();
-    });
-
     describe('#initialize', () => {
         it('should get initial state value is null with initialize', () => {
-            store = new ZoomStore(null);
+            store = injectStoreForTest(ZoomStore, null);
             expect(store.getState()).toEqual(null);
         });
 
         it('should get initial state value is empty with initialize', () => {
-            store = new ZoomStore({
+            store = injectStoreForTest(ZoomStore, {
                 animals: [],
                 foo: null
             });
@@ -124,7 +123,7 @@ describe('#store', () => {
         it('should get initial state value has data with initialize', () => {
             const animals = createSomeAnimals();
             const foo = { id: 1, name: 'Foo', description: 'This is a foo' };
-            store = new ZoomStore({
+            store = injectStoreForTest(ZoomStore, {
                 animals: animals,
                 foo: foo
             });
@@ -137,7 +136,7 @@ describe('#store', () => {
         it('should get correct data through subscribe select animals stream', () => {
             const animals = createSomeAnimals();
             const foo = { id: 1, name: 'Foo', description: 'This is a foo' };
-            store = new ZoomStore({
+            store = injectStoreForTest(ZoomStore, {
                 animals: animals,
                 foo: foo
             });
@@ -152,7 +151,7 @@ describe('#store', () => {
         it('should get correct state value', () => {
             const animals = createSomeAnimals();
             const foo = { id: 1, name: 'foo name', description: 'foo description' };
-            store = new ZoomStore({
+            store = injectStoreForTest(ZoomStore, {
                 animals: animals,
                 foo: foo
             });
@@ -165,7 +164,7 @@ describe('#store', () => {
         it('should deliver whole state value to setState function success', () => {
             const animals = createSomeAnimals();
             const foo = { id: 1, name: 'foo name', description: 'foo description' };
-            store = new ZoomStore({
+            store = injectStoreForTest(ZoomStore, {
                 animals: animals,
                 foo: foo
             });
@@ -180,7 +179,7 @@ describe('#store', () => {
         it('should set state success through set new partial state object', () => {
             const animals = createSomeAnimals();
             const newFoo = { id: 100, name: 'new foo name', description: 'new foo description' };
-            store = new ZoomStore({
+            store = injectStoreForTest(ZoomStore, {
                 animals: animals,
                 foo: null
             });
@@ -197,7 +196,7 @@ describe('#store', () => {
             const animals = createSomeAnimals();
             const newFoo = { id: 100, name: 'new foo name', description: 'new foo description' };
             const addAnimalMonster = { id: 100, name: 'monster' };
-            store = new ZoomStore({
+            store = injectStoreForTest(ZoomStore, {
                 animals: animals,
                 foo: null
             });
@@ -216,7 +215,7 @@ describe('#store', () => {
         it('should set state success through invoke setState function which return partial state object', () => {
             const animals = createSomeAnimals();
             const newFoo = { id: 100, name: 'new foo name', description: 'new foo description' };
-            store = new ZoomStore({
+            store = injectStoreForTest(ZoomStore, {
                 animals: animals,
                 foo: null
             });
@@ -235,7 +234,7 @@ describe('#store', () => {
             const animals = createSomeAnimals();
             const foo = { id: 1, name: 'foo name', description: 'foo description' };
             const newFoo = { id: 10, name: 'new foo name', description: 'new foo description' };
-            store = new ZoomStore({
+            store = injectStoreForTest(ZoomStore, {
                 animals: animals,
                 foo: foo
             });
@@ -256,31 +255,32 @@ describe('#store', () => {
 
         it('should clear state success after only change an animal name', () => {
             const animals = createSomeAnimals();
-            const _animals = createSomeAnimals();
             const foo = { id: 1, name: 'foo name', description: 'foo description' };
-            store = new ZoomStore({
+            store = injectStoreForTest(ZoomStore, {
                 animals: animals,
                 foo: foo
             });
-            store.setState(state => {
-                const catIndex = state.animals.findIndex(animal => animal.name === 'cat')
-                state.animals[catIndex] = { name: 'cat', id: 100 }
-                state.animals = [...state.animals]
-                return state
+            store.setState((state) => {
+                state.foo.name = 'new foo name';
+                return {
+                    animals: [...state.animals, { id: 100, name: 'new cat' }],
+                    foo: foo
+                };
             });
-            expect(store.getState().animals.find(animal => animal.name === 'cat').id).toEqual(100);
+            expect(store.getState().animals.find((animal) => animal.id === 100).name).toEqual('new cat');
+            expect(store.getState().foo.name).toEqual('new foo name');
             store.clearState();
             expect(store.getState()).toEqual({
-                animals: _animals,
-                foo: foo
+                animals: animals,
+                foo: { id: 1, name: 'foo name', description: 'foo description' }
             });
-        })
+        });
 
         it('should get correct snapshot', () => {
             const animals = createSomeAnimals();
             const foo = { id: 1, name: 'foo name', description: 'foo description' };
             const newFoo = { id: 10, name: 'new foo name', description: 'new foo description' };
-            store = new ZoomStore({
+            store = injectStoreForTest(ZoomStore, {
                 animals: animals,
                 foo: foo
             });
@@ -303,7 +303,7 @@ describe('#store', () => {
         it('should auto subscribe action result stream when invoke action', () => {
             const animals = createSomeAnimals();
             const addAnimalMonster = { id: 100, name: 'monster' };
-            store = new ZoomStore({
+            store = injectStoreForTest(ZoomStore, {
                 animals: animals
             });
             const animalsSpy = jasmine.createSpy('animals selector spy');
@@ -317,7 +317,7 @@ describe('#store', () => {
         it('should get correct value when subscribe action result stream by invoke action', () => {
             const animals = createSomeAnimals();
             const addAnimalMonster = { id: 100, name: 'monster' };
-            store = new ZoomStore({
+            store = injectStoreForTest(ZoomStore, {
                 animals: animals
             });
             const animalsSpy = jasmine.createSpy('animals selector spy');
@@ -334,7 +334,7 @@ describe('#store', () => {
         it('should return value when invoke action without observable', () => {
             const animals = createSomeAnimals();
             const addAnimalMonster = { id: 100, name: 'monster' };
-            store = new ZoomStore({
+            store = injectStoreForTest(ZoomStore, {
                 animals: animals
             });
             const result = store.pureAddWithReturnValue(addAnimalMonster);
@@ -345,23 +345,21 @@ describe('#store', () => {
 
     describe('#getStoreInstanceId', () => {
         it('should get correct InstanceId', () => {
-            store = new ZoomStore({});
+            store = injectStoreForTest(ZoomStore, {});
             expect(store.getStoreInstanceId()).toEqual('ZoomStore');
-            store.ngOnDestroy();
         });
     });
 
     describe('#getStoreInstanceName', () => {
         it('should get correct InstanceName', () => {
-            store = new ZoomStore({});
+            store = injectStoreForTest(ZoomStore, {});
             expect(store.getName()).toEqual('ZoomStore');
-            store.ngOnDestroy();
         });
     });
 
     describe('#error', () => {
         it('should throw error', fakeAsync(() => {
-            store = new ZoomStore();
+            store = injectStoreForTest(ZoomStore);
             const successSpy = jasmine.createSpy('success spy');
             const errorSpy = jasmine.createSpy('error spy');
             const completeSpy = jasmine.createSpy('complete spy');
@@ -371,14 +369,14 @@ describe('#store', () => {
         }));
 
         it('should throw error directly', fakeAsync(() => {
-            store = new ZoomStore();
+            store = injectStoreForTest(ZoomStore);
             expect(() => {
                 store.onErrorDirectly();
             }).toThrowError('this is a directly test error');
         }));
 
         it('should call once action when action throw error', () => {
-            store = new ZoomStore({});
+            store = injectStoreForTest(ZoomStore, {});
             const executeSpy = jasmine.createSpy('execute spy in action');
             const successSpy = jasmine.createSpy('success spy');
             const errorSpy = jasmine.createSpy('error spy');
@@ -392,7 +390,7 @@ describe('#store', () => {
 
     describe('#storeFactory', () => {
         it('should get stores by name', () => {
-            store = new ZoomStore({});
+            store = injectStoreForTest(ZoomStore, {});
             const storeFactory = TestBed.inject(StoreFactory);
             const stores = storeFactory.getStores('ZoomStore');
             expect(stores[0]).toEqual(store);

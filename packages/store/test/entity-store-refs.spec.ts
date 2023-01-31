@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { EntityStore, EntityState, EntityStoreOptions } from '../entity-store';
 import { MergeReferencesStrategy, OnCombineRefs, ReferencesIdDictionary } from '../references';
+import { injectStoreForTest, StoreInitialStateToken, StoreOptionsToken } from './inject-store';
 
 describe('Store: EntityStore with refs', () => {
     interface UserInfo {
@@ -38,7 +39,10 @@ describe('Store: EntityStore with refs', () => {
 
     @Injectable()
     class TasksStore extends EntityStore<TasksState, TaskInfo, TaskReferences> implements OnCombineRefs<TaskInfo, TaskReferences> {
-        constructor(initialState?: TasksState, options?: EntityStoreOptions<TaskInfo, TaskReferences>) {
+        constructor(
+            @Inject(StoreInitialStateToken) initialState?: TasksState,
+            @Inject(StoreOptionsToken) options?: EntityStoreOptions<TaskInfo, TaskReferences>
+        ) {
             super(initialState, options);
         }
 
@@ -78,7 +82,7 @@ describe('Store: EntityStore with refs', () => {
     });
 
     it('should get initial data when call store initialize', () => {
-        const tasksStore = new TasksStore();
+        const tasksStore = injectStoreForTest(TasksStore);
         tasksStore.initializeWithReferences(
             initialTasks,
             { groups: initialGroups },
@@ -112,7 +116,8 @@ describe('Store: EntityStore with refs', () => {
     });
 
     it('should get correct refs by entitiesWithRefs$', () => {
-        const tasksStore = new TasksStore(
+        const tasksStore = injectStoreForTest(
+            TasksStore,
             {
                 entities: initialTasks,
                 pagination: {
@@ -165,7 +170,8 @@ describe('Store: EntityStore with refs', () => {
             _id: `project-new-1`,
             name: `project-new name 1`
         };
-        const tasksStore = new TasksStore(
+        const tasksStore = injectStoreForTest(
+            TasksStore,
             {
                 entities: initialTasks,
                 pagination: {
@@ -219,7 +225,8 @@ describe('Store: EntityStore with refs', () => {
         let tasksStore: TasksStore;
 
         beforeEach(() => {
-            tasksStore = new TasksStore(
+            tasksStore = injectStoreForTest(
+                TasksStore,
                 {
                     entities: [...initialTasks],
                     pagination: {
@@ -369,7 +376,8 @@ describe('Store: EntityStore with refs', () => {
         });
 
         it('should append new reference when mergeReferencesStrategy is Append', () => {
-            tasksStore = new TasksStore(
+            tasksStore = injectStoreForTest(
+                TasksStore,
                 {
                     entities: [...initialTasks],
                     pagination: {
@@ -416,7 +424,8 @@ describe('Store: EntityStore with refs', () => {
         let tasksStore: TasksStore;
 
         beforeEach(() => {
-            tasksStore = new TasksStore(
+            tasksStore = injectStoreForTest(
+                TasksStore,
                 {
                     entities: initialTasks,
                     pagination: null,
@@ -461,7 +470,7 @@ describe('Store: EntityStore with refs', () => {
 
     describe('clear', () => {
         it('should clear entities, references pagination', () => {
-            const tasksEntityStore = new TasksStore({
+            const tasksEntityStore = injectStoreForTest(TasksStore, {
                 entities: initialTasks,
                 pagination: { pageIndex: 1, count: 100, pageSize: 20 },
                 references: {

@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { EntityState, EntityStore, EntityStoreOptions } from '../entity-store';
+import { injectStoreForTest, StoreInitialStateToken, StoreOptionsToken } from './inject-store';
 
 describe('Store: EntityStore', () => {
     interface TaskInfo {
@@ -11,7 +13,10 @@ describe('Store: EntityStore', () => {
 
     @Injectable()
     class TasksEntityStore extends EntityStore<TasksState, TaskInfo> {
-        constructor(initialState?: TasksState, options?: EntityStoreOptions<TaskInfo>) {
+        constructor(
+            @Inject(StoreInitialStateToken) initialState?: TasksState,
+            @Inject(StoreOptionsToken) options?: EntityStoreOptions<TaskInfo>
+        ) {
             super(initialState, options);
         }
     }
@@ -30,7 +35,7 @@ describe('Store: EntityStore', () => {
 
     @Injectable()
     class UsersEntityStore extends EntityStore<UsersState, UserInfo> {
-        constructor(initialState?: UsersState) {
+        constructor(@Inject(StoreInitialStateToken) initialState?: UsersState) {
             super(initialState, {
                 idKey: 'uid'
             });
@@ -43,7 +48,7 @@ describe('Store: EntityStore', () => {
     ];
 
     it('should get store default value', () => {
-        const taskEntityStore = new TasksEntityStore();
+        const taskEntityStore = injectStoreForTest(TasksEntityStore);
         const state = taskEntityStore.snapshot;
         expect(state.pagination).toEqual(undefined);
         expect(state.entities).toEqual([]);
@@ -52,7 +57,7 @@ describe('Store: EntityStore', () => {
     });
 
     it('should get initialize data when call store initialize', () => {
-        const taskEntityStore = new TasksEntityStore();
+        const taskEntityStore = injectStoreForTest(TasksEntityStore);
         taskEntityStore.initialize([...initialTasks], {
             pageIndex: 2,
             pageSize: 20,
@@ -72,8 +77,9 @@ describe('Store: EntityStore', () => {
 
     describe('add', () => {
         let tasksEntityStore: TasksEntityStore;
+
         beforeEach(() => {
-            tasksEntityStore = new TasksEntityStore({
+            tasksEntityStore = injectStoreForTest(TasksEntityStore, {
                 entities: [...initialTasks],
                 pagination: {
                     pageIndex: 1,
@@ -81,9 +87,6 @@ describe('Store: EntityStore', () => {
                     count: initialTasks.length
                 }
             });
-        });
-        afterEach(() => {
-            tasksEntityStore.ngOnDestroy();
         });
 
         it('should task success for append', () => {
@@ -198,7 +201,7 @@ describe('Store: EntityStore', () => {
         let tasksEntityStore: TasksEntityStore;
 
         beforeEach(() => {
-            tasksEntityStore = new TasksEntityStore({
+            tasksEntityStore = injectStoreForTest(TasksEntityStore, {
                 entities: [...initialTasks],
                 pagination: {
                     pageCount: 1,
@@ -207,10 +210,6 @@ describe('Store: EntityStore', () => {
                     count: 2
                 }
             });
-        });
-
-        afterEach(() => {
-            tasksEntityStore.ngOnDestroy();
         });
 
         it(`remove by id`, () => {
@@ -264,7 +263,7 @@ describe('Store: EntityStore', () => {
                     name: `${index + 1} name`
                 });
             }
-            tasksEntityStore = new TasksEntityStore({
+            tasksEntityStore = injectStoreForTest(TasksEntityStore, {
                 entities: userEntities,
                 pagination: {
                     pageCount: 2,
@@ -292,7 +291,7 @@ describe('Store: EntityStore', () => {
         });
 
         it(`remove user by custom idKey uid`, () => {
-            const userStore = new UsersEntityStore({
+            const userStore = injectStoreForTest(UsersEntityStore, {
                 entities: initialUsers
             });
             const state = userStore.snapshot;
@@ -306,14 +305,10 @@ describe('Store: EntityStore', () => {
         let tasksEntityStore: TasksEntityStore;
 
         beforeEach(() => {
-            tasksEntityStore = new TasksEntityStore({
+            tasksEntityStore = injectStoreForTest(TasksEntityStore, {
                 entities: [...initialTasks],
                 pagination: null
             });
-        });
-
-        afterEach(() => {
-            tasksEntityStore.ngOnDestroy();
         });
 
         it(`update by id`, () => {
@@ -368,7 +363,7 @@ describe('Store: EntityStore', () => {
         });
 
         it(`update user by custom idKey uid`, () => {
-            const userStore = new UsersEntityStore({
+            const userStore = injectStoreForTest(UsersEntityStore, {
                 entities: initialUsers
             });
             const state = userStore.snapshot;
@@ -385,7 +380,7 @@ describe('Store: EntityStore', () => {
 
     describe('clear', () => {
         it('should clear entities and pagination', () => {
-            const tasksEntityStore = new TasksEntityStore({
+            const tasksEntityStore = injectStoreForTest(TasksEntityStore, {
                 entities: [...initialTasks],
                 pagination: { pageIndex: 1, count: 100, pageSize: 20 }
             });
@@ -401,7 +396,7 @@ describe('Store: EntityStore', () => {
         });
 
         it('should clear pagination', () => {
-            const tasksEntityStore = new TasksEntityStore({
+            const tasksEntityStore = injectStoreForTest(TasksEntityStore, {
                 entities: [...initialTasks],
                 pagination: { pageIndex: 1, count: 100, pageSize: 20 }
             });
@@ -419,7 +414,8 @@ describe('Store: EntityStore', () => {
 
     describe('constructor', () => {
         it('should merge default options', () => {
-            const store = new TasksEntityStore(
+            const store = injectStoreForTest(
+                TasksEntityStore,
                 {
                     entities: [...initialTasks]
                 },
@@ -433,7 +429,8 @@ describe('Store: EntityStore', () => {
         it('should throw error when idKey is empty', () => {
             const assertIdKeyError = function (idKeyValue: string) {
                 expect(() => {
-                    return new TasksEntityStore(
+                    return injectStoreForTest(
+                        TasksEntityStore,
                         {
                             entities: [...initialTasks]
                         },
@@ -451,7 +448,7 @@ describe('Store: EntityStore', () => {
 
     describe('active', () => {
         it('should set active and get id', () => {
-            const tasksEntityStore = new TasksEntityStore({
+            const tasksEntityStore = injectStoreForTest(TasksEntityStore, {
                 entities: [...initialTasks]
             });
             expect(tasksEntityStore.activeId).toEqual(null);
@@ -463,7 +460,7 @@ describe('Store: EntityStore', () => {
         });
 
         it('should get entity', async () => {
-            const tasksEntityStore = new TasksEntityStore({
+            const tasksEntityStore = injectStoreForTest(TasksEntityStore, {
                 entities: [...initialTasks]
             });
 
@@ -475,7 +472,7 @@ describe('Store: EntityStore', () => {
         });
 
         it('should clear active id and entity', () => {
-            const tasksEntityStore = new TasksEntityStore({
+            const tasksEntityStore = injectStoreForTest(TasksEntityStore, {
                 entities: [...initialTasks]
             });
             tasksEntityStore.setActive('1');
