@@ -26,7 +26,7 @@ export class TodosStore extends Store<TodosState> {
     fetchItems() {
         return this.http.get<Todo[]>('https://62f70d4273b79d015352b5e5.mockapi.io/items').pipe(
             tap((data) => {
-                this.setState({ items: data });
+                this.update({ items: data });
             })
         );
     }

@@ -11,7 +11,7 @@ import {
     ReferencesIdDictionary
 } from './references';
 import { Store } from './store';
-import { PaginationInfo, StoreOptions } from './types';
+import { PaginationInfo, StoreOptions, UpdateStatePredicate } from './types';
 import { coerceArray } from './utils';
 
 export interface EntityStoreOptions<TEntity = unknown, TReferences = unknown> extends ProducerOptions<TEntity>, StoreOptions {
@@ -294,8 +294,19 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
      *   name: 'New Name'
      * }, references);
      */
-    update(idsOrFn: Id | Id[] | null, newStateOrFn: ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>): void {
-        this.updateInternal(idsOrFn, newStateOrFn, undefined);
+    update(state: Partial<TState>): void;
+    update(predicate: UpdateStatePredicate<TState>): void;
+    update(ids: Id | Id[] | null, newStateOrFn: Partial<TEntity>): void;
+    update(ids: Id | Id[] | null, newStateOrFn: UpdateStatePredicate<TEntity>): void;
+    update(
+        idsOrFnOrState: Id | Id[] | null | Partial<TState> | UpdateStatePredicate<TState>,
+        newStateOrFn?: UpdateStatePredicate<TEntity> | Partial<TEntity>
+    ): void {
+        if (!newStateOrFn) {
+            super.update(idsOrFnOrState as Partial<TState>);
+            return;
+        }
+        this.updateInternal(idsOrFnOrState as Id | Id[] | null, newStateOrFn as Partial<TEntity>, undefined);
     }
 
     /**
@@ -372,7 +383,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
 
     @Action()
     setActive(id: Id | null = null): void {
-        this.setState({
+        this.update({
             ...this.snapshot,
             activeId: id
         });

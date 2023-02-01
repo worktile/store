@@ -29,3 +29,5 @@ export interface StoreOptions {
      */
     instanceMaxCount?: number;
 }
+
+export type UpdateStatePredicate<State, NewState extends Partial<State> = Partial<State>> = (state: State) => NewState | void;

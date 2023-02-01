@@ -34,7 +34,7 @@ class ZoomStore extends Store<ZoomState> {
     fetchAnimalsWithCancelSelf() {
         return this.fetchAnimals$.pipe(
             tap((animals) => {
-                this.setState({
+                this.update({
                     animals: animals
                 });
             })
@@ -45,7 +45,7 @@ class ZoomStore extends Store<ZoomState> {
     fetchAnimalsWithCancelStore() {
         return this.fetchAnimals$.pipe(
             tap((animals) => {
-                this.setState({
+                this.update({
                     animals: animals
                 });
             })
@@ -56,7 +56,7 @@ class ZoomStore extends Store<ZoomState> {
     fetchAnimalsWithCancelAll() {
         return this.fetchAnimals$.pipe(
             tap((animals) => {
-                this.setState({
+                this.update({
                     animals: animals
                 });
             })
@@ -67,7 +67,7 @@ class ZoomStore extends Store<ZoomState> {
     fetchAnimals() {
         return this.fetchAnimals$.pipe(
             tap((animals) => {
-                this.setState({
+                this.update({
                     animals: animals
                 });
             })
@@ -97,7 +97,7 @@ class GardenStore extends Store<GardenState> {
     fetchFlowers() {
         return this.fetchFlowers$.pipe(
             tap((flowers) => {
-                this.setState({
+                this.update({
                     flowers: flowers
                 });
             })

@@ -45,7 +45,7 @@ class ZoomStore extends Store<ZoomState> {
     addAnimal(animal: Animal) {
         return of(animal).pipe(
             tap(() => {
-                this.setState({
+                this.update({
                     animals: produce(this.getState().animals).add(animal)
                 });
             })
@@ -54,7 +54,7 @@ class ZoomStore extends Store<ZoomState> {
 
     @Action()
     removeAnimal(id: number) {
-        this.setState({
+        this.update({
             animals: produce(this.getState().animals).remove(id as any)
         });
     }
@@ -176,14 +176,14 @@ describe('#store', () => {
             });
         });
 
-        it('should set state success through set new partial state object', () => {
+        it('should update state success through set new partial state object', () => {
             const animals = createSomeAnimals();
             const newFoo = { id: 100, name: 'new foo name', description: 'new foo description' };
             store = injectStoreForTest(ZoomStore, {
                 animals: animals,
                 foo: null
             });
-            store.setState({
+            store.update({
                 foo: newFoo
             });
             expect(store.getState()).toEqual({
@@ -192,7 +192,7 @@ describe('#store', () => {
             });
         });
 
-        it('should set state success through invoke setState function', () => {
+        it('should update state success through invoke update function', () => {
             const animals = createSomeAnimals();
             const newFoo = { id: 100, name: 'new foo name', description: 'new foo description' };
             const addAnimalMonster = { id: 100, name: 'monster' };
@@ -200,7 +200,7 @@ describe('#store', () => {
                 animals: animals,
                 foo: null
             });
-            store.setState((state) => {
+            store.update((state) => {
                 return {
                     foo: newFoo,
                     animals: [...state.animals, addAnimalMonster]
@@ -212,14 +212,14 @@ describe('#store', () => {
             });
         });
 
-        it('should set state success through invoke setState function which return partial state object', () => {
+        it('should update state success through invoke update function which return partial state object', () => {
             const animals = createSomeAnimals();
             const newFoo = { id: 100, name: 'new foo name', description: 'new foo description' };
             store = injectStoreForTest(ZoomStore, {
                 animals: animals,
                 foo: null
             });
-            store.setState((state) => {
+            store.update((state) => {
                 return {
                     foo: newFoo
                 };
@@ -227,6 +227,62 @@ describe('#store', () => {
             expect(store.getState()).toEqual({
                 animals: animals,
                 foo: newFoo
+            });
+        });
+
+        describe('deprecated setState ', () => {
+            it('should set state success through set new partial state object', () => {
+                const animals = createSomeAnimals();
+                const newFoo = { id: 100, name: 'new foo name', description: 'new foo description' };
+                store = injectStoreForTest(ZoomStore, {
+                    animals: animals,
+                    foo: null
+                });
+                store.setState({
+                    foo: newFoo
+                });
+                expect(store.getState()).toEqual({
+                    animals: animals,
+                    foo: newFoo
+                });
+            });
+
+            it('should set state success through invoke setState function', () => {
+                const animals = createSomeAnimals();
+                const newFoo = { id: 100, name: 'new foo name', description: 'new foo description' };
+                const addAnimalMonster = { id: 100, name: 'monster' };
+                store = injectStoreForTest(ZoomStore, {
+                    animals: animals,
+                    foo: null
+                });
+                store.setState((state) => {
+                    return {
+                        foo: newFoo,
+                        animals: [...state.animals, addAnimalMonster]
+                    };
+                });
+                expect(store.getState()).toEqual({
+                    animals: [...animals, addAnimalMonster],
+                    foo: newFoo
+                });
+            });
+
+            it('should set state success through invoke setState function which return partial state object', () => {
+                const animals = createSomeAnimals();
+                const newFoo = { id: 100, name: 'new foo name', description: 'new foo description' };
+                store = injectStoreForTest(ZoomStore, {
+                    animals: animals,
+                    foo: null
+                });
+                store.setState((state) => {
+                    return {
+                        foo: newFoo
+                    };
+                });
+                expect(store.getState()).toEqual({
+                    animals: animals,
+                    foo: newFoo
+                });
             });
         });
 
@@ -238,7 +294,7 @@ describe('#store', () => {
                 animals: animals,
                 foo: foo
             });
-            store.setState({
+            store.update({
                 animals: [{ id: 100, name: 'new' }],
                 foo: newFoo
             });
@@ -296,6 +352,50 @@ describe('#store', () => {
                 animals: [{ id: 100, name: 'new' }],
                 foo: newFoo
             });
+        });
+    });
+
+    describe('#value-type-state', () => {
+        @Injectable()
+        class CounterStore extends Store<number> {
+            constructor() {
+                super(0);
+            }
+
+            @Action()
+            increase() {
+                this.update(this.snapshot + 1);
+            }
+
+            @Action()
+            decrease() {
+                this.update(this.snapshot - 1);
+            }
+        }
+
+        let store: CounterStore;
+
+        beforeEach(() => {
+            TestBed.configureTestingModule({
+                providers: [CounterStore]
+            });
+            store = TestBed.inject(CounterStore);
+        });
+
+        it('should get initial state', () => {
+            expect(store.getState()).toEqual(0);
+        });
+
+        it('should increase', () => {
+            expect(store.getState()).toEqual(0);
+            store.increase();
+            expect(store.getState()).toEqual(1);
+        });
+
+        it('should decrease', () => {
+            expect(store.getState()).toEqual(0);
+            store.decrease();
+            expect(store.getState()).toEqual(-1);
         });
     });
 

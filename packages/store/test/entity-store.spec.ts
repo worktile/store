@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { produce } from '@tethys/cdk/immutable';
 import { EntityState, EntityStore, EntityStoreOptions } from '../entity-store';
 import { injectStoreForTest, StoreInitialStateToken, StoreOptionsToken } from './inject-store';
 
@@ -346,10 +347,10 @@ describe('Store: EntityStore', () => {
         });
 
         it(`update by id and newStateFn`, () => {
-            tasksEntityStore.update('1', (user) => {
+            tasksEntityStore.update('1', (task) => {
                 return {
-                    ...user,
-                    name: 'new 1 user'
+                    ...task,
+                    name: 'new task name'
                 };
             });
             const state = tasksEntityStore.snapshot;
@@ -358,7 +359,7 @@ describe('Store: EntityStore', () => {
             });
             expect(entity).toEqual({
                 _id: '1',
-                name: 'new 1 user'
+                name: 'new task name'
             });
         });
 
@@ -375,6 +376,34 @@ describe('Store: EntityStore', () => {
                 { uid: 'user-1', name: 'new user1 name' },
                 { uid: 'user-2', name: 'user name-2' }
             ]);
+        });
+
+        it('should update whole state by partial state', () => {
+            tasksEntityStore.update({
+                entities: produce(tasksEntityStore.getState().entities).update('1', { name: 'new task name' })
+            });
+            const entity = tasksEntityStore.getState().entities.find((item) => {
+                return item._id === '1';
+            });
+            expect(entity).toEqual({
+                _id: '1',
+                name: 'new task name'
+            });
+        });
+
+        it('should update whole state by predicate function', () => {
+            tasksEntityStore.update((state) => {
+                return {
+                    entities: produce(state.entities).update('1', { name: 'new task name' })
+                };
+            });
+            const entity = tasksEntityStore.getState().entities.find((item) => {
+                return item._id === '1';
+            });
+            expect(entity).toEqual({
+                _id: '1',
+                name: 'new task name'
+            });
         });
     });
 

@@ -24,9 +24,9 @@ export class CounterStore extends Store<CounterState> {
 }
 ```
 
-## setState
+## update
 
-We can call the `setState()` method to transfer in the new state.
+We can call the `update()` method to transfer in the new state.
 
 
 ```ts
@@ -37,11 +37,11 @@ export class CounterStore extends Store<CounterState> {
 
     @Action()
     increase() {
-        this.setState({ count: this.snapshot.count + 1 });
+        this.update({ count: this.snapshot.count + 1 });
     }
 }
 ```
-`setState` support multiple parameter types:
+`update` support multiple parameter types:
 - New fully `State` object
 - Partial `State` updated objects
 - The function return the new `State` object
@@ -51,7 +51,7 @@ export class CounterStore extends Store<CounterState> {
 export class CounterStore extends Store<CounterState> {
     @Action()
     increase() {
-        this.setState((state)=> {
+        this.update((state)=> {
           return { count: state.count + 1 };
         });
     }
@@ -65,6 +65,13 @@ export class CounterStore extends Store<CounterState> {
 - 严禁在`Store`外直接修改`snapshot`中的数据
 - `OnPush`组件禁止使用`snapshot`, 否则数据变更后无法同步视图
 <alert>使用 snapshot 的时候一定要了解 Angular 数据变更机制，否则非常容易造成数据不同步的缺陷。</alert>
+
+## getState
+alias function return snapshot.
+
+```ts
+const state = store.getState();
+```
 
 ## select
 一个`Store`可以存储多个数据集，当某个组件只需要获取部分数据时，可以通过`select()`函数过滤需要的数据，这样只有过滤的数据变化才会收到变化订阅，提高应用程序的性能。
@@ -90,6 +97,23 @@ export class ThyStoreCounterExampleComponent implements OnInit {
 - 推荐使用`select`返回需要的`Observable`, 在模版中使用`async`管道订阅使用, 如果模版中多处使用可以使用`as`关键字保存为临时对象
 - 一旦在代码中订阅使用, 一定要取消订阅, 推荐`takeUntil`操作符取消订阅
 - `selector`推荐统一定义到`Store`的静态函数中, 提高性能的话在最后添加`shareReplay`管道是一个不错的好习惯
+
+## StoreOptions
+
+The first parameter of the Store constructor is the initial state, and the second parameter is `StoreOptions`. currently, the configuration name and the maximum number of instances are supported:
+
+- `name: string`: Define name of store, default name is generated according to the class name, e.g. class ZoomStore name is `ZoomStore`, In production environment, js will be compressed and confused, so it is recommended to give each store a unique name.
+- `instanceMaxCount: number`: The max number of instances for the current store, default 20, set to 0 means unlimited, Note: only throw error in devMode, unlimited in production environment.
+
+```ts
+@Injectable()
+export class CounterStore extends Store<CounterState> {
+
+    constructor() {
+        super({ count: 0 }, { name: "CounterStore",  instanceMaxCount: 100 });
+    }
+}
+```
 
 ## getStores
 `StoreFactory`的`getStores(names: string | string[])`方法，可以通过`Store`名字，取到注册过的所有`Store`。
