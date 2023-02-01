@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [14.2.0](https://github.com/worktile/store/compare/v14.1.1...v14.2.0) (2023-02-01)
+
+
+### Features
+
+* add update to Store instead of setState, mark setState as deprecated ([#101](https://github.com/worktile/store/issues/101)) ([d9bf41f](https://github.com/worktile/store/commit/d9bf41f9583e3c9ef92577984b750540cbc78156))
+* use json prase and json stringfy to deep clone an initialState, to avoid object reference ([be6efe2](https://github.com/worktile/store/commit/be6efe24de85f22fd9162ed44ac2727e84be03f0))
+
+
+
 ## [14.1.1](https://github.com/worktile/store/compare/v14.1.0...v14.1.1) (2023-01-17)
 
 
