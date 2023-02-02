@@ -5,15 +5,20 @@ import { coerceArray } from '../utils';
 
 @Injectable()
 export class InternalStoreFactory implements OnDestroy {
-    private static factory = new InternalStoreFactory();
+    private static factory: InternalStoreFactory;
 
     static get instance() {
+        if (!this.factory) {
+            this.factory = new InternalStoreFactory();
+        }
         return this.factory;
     }
 
     private storeInstancesMap = new Map<string, Store>();
 
     public state$ = new Subject<{ storeId: string; state: unknown }>();
+
+    constructor() {}
 
     register(store: Store) {
         this.storeInstancesMap.set(store.getStoreInstanceId(), store);

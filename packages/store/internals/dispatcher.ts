@@ -13,9 +13,12 @@ import { InternalStoreFactory } from './internal-store-factory';
     providedIn: 'root'
 })
 export class InternalDispatcher {
-    private static dispatcher = new InternalDispatcher();
+    private static dispatcher: InternalDispatcher;
 
     static get instance() {
+        if (!this.dispatcher) {
+            this.dispatcher = new InternalDispatcher();
+        }
         return this.dispatcher;
     }
 
