@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [15.0.0-next.0](https://github.com/worktile/store/compare/v14.2.0...v15.0.0-next.0) (2023-02-02)
+
+
+### Features
+
+* upgrade ng to 15 ([#103](https://github.com/worktile/store/issues/103)) ([43d2245](https://github.com/worktile/store/commit/43d224538a7af335d2b91dd46710c6adc0c849fc))
+
+
+
 # [14.2.0](https://github.com/worktile/store/compare/v14.1.1...v14.2.0) (2023-02-01)
 
 
