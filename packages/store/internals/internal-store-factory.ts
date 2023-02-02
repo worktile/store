@@ -18,8 +18,6 @@ export class InternalStoreFactory implements OnDestroy {
 
     public state$ = new Subject<{ storeId: string; state: unknown }>();
 
-    constructor() {}
-
     register(store: Store) {
         this.storeInstancesMap.set(store.getStoreInstanceId(), store);
     }
