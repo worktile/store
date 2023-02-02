@@ -25,9 +25,7 @@ yarn add @tethys/store</div></code></pre>
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">CounterStore</span> <span class="token keyword">extends</span> <span class="token class-name">Store</span><span class="token operator">&lt;</span>CounterState<span class="token operator">></span> <span class="token punctuation">{</span>
 
     <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-            count<span class="token punctuation">:</span> <span class="token number">0</span>
-        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count<span class="token punctuation">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></div></code></pre>
 
@@ -42,27 +40,25 @@ yarn add @tethys/store</div></code></pre>
   imports<span class="token punctuation">:</span> <span class="token punctuation">[</span>ThyStoreModule<span class="token punctuation">.</span><span class="token function">forRoot</span><span class="token punctuation">(</span><span class="token punctuation">[</span>CounterStore<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">AppModule</span> <span class="token punctuation">{</span><span class="token punctuation">}</span></div></code></pre>
-<div class="dg-paragraph"><alert>定义的 Store 不通过<code>ThyStoreModule.forRoot</code>设置也是可以正常使用，它就是一个普通的服务。</alert></div>
+<div class="dg-paragraph"><alert>定义的 Store 不通过<code>ThyStoreModule.forRoot</code>设置也是可以正常使用，它就是一个普通的服务，需要和服务一样提供 provider 并在任何可以注入的地方注入。</alert></div>
 
         <h2 id="%E6%B7%BB%E5%8A%A0-action" class="docs-header-link">
           <span header-link="%E6%B7%BB%E5%8A%A0-action"></span>
           添加 Action
         </h2>
-      <p>在<code>Store</code>中添加普通的函数，并使用<code>@Action()</code>装饰器装饰即可，Action 函数中可以通过调用基类的<code>setState</code>函数修改状态。</p>
+      <p>在<code>Store</code>中添加普通的函数，并使用<code>@Action()</code>装饰器装饰即可，Action 函数中可以通过调用基类的<code>update</code>函数修改状态。</p>
 <pre class="language-ts"><code class="language-ts"><div>@<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">CounterStore</span> <span class="token keyword">extends</span> <span class="token class-name">Store</span><span class="token operator">&lt;</span>CounterState<span class="token operator">></span> <span class="token punctuation">{</span>
 
     <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-            count<span class="token punctuation">:</span> <span class="token number">0</span>
-        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count<span class="token punctuation">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
     @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
     <span class="token function">increase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">return</span> <span class="token function">of</span><span class="token punctuation">(</span><span class="token keyword">true</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
             <span class="token function">tap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>snapshot<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>snapshot<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
             <span class="token punctuation">}</span><span class="token punctuation">)</span>
         <span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>

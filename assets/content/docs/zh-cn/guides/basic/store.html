@@ -16,11 +16,11 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></div></code></pre>
 
-        <h2 id="setstate" class="docs-header-link">
-          <span header-link="setstate"></span>
-          setState
+        <h2 id="update" class="docs-header-link">
+          <span header-link="update"></span>
+          update
         </h2>
-      <p>当需要更新状态时可以通过调用<code>setState()</code>方法传入新的状态。</p>
+      <p>当需要更新状态时可以通过调用<code>update()</code>方法传入新的状态。</p>
 <pre class="language-ts"><code class="language-ts"><div>@<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">CounterStore</span> <span class="token keyword">extends</span> <span class="token class-name">Store</span><span class="token operator">&lt;</span>CounterState<span class="token operator">></span> <span class="token punctuation">{</span>
     
@@ -28,10 +28,10 @@
 
     @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
     <span class="token function">increase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>snapshot<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>snapshot<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></div></code></pre>
-<div class="dg-paragraph"><code>setState</code> 可以支持多种参数类型</div>
+<div class="dg-paragraph"><code>update</code> 可以支持多种参数类型</div>
 <ul>
 <li>完整的<code>State</code>新对象</li>
 <li>部分<code>State</code>更新的对象</li>
@@ -41,11 +41,12 @@
 <span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">CounterStore</span> <span class="token keyword">extends</span> <span class="token class-name">Store</span><span class="token operator">&lt;</span>CounterState<span class="token operator">></span> <span class="token punctuation">{</span>
     @<span class="token function">Action</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
     <span class="token function">increase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span><span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">update</span><span class="token punctuation">(</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span><span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
           <span class="token keyword">return</span> <span class="token punctuation">{</span> count<span class="token punctuation">:</span> state<span class="token punctuation">.</span>count <span class="token operator">+</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></div></code></pre>
+<div class="dg-paragraph"><alert>在<code>14.2.0</code>版本之前，使用<code>setState</code>函数更新状态，<code>setState</code>在<code>14.2.0</code>版本被废弃，使用<code>update</code>函数代替。</alert></div>
 
         <h2 id="snapshot" class="docs-header-link">
           <span header-link="snapshot"></span>
@@ -59,6 +60,13 @@
 <li><code>OnPush</code>组件禁止使用<code>snapshot</code>, 否则数据变更后无法同步视图
 <alert>使用 snapshot 的时候一定要了解 Angular 数据变更机制，否则非常容易造成数据不同步的缺陷。</alert></li>
 </ul>
+
+        <h2 id="getstate" class="docs-header-link">
+          <span header-link="getstate"></span>
+          getState
+        </h2>
+      <p>snapshot 的别名函数。</p>
+<pre class="language-ts"><code class="language-ts"><div><span class="token keyword">const</span> state <span class="token operator">=</span> store<span class="token punctuation">.</span><span class="token function">getState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span></div></code></pre>
 
         <h2 id="select" class="docs-header-link">
           <span header-link="select"></span>
@@ -85,6 +93,23 @@
 <li>一旦在代码中订阅使用, 一定要取消订阅, 推荐<code>takeUntil</code>操作符取消订阅</li>
 <li><code>selector</code>推荐统一定义到<code>Store</code>的静态函数中, 提高性能的话在最后添加<code>shareReplay</code>管道是一个不错的好习惯</li>
 </ul>
+
+        <h2 id="storeoptions" class="docs-header-link">
+          <span header-link="storeoptions"></span>
+          StoreOptions
+        </h2>
+      <p>Store 构造函数第一个参数是初始化状态，第二个参数是<code>StoreOptions</code>，目前支持配置名称和最大实例数：</p>
+<ul>
+<li><code>name: string</code>: Store 的名称，默认根据类名生成，比如 <code>class ZoomStore</code>的名称是<code>ZoomStore</code>，在生产环境中，js 会被压缩混淆，所以建议给每个 Store 起一个唯一的名字。</li>
+<li><code>instanceMaxCount: number</code>: 当前 Store 的最大实例数，默认是 20，设置 0 意味着不受限制，注意：只有在 Dev 环境才会报错，生产环境不受数量限制</li>
+</ul>
+<pre class="language-ts"><code class="language-ts"><div>@<span class="token function">Injectable</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">class</span> <span class="token class-name">CounterStore</span> <span class="token keyword">extends</span> <span class="token class-name">Store</span><span class="token operator">&lt;</span>CounterState<span class="token operator">></span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count<span class="token punctuation">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">"CounterStore"</span><span class="token punctuation">,</span>  instanceMaxCount<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></div></code></pre>
 
         <h2 id="getstores" class="docs-header-link">
           <span header-link="getstores"></span>

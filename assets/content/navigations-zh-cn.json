@@ -105,8 +105,8 @@
               "toc": "content",
               "headings": [
                 {
-                  "id": "setstate",
-                  "name": "setState",
+                  "id": "update",
+                  "name": "update",
                   "level": 2,
                   "type": "h2"
                 },
@@ -117,8 +117,20 @@
                   "type": "h2"
                 },
                 {
+                  "id": "getstate",
+                  "name": "getState",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
                   "id": "select",
                   "name": "select",
+                  "level": 2,
+                  "type": "h2"
+                },
+                {
+                  "id": "storeoptions",
+                  "name": "StoreOptions",
                   "level": 2,
                   "type": "h2"
                 },
@@ -663,8 +675,8 @@
       "toc": "content",
       "headings": [
         {
-          "id": "setstate",
-          "name": "setState",
+          "id": "update",
+          "name": "update",
           "level": 2,
           "type": "h2"
         },
@@ -675,8 +687,20 @@
           "type": "h2"
         },
         {
+          "id": "getstate",
+          "name": "getState",
+          "level": 2,
+          "type": "h2"
+        },
+        {
           "id": "select",
           "name": "select",
+          "level": 2,
+          "type": "h2"
+        },
+        {
+          "id": "storeoptions",
+          "name": "StoreOptions",
           "level": 2,
           "type": "h2"
         },
