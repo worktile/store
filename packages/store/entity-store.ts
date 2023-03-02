@@ -44,7 +44,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     protected internalReferencesIdMap: ReferencesIdDictionary<TReferences>;
 
     get referencesMap() {
-        return this, this.internalReferencesIdMap;
+        return this.internalReferencesIdMap;
     }
 
     get entities() {
