@@ -136,7 +136,7 @@ export function mergeReferences<TReferences>(
 export function buildReferencesKeyBy<TReferences>(
     references: Partial<TReferences>,
     idKeys?: Partial<ReferenceArrayExtractAllowKeys<TReferences>>
-) {
+): ReferencesIdDictionary<TReferences> {
     const result: { [key in keyof TReferences]?: { [key: string]: ArrayInferExtract<TReferences[key]> } } = {};
     for (const key in references) {
         if (references.hasOwnProperty(key)) {

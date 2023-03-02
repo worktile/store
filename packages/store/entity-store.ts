@@ -41,7 +41,11 @@ export interface EntityState<TEntity, TReferences = unknown> extends ActiveState
 export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEntity, TReferences = unknown> extends Store<TState> {
     protected options: EntityStoreOptions<TEntity, TReferences>;
 
-    private internalReferencesIdMap: ReferencesIdDictionary<TReferences>;
+    protected internalReferencesIdMap: ReferencesIdDictionary<TReferences>;
+
+    get referencesMap() {
+        return this, this.internalReferencesIdMap;
+    }
 
     get entities() {
         return this.snapshot.entities;
