@@ -14,12 +14,12 @@ export class InternalStoreFactory implements OnDestroy {
         return this.factory;
     }
 
-    private storeInstancesMap = new Map<string, Store>();
+    private storeInstancesMap = new Map<string, WeakRef<Store>>();
 
     public state$ = new Subject<{ storeId: string; state: unknown }>();
 
     register(store: Store) {
-        this.storeInstancesMap.set(store.getStoreInstanceId(), store);
+        this.storeInstancesMap.set(store.getStoreInstanceId(), new WeakRef(store));
     }
 
     unregister(store: Store) {
@@ -27,18 +27,27 @@ export class InternalStoreFactory implements OnDestroy {
     }
 
     get(id: string) {
-        return this.storeInstancesMap.get(id);
+        if (this.storeInstancesMap?.get(id)?.deref()) {
+            return this.storeInstancesMap?.get(id)?.deref();
+        } else {
+            this.storeInstancesMap.delete(id);
+            return null;
+        }
     }
 
     getStores(names: string | string[]) {
-        return Array.from(this.storeInstancesMap.values()).filter((store) => {
-            return coerceArray(names).includes(store.getName());
+        const stores = [];
+        Array.from(this.storeInstancesMap.values()).forEach((store) => {
+            if (coerceArray(names).includes(store.deref()?.getName())) {
+                stores.push(store.deref());
+            }
         });
+        return stores;
     }
 
     getAllState() {
         return Array.from(this.storeInstancesMap.entries()).reduce((state, [storeId, store]) => {
-            state[storeId] = store.getState();
+            state[storeId] = store.deref()?.getState();
             return state;
         }, {});
     }
