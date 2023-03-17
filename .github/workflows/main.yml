@@ -1,5 +1,15 @@
 name: ci-tethys-store-test
-on: push
+on:
+    push:
+        branches:
+            - master
+        paths-ignore:
+            - README.md
+            - CHANGELOG.md # Should never be edited anyway
+            - .gitignore
+    pull_request:
+        branches:
+            - master
 jobs:
     build:
         runs-on: ubuntu-latest
