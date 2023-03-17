@@ -11,7 +11,7 @@
     "esModuleInterop": false,
     "importHelpers": true,
     "target": "es2015",
-    "lib": ["es2018", "dom"],
+    "lib": ["esnext", "dom"],
     "types": ["node"],
     "paths": {
       "@tethys/store/*": ["../../packages/store/*"],
