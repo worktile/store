@@ -27,27 +27,51 @@ export class InternalStoreFactory implements OnDestroy {
     }
 
     get(id: string) {
-        if (this.storeInstancesMap?.get(id)?.deref()) {
-            return this.storeInstancesMap?.get(id)?.deref();
+        const storeWeakRef = this.storeInstancesMap.get(id);
+        if (storeWeakRef) {
+            const store = storeWeakRef.deref();
+            if (store) {
+                return store;
+            } else {
+                this.storeInstancesMap.delete(id);
+                return null;
+            }
         } else {
-            this.storeInstancesMap.delete(id);
             return null;
         }
     }
 
-    getStores(names: string | string[]) {
+    getStores(predicate: (storeId: string, name: string, store?: string) => boolean) {
         const stores = [];
-        Array.from(this.storeInstancesMap.values()).forEach((store) => {
-            if (coerceArray(names).includes(store.deref()?.getName())) {
-                stores.push(store.deref());
+        this.storeInstancesMap.forEach((storeWeakRef, id) => {
+            const store = storeWeakRef.deref();
+            if (!store) {
+                this.storeInstancesMap.delete(id);
+                return;
+            }
+            if (predicate(id, store.getName())) {
+                stores.push(store);
             }
         });
         return stores;
     }
 
+    getAllStores() {
+        return this.getStores((storeId: string, name: string) => {
+            return true;
+        });
+    }
+
+    getStoresByNames(names: string | string[]) {
+        names = coerceArray(names);
+        return this.getStores((storeId: string, name: string) => {
+            return names.includes(name);
+        });
+    }
+
     getAllState() {
-        return Array.from(this.storeInstancesMap.entries()).reduce((state, [storeId, store]) => {
-            state[storeId] = store.deref()?.getState();
+        return this.getAllStores().reduce((state, store) => {
+            state[store.getStoreInstanceId()] = store.getState();
             return state;
         }, {});
     }

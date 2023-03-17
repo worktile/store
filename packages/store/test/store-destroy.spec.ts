@@ -39,8 +39,18 @@ describe('store-auto-destroy', () => {
         const storeName = store.getName();
         expect(store).toBeDefined();
         expect(InternalStoreFactory.instance.get(storeName)).toBeTruthy();
-        expect(InternalStoreFactory.instance.getStores(storeName)).toBeTruthy();
+        expect(InternalStoreFactory.instance.getStoresByNames(storeName)).toBeTruthy();
         store.ngOnDestroy();
         expect(InternalStoreFactory.instance.get(storeName)).toBeFalsy();
+        let mockStore = {
+            getStoreInstanceId: () => {
+                return 'mockStore';
+            }
+        } as any;
+        InternalStoreFactory.instance.register(mockStore as any);
+        expect(InternalStoreFactory.instance['storeInstancesMap'].size).toBe(1);
+        spyOn(InternalStoreFactory.instance['storeInstancesMap'].get('mockStore'), 'deref').and.returnValue(null);
+        expect(InternalStoreFactory.instance.get('mockStore')).toBeFalsy();
+        expect(InternalStoreFactory.instance['storeInstancesMap'].size).toBe(0);
     }));
 });

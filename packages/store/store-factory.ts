@@ -7,6 +7,6 @@ export class StoreFactory {
     constructor() {}
 
     getStores<T = Store>(names: string | string[]): T[] {
-        return InternalStoreFactory.instance.getStores(names) as unknown as T[];
+        return InternalStoreFactory.instance.getStoresByNames(names) as unknown as T[];
     }
 }
