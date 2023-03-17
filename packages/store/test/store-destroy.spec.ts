@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { InternalStoreFactory } from '../internals/internal-store-factory';
 import { Store } from '../store';
 
@@ -34,7 +34,7 @@ describe('store-auto-destroy', () => {
         expect(store.getStoreInstanceId()).toBe('GardenStore');
     });
 
-    it('should store destroy', fakeAsync(() => {
+    it('should store destroy', () => {
         let store = TestBed.inject(GardenStore);
         const storeName = store.getName();
         expect(store).toBeDefined();
@@ -42,15 +42,17 @@ describe('store-auto-destroy', () => {
         expect(InternalStoreFactory.instance.getStoresByNames(storeName)).toBeTruthy();
         store.ngOnDestroy();
         expect(InternalStoreFactory.instance.get(storeName)).toBeFalsy();
-        let mockStore = {
-            getStoreInstanceId: () => {
-                return 'mockStore';
-            }
-        } as any;
-        InternalStoreFactory.instance.register(mockStore as any);
+    });
+
+    it('should weakRef effective', () => {
+        InternalStoreFactory.instance['storeInstancesMap'] = new Map<string, WeakRef<Store>>();
+        const store = TestBed.inject(GardenStore);
+        const storeName = store.getName();
+        expect(store).toBeDefined();
+        expect(InternalStoreFactory.instance.getStoresByNames(storeName)).toBeTruthy();
         expect(InternalStoreFactory.instance['storeInstancesMap'].size).toBe(1);
-        spyOn(InternalStoreFactory.instance['storeInstancesMap'].get('mockStore'), 'deref').and.returnValue(null);
-        expect(InternalStoreFactory.instance.get('mockStore')).toBeFalsy();
+        spyOn(InternalStoreFactory.instance['storeInstancesMap'].get(storeName), 'deref').and.returnValue(null);
+        expect(InternalStoreFactory.instance.getStoresByNames(storeName)).toEqual([]);
         expect(InternalStoreFactory.instance['storeInstancesMap'].size).toBe(0);
-    }));
+    });
 });
