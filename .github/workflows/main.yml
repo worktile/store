@@ -1,6 +1,5 @@
 name: ci-tethys-store-test
-on: push
-    pull_request
+on: push, pull_request
 jobs:
     build:
         runs-on: ubuntu-latest
