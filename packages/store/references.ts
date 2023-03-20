@@ -1,3 +1,5 @@
+import { SafeAny } from './inner-types';
+import { Id } from '@tethys/cdk';
 import { keyBy, indexKeyBy } from './utils';
 
 // 抽取数据中的Item类型，不是数组直接返回对象的类型
@@ -46,6 +48,12 @@ export type ReferenceExtractAllowKeys<T> = {
 export type ReferenceArrayExtractAllowKeys<T> = {
     [key in keyof ReferenceArrayExtractAllowNames<T>]?: keyof ReferenceObjectExtract<T>[key];
 };
+
+export interface ReferencedField {
+    key: string;
+    lookup?: string;
+    value_path?: string;
+}
 
 function getReferenceIdKey<TReferences>(referenceKey: string, idKeys: ReferenceArrayExtractAllowKeys<TReferences>) {
     if (idKeys && idKeys[referenceKey]) {
@@ -136,7 +144,7 @@ export function mergeReferences<TReferences>(
 export function buildReferencesKeyBy<TReferences>(
     references: Partial<TReferences>,
     idKeys?: Partial<ReferenceArrayExtractAllowKeys<TReferences>>
-) {
+): ReferencesIdDictionary<TReferences> {
     const result: { [key in keyof TReferences]?: { [key: string]: ArrayInferExtract<TReferences[key]> } } = {};
     for (const key in references) {
         if (references.hasOwnProperty(key)) {

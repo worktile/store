@@ -1,3 +1,4 @@
+import { isObject } from '@tethys/cdk';
 import { SafeAny, StoreMetaInfo } from './inner-types';
 import { META_KEY } from './types';
 
@@ -57,7 +58,7 @@ export function generateIdWithTime(): string {
  *
  */
 export function getObjectValue<T>(obj: T, prop: string): any {
-    prop.split('.').reduce((previousValue: SafeAny, part: string) => previousValue && previousValue[part], obj);
+    return prop.split('.').reduce((previousValue: SafeAny, part: string) => previousValue && previousValue[part], obj);
 }
 
 /**
@@ -86,4 +87,12 @@ export function setObjectValue<T>(obj: T, prop: string, value: SafeAny) {
     }, obj);
 
     return obj;
+}
+
+export function getIdFromValue<T>(value: T) {
+    if (isObject(value)) {
+        return value['uid'] || value['id'] || value['_id'];
+    } else {
+        return value;
+    }
 }
