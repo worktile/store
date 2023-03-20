@@ -97,6 +97,7 @@ export class ThyStoreReferencesBuilderExampleComponent implements OnInit {
         }
     ];
 
+    // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
     ngOnInit(): void {}
 
     build() {
