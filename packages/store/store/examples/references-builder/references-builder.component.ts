@@ -16,9 +16,6 @@ export class ThyStoreReferencesBuilderExampleComponent implements OnInit {
                 name: '第一章 一伞之恩',
                 project_id: '5d52b816ba0092ef66610393',
                 sprint_id: '5d53715d98b51d32cb6a5c75',
-                properties: {
-                    risk: '5cd11b075d68a93340040003'
-                },
                 suite_ids: ['5eccdb455e57e0c4ce3b7ba5', '62287b4aa942ffb24b59e001'],
                 attachments: [
                     {
@@ -32,19 +29,13 @@ export class ThyStoreReferencesBuilderExampleComponent implements OnInit {
                 name: '第二章 玄鬼宗伏袭',
                 project_id: '5d52b816ba0092ef66610393',
                 sprint_id: '5d53716998b51dd3f26a5c7c',
-                properties: {
-                    risk: '5cd11b075d68a93340040003'
-                },
                 suite_ids: ['5eccdb455e57e0c4ce3b7ba5']
             },
             {
                 _id: '3',
                 name: '第三章 夜魔魅影',
                 project_id: '5d52b816ba0092ef66610393',
-                sprint_id: '5d53716998b51dd3f26a5c7c',
-                properties: {
-                    risk: '5cd11b075d68a93340040003'
-                }
+                sprint_id: '5d53716998b51dd3f26a5c7c'
             }
         ],
         references: {
@@ -93,28 +84,9 @@ export class ThyStoreReferencesBuilderExampleComponent implements OnInit {
         }
     };
 
-    property = [
+    fields = [
         { key: 'project_id', lookup: 'projects' },
         { key: 'sprint_id', lookup: 'sprints' },
-        {
-            name: '风险',
-            value_path: 'properties.risk',
-            key: 'risk',
-            options: [
-                {
-                    _id: '5cd11b075d68a93340040003',
-                    text: '高'
-                },
-                {
-                    _id: '5cd11b075d68a93340040002',
-                    text: '中'
-                },
-                {
-                    _id: '5cd11b075d68a93340040001',
-                    text: '低'
-                }
-            ]
-        },
         {
             key: 'suite_ids',
             lookup: 'suites'
@@ -128,10 +100,9 @@ export class ThyStoreReferencesBuilderExampleComponent implements OnInit {
     ngOnInit(): void {}
 
     build() {
-        const refBuilder = createReferencesBuilder(this.responseData.references);
+        const refBuilder = createReferencesBuilder(this.responseData.references).build();
         const attachedValue = this.responseData.value.map((item) => {
-            return refBuilder.attachRefs(item, this.property);
+            return refBuilder.attachRefs(item, this.fields);
         });
-        console.log(attachedValue);
     }
 }

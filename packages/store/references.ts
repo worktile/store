@@ -49,10 +49,9 @@ export type ReferenceArrayExtractAllowKeys<T> = {
     [key in keyof ReferenceArrayExtractAllowNames<T>]?: keyof ReferenceObjectExtract<T>[key];
 };
 
-export interface BuildReferenceProperty {
+export interface ReferencedField {
     key: string;
     lookup?: string;
-    options?: { _id: Id; [key: string]: SafeAny }[];
     value_path?: string;
 }
 

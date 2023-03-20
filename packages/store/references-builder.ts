@@ -1,6 +1,6 @@
 import { Id } from '@tethys/cdk';
 import {
-    BuildReferenceProperty,
+    ReferencedField,
     buildReferencesKeyBy,
     mergeReferences,
     MergeReferencesStrategy,
@@ -33,26 +33,23 @@ export class ReferencesBuilder<TReferences> {
         return this.build();
     }
 
-    attachRefs<T>(entity: T, properties: BuildReferenceProperty[]) {
+    attachRefs<T>(entity: T, fields: ReferencedField[]) {
         const refs = {};
-        properties.forEach((property) => {
-            const valuePath = property.value_path || property.key;
-            const lookup = property.lookup || property.key;
+        fields.forEach((field) => {
+            const valuePath = field.value_path || field.key;
+            const lookup = field.lookup || field.key;
 
-            if (property.lookup || property.options) {
+            if (field.lookup) {
                 const value = getObjectValue(entity, valuePath);
                 let refsMap = this.referencesIdMap[lookup];
-                if (property.options) {
-                    refsMap = keyBy<{ _id: Id; [key: string]: any }>(property.options, '_id');
-                }
                 if (refsMap) {
                     if (value) {
                         if (Array.isArray(value)) {
-                            refs[property.key] = value.map((value) => {
+                            refs[field.key] = value.map((value) => {
                                 return refsMap[getIdFromValue(value)];
                             });
                         } else {
-                            refs[property.key] = refsMap[getIdFromValue(value)];
+                            refs[field.key] = refsMap[getIdFromValue(value)];
                         }
                     }
                 }
@@ -66,5 +63,5 @@ export function createReferencesBuilder<TReferences>(
     references: TReferences,
     idKeys?: Partial<ReferenceArrayExtractAllowKeys<TReferences>>
 ) {
-    return new ReferencesBuilder(references, idKeys).build();
+    return new ReferencesBuilder(references, idKeys);
 }

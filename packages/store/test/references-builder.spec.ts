@@ -11,7 +11,7 @@ describe('Store: ReferencesBuilder', () => {
     let refsBuilder: ReferencesBuilder<ReferencesInfo>;
 
     beforeEach(() => {
-        refsBuilder = createReferencesBuilder(responseData.references);
+        refsBuilder = createReferencesBuilder(responseData.references).build();
     });
 
     it('should create referencesBuilder', () => {
@@ -59,7 +59,7 @@ describe('Store: ReferencesBuilder', () => {
     });
 
     it('should attach references', () => {
-        const attachedValue = refsBuilder.attachRefs(responseData.value, property);
+        const attachedValue = refsBuilder.attachRefs(responseData.value, fields);
         expect(attachedValue.refs).toEqual({
             project_id: {
                 _id: '5d52b816ba0092ef66610393',
@@ -68,10 +68,6 @@ describe('Store: ReferencesBuilder', () => {
             sprint_id: {
                 _id: '5d53715d98b51d32cb6a5c75',
                 name: '生命的意义'
-            },
-            risk: {
-                _id: '5cd11b075d68a93340040003',
-                text: '高'
             },
             suite_ids: [
                 {
@@ -99,9 +95,6 @@ const responseData = {
         name: '第一章 一伞之恩',
         project_id: '5d52b816ba0092ef66610393',
         sprint_id: '5d53715d98b51d32cb6a5c75',
-        properties: {
-            risk: '5cd11b075d68a93340040003'
-        },
         suite_ids: ['5eccdb455e57e0c4ce3b7ba5', '62287b4aa942ffb24b59e001'],
         attachments: [
             {
@@ -143,28 +136,9 @@ const responseData = {
     }
 };
 
-const property = [
+const fields = [
     { key: 'project_id', lookup: 'projects' },
     { key: 'sprint_id', lookup: 'sprints' },
-    {
-        name: '风险',
-        value_path: 'properties.risk',
-        key: 'risk',
-        options: [
-            {
-                _id: '5cd11b075d68a93340040003',
-                text: '高'
-            },
-            {
-                _id: '5cd11b075d68a93340040002',
-                text: '中'
-            },
-            {
-                _id: '5cd11b075d68a93340040001',
-                text: '低'
-            }
-        ]
-    },
     {
         key: 'suite_ids',
         lookup: 'suites'
