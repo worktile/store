@@ -1,5 +1,6 @@
 import { InjectionToken } from '@angular/core';
 import { Id as CDKId } from '@tethys/cdk';
+import { MergeReferencesStrategy } from './references';
 
 export const META_KEY = '__THY_META__';
 export const ROOT_STORES_TOKEN = new InjectionToken<any>('ROOT_STORES_TOKEN');
@@ -28,6 +29,7 @@ export interface StoreOptions {
      * @default 20
      */
     instanceMaxCount?: number;
+    mergeReferencesStrategy?: MergeReferencesStrategy;
 }
 
 export type UpdateStatePredicate<State, NewState extends Partial<State> = Partial<State>> = (state: State) => NewState | void;

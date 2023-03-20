@@ -1,0 +1,27 @@
+<header class="header">
+  <h1>Detail Data</h1>
+</header>
+<div *ngIf="detailStore.state$ | async as detailInfo">
+  <h4>标题: {{ detailInfo.title }}</h4>
+  <div>所属: {{ detailInfo.refs.test_library_id.name }}</div>
+  <div>
+    状态:
+    <span [ngStyle]="{ color: detailInfo.refs.state_id._id === 'success-state-id' ? '#73d897' : '' }">
+      {{ detailInfo.refs.state_id.name }}
+    </span>
+  </div>
+  <div>
+    所属模块:
+    <span *ngFor="let item of detailInfo.refs.suite_ids"> {{ item.name }} / </span>
+  </div>
+  <div>负责人: {{ detailInfo.refs.maintenance_uid.name }}</div>
+  <div>
+    参与人: <span *ngFor="let item of detailInfo.refs.canyuren"> {{ item.name }} 、 </span>
+  </div>
+</div>
+
+<button class="dg-btn dg-btn-primary dg-btn-sm mr-20" (click)="addUsers()">添加参与人</button>
+
+<button class="dg-btn dg-btn-primary dg-btn-sm mr-20" (click)="changeState()">完成</button>
+
+<button class="dg-btn dg-btn-danger dg-btn-sm" (click)="reset()">重置</button>
