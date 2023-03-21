@@ -104,16 +104,16 @@ export class ThyStoreCounterExampleComponent implements OnInit {
 ```
 ## 文档
 
-- [介绍](https://tethys-org.github.io/store/guides/intro)
-- [快速开始](https://tethys-org.github.io/store/guides/getting-started)
-- [Store](https://tethys-org.github.io/store/guides/basic/store)
-- [Entity Store](https://tethys-org.github.io/store/guides/advanced/entity-store)
-- [Entity Store with References](https://tethys-org.github.io/store/guides/advanced/entity-store-references)
-- [FAQ](https://tethys-org.github.io/store/guides/faq)
+- [介绍](https://worktile.github.io/store/guides/intro)
+- [快速开始](https://worktile.github.io/store/guides/getting-started)
+- [Store](https://worktile.github.io/store/guides/basic/store)
+- [Entity Store](https://worktile.github.io/store/guides/advanced/entity-store)
+- [Entity Store with References](https://worktile.github.io/store/guides/advanced/entity-store-references)
+- [FAQ](https://worktile.github.io/store/guides/faq)
 
 ## Development
 ```base
-$ git clone https://github.com/tethys-org/store
+$ git clone https://github.com/worktile/store
 $ cd store && yarn
 $ yarn start:docs // open http://localhost:8887
 ```
