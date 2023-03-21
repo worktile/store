@@ -7,6 +7,7 @@ import { Action } from '../action';
 import { Store } from '../store';
 import { StoreFactory } from '../store-factory';
 import { injectStoreForTest, StoreInitialStateToken } from './inject-store';
+import { SafeAny } from '@tethys/store/inner-types';
 
 interface Animal {
     id: number;
@@ -22,6 +23,21 @@ interface FooEntity {
 class ZoomState {
     animals: Animal[];
     foo: FooEntity;
+}
+
+export interface User {
+    _id: string;
+    name: string;
+}
+
+export interface DetailReferences {
+    users?: User[];
+    states?: { _id: string; [key: string]: SafeAny }[];
+}
+
+interface DetailState {
+    _id: string;
+    [key: string]: SafeAny;
 }
 
 @Injectable()
@@ -89,6 +105,114 @@ class ZoomStore extends Store<ZoomState> {
             animals: produce(this.getState().animals).add(animal)
         });
         return animal;
+    }
+}
+
+@Injectable()
+export class DetailStore extends Store<DetailState, DetailReferences> {
+    constructor() {
+        super({});
+    }
+
+    @Action()
+    fetchDetail() {
+        const data = {
+            value: {
+                title: '如何实现骨架屏',
+                maintenance_uid: 'user2',
+                test_library_id: '5d68c672e514ac452594ba44',
+                suite_ids: ['60ecf0c9fe7a7a8d8c2c8ecb', '6368ccf675ec249953b63020'],
+                state_id: 'no-start-state-id'
+            },
+            references: {
+                library: [
+                    {
+                        name: '提升用户体验',
+                        _id: '5d68c672e514ac452594ba44'
+                    }
+                ],
+                suites: [
+                    {
+                        _id: '60ecf0c9fe7a7a8d8c2c8ecb',
+                        name: '其他模块'
+                    },
+                    {
+                        _id: '6368ccf675ec249953b63020',
+                        name: '模块01'
+                    }
+                ],
+                states: [
+                    {
+                        _id: 'no-start-state-id',
+                        name: '未开始'
+                    }
+                ],
+                users: [
+                    { _id: 'user1', name: 'why520crazy' },
+                    { _id: 'user2', name: 'peter' }
+                ],
+                properties: [
+                    {
+                        key: 'test_library_id',
+                        name: '测试库',
+                        value_path: 'test_library_id',
+                        lookup: 'library'
+                    },
+                    {
+                        key: 'suite_ids',
+                        name: '模块',
+                        value_path: 'suite_ids',
+                        lookup: 'suites'
+                    },
+                    {
+                        key: 'state_id',
+                        name: '状态',
+                        value_path: 'state_id',
+                        lookup: 'states'
+                    },
+                    {
+                        key: 'maintenance_uid',
+                        name: '负责人',
+                        value_path: 'maintenance_uid',
+                        lookup: 'users'
+                    }
+                ]
+            }
+        };
+        return of(data).pipe(
+            tap((data) => {
+                this.initializeWithReferences(data.value, data.references, data.references.properties);
+            })
+        );
+    }
+
+    @Action()
+    changeStateAndMaintenance() {
+        const data = {
+            value: {
+                state_id: 'success-state-id',
+                maintenance_uid: 'user3'
+            },
+            references: {
+                states: [
+                    {
+                        _id: 'success-state-id',
+                        name: '完成'
+                    }
+                ],
+                users: [
+                    {
+                        _id: 'user3',
+                        name: '小李'
+                    }
+                ]
+            }
+        };
+        return of(data).pipe(
+            tap((data) => {
+                this.updateWithReferences(data.value, data.references);
+            })
+        );
     }
 }
 
@@ -494,6 +618,71 @@ describe('#store', () => {
             const storeFactory = TestBed.inject(StoreFactory);
             const stores = storeFactory.getStores('ZoomStore');
             expect(stores[0]).toEqual(store);
+        });
+    });
+});
+
+describe('#storeWithReferences', () => {
+    let store: DetailStore;
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [DetailStore]
+        });
+        store = TestBed.inject(DetailStore);
+        store.fetchDetail().subscribe();
+    });
+    it('should get state with refs when initializeWithReferences', () => {
+        expect(store.getState().refs).toEqual({
+            test_library_id: {
+                name: '提升用户体验',
+                _id: '5d68c672e514ac452594ba44'
+            },
+            suite_ids: [
+                {
+                    _id: '60ecf0c9fe7a7a8d8c2c8ecb',
+                    name: '其他模块'
+                },
+                {
+                    _id: '6368ccf675ec249953b63020',
+                    name: '模块01'
+                }
+            ],
+            state_id: {
+                _id: 'no-start-state-id',
+                name: '未开始'
+            },
+            maintenance_uid: {
+                _id: 'user2',
+                name: 'peter'
+            }
+        });
+    });
+
+    it('should get state with newRefs when updateWithReferences', () => {
+        store.changeStateAndMaintenance().subscribe();
+        expect(store.getState().refs).toEqual({
+            test_library_id: {
+                name: '提升用户体验',
+                _id: '5d68c672e514ac452594ba44'
+            },
+            suite_ids: [
+                {
+                    _id: '60ecf0c9fe7a7a8d8c2c8ecb',
+                    name: '其他模块'
+                },
+                {
+                    _id: '6368ccf675ec249953b63020',
+                    name: '模块01'
+                }
+            ],
+            state_id: {
+                _id: 'success-state-id',
+                name: '完成'
+            },
+            maintenance_uid: {
+                _id: 'user3',
+                name: '小李'
+            }
         });
     });
 });

@@ -8,7 +8,8 @@ import {
     mergeReferences,
     MergeReferencesStrategy,
     ReferenceArrayExtractAllowKeys,
-    ReferencesIdDictionary
+    ReferencesIdDictionary,
+    ReferencedField
 } from './references';
 import { Store } from './store';
 import { PaginationInfo, StoreOptions, UpdateStatePredicate } from './types';
@@ -16,7 +17,6 @@ import { coerceArray } from './utils';
 
 export interface EntityStoreOptions<TEntity = unknown, TReferences = unknown> extends ProducerOptions<TEntity>, StoreOptions {
     referencesIdKeys?: ReferenceArrayExtractAllowKeys<TReferences>;
-    mergeReferencesStrategy?: MergeReferencesStrategy;
 }
 
 export interface EntityAddOptions {
@@ -157,11 +157,21 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
      * this.store.initializeWithReferences([Entity, Entity], references: TReferences, pagination: PaginationInfo);
      *
      */
-    initializeWithReferences(entities: TEntity[], references: TReferences, pagination?: PaginationInfo) {
+    initializeWithReferences(state: Partial<TState>, references: TReferences, fields: ReferencedField[]): void;
+    initializeWithReferences(entities: TEntity[], references: TReferences, pagination?: PaginationInfo): void;
+    initializeWithReferences(
+        entities: TEntity[] | Partial<TState>,
+        references: TReferences,
+        paginationOrFields: PaginationInfo | ReferencedField[]
+    ): void {
+        if (!Array.isArray(entities)) {
+            super.initializeWithReferences(entities as Partial<TState>, references, paginationOrFields as ReferencedField[]);
+            return;
+        }
         this.snapshot.references = references;
         this.buildReferencesIdMap();
         this.snapshot.entities = entities || [];
-        this.snapshot.pagination = pagination;
+        this.snapshot.pagination = paginationOrFields as PaginationInfo;
         this.next({ ...this.snapshot });
     }
 
@@ -329,12 +339,29 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
      *   name: 'New Name'
      * }, references);
      */
+    updateWithReferences(state: Partial<TState> | UpdateStatePredicate<TState>, references: TReferences): void;
     updateWithReferences(
         idsOrFn: Id | Id[] | null,
-        newStateOrFn: ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>,
+        newStateOrFn: UpdateStatePredicate<TEntity> | Partial<TEntity>,
         references: TReferences
+    ): void;
+    updateWithReferences(
+        idsOrFnOrState: Partial<TState> | UpdateStatePredicate<TState> | Id | Id[] | null,
+        newStateOrReferences: UpdateStatePredicate<TEntity> | Partial<TEntity> | TReferences,
+        references?: TReferences | null
     ): void {
-        this.updateInternal(idsOrFn, newStateOrFn, references);
+        if (!references) {
+            super.updateWithReferences(
+                idsOrFnOrState as Partial<TState> | UpdateStatePredicate<TState>,
+                newStateOrReferences as TReferences
+            );
+            return;
+        }
+        this.updateInternal(
+            idsOrFnOrState as Id | Id[] | null,
+            newStateOrReferences as ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>,
+            references
+        );
     }
 
     /**

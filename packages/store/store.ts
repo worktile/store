@@ -6,13 +6,15 @@ import { Action } from './action';
 import { StoreMetaInfo } from './inner-types';
 import { InternalDispatcher } from './internals/dispatcher';
 import { InternalStoreFactory } from './internals/internal-store-factory';
+import { ReferencedField } from './references';
+import { createReferencesBuilder, ReferencesBuilder } from './references-builder';
 import { META_KEY, StoreOptions, UpdateStatePredicate } from './types';
 
 /**
  * @dynamic
  */
 @Injectable()
-export class Store<T = unknown> implements Observer<T>, OnDestroy {
+export class Store<T = unknown, TReferences = unknown> implements Observer<T>, OnDestroy {
     private initialStateCache: T;
 
     public state$: BehaviorSubject<T>;
@@ -23,6 +25,10 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
 
     private storeOptions: StoreOptions;
 
+    private refsBuilder: ReferencesBuilder<TReferences>;
+
+    private referencedField: ReferencedField[];
+
     constructor(initialState: Partial<T>, options?: StoreOptions) {
         this.storeOptions = options;
         this.name = this.setName();
@@ -32,6 +38,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
         // https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
         this.initialStateCache = this.cloneInitialState(initialState);
+        this.refsBuilder = createReferencesBuilder({} as TReferences);
         InternalStoreFactory.instance.register(this);
         InternalDispatcher.instance.dispatch(
             this.getStoreInstanceId(),
@@ -137,6 +144,15 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         this.update(fnOrState as Partial<T>);
     }
 
+    initializeWithReferences(state: Partial<T>, references: TReferences, fields: ReferencedField[]): void {
+        this.referencedField = fields;
+        state = this.refsBuilder.build(references).attachRefs(state, fields);
+        this.next({
+            ...this.snapshot,
+            ...state
+        });
+    }
+
     /**
      * Mutated the state of store
      *
@@ -152,21 +168,40 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     update(state: Partial<T>): void;
     update(predicate: UpdateStatePredicate<T>): void;
     update(fnOrState: Partial<T> | UpdateStatePredicate<T>): void {
-        if (isFunction(fnOrState)) {
-            this.next({
+        this.updateStateInternal(fnOrState);
+    }
+
+    private updateStateInternal(newStateOrFn: Partial<T> | UpdateStatePredicate<T>, references?: TReferences) {
+        let state = this.snapshot;
+        if (isFunction(newStateOrFn)) {
+            state = {
                 ...this.snapshot,
-                ...(fnOrState as any)(this.snapshot)
-            });
+                ...(newStateOrFn as any)(this.snapshot)
+            };
         } else {
-            if (isObject(fnOrState)) {
-                this.next({
+            if (isObject(newStateOrFn)) {
+                state = {
                     ...this.snapshot,
-                    ...(fnOrState as T)
-                });
+                    ...(newStateOrFn as T)
+                };
             } else {
-                this.next(fnOrState);
+                state = newStateOrFn;
             }
         }
+        if (references) {
+            if (this.storeOptions?.mergeReferencesStrategy) {
+                this.refsBuilder.merge(references, { strategy: this.storeOptions.mergeReferencesStrategy });
+            } else {
+                this.refsBuilder.merge(references);
+            }
+
+            state = this.refsBuilder.attachRefs(state, this.referencedField);
+        }
+        this.next(state);
+    }
+
+    updateWithReferences(state: Partial<T> | UpdateStatePredicate<T>, references: TReferences = {} as TReferences): void {
+        this.updateStateInternal(state, references);
     }
 
     getState(): T {
