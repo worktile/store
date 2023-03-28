@@ -34,7 +34,8 @@ export interface ActiveState {
 
 export interface EntityState<TEntity, TReferences = unknown> extends ActiveState {
     pagination?: PaginationInfo;
-    entities: TEntity[];
+    entities?: TEntity[];
+    entity?: TEntity;
     references?: TReferences;
 }
 
@@ -47,8 +48,16 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         return this.snapshot.entities;
     }
 
+    get entity() {
+        return this.snapshot.entity;
+    }
+
     entities$ = this.select((state) => {
         return state.entities;
+    });
+
+    entity$ = this.select((state) => {
+        return state.entity;
     });
 
     get activeId(): Id | null {
@@ -90,6 +99,24 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
                 }
                 return newEntity;
             });
+        })
+    );
+
+    entityWithRefs$ = this.entity$.pipe(
+        map((entity) => {
+            if (!entity) {
+                return entity;
+            }
+            const newEntity = { ...entity };
+            if (this['onCombineRefs']) {
+                if (!newEntity['refs']) {
+                    newEntity['refs'] = {};
+                }
+                this['onCombineRefs'](newEntity, this.internalReferencesIdMap, this.snapshot.references);
+            } else {
+                throw new Error(`onCombineRefs is not empty`);
+            }
+            return newEntity;
         })
     );
 
@@ -157,11 +184,17 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
      * this.store.initializeWithReferences([Entity, Entity], references: TReferences, pagination: PaginationInfo);
      *
      */
-    initializeWithReferences(entities: TEntity[], references: TReferences, pagination?: PaginationInfo) {
+    initializeWithReferences(entity: TEntity, references: TReferences): void;
+    initializeWithReferences(entities: TEntity[], references: TReferences, pagination?: PaginationInfo);
+    initializeWithReferences(entities: TEntity | TEntity[], references: TReferences, pagination?: PaginationInfo) {
         this.snapshot.references = references;
         this.buildReferencesIdMap();
-        this.snapshot.entities = entities || [];
-        this.snapshot.pagination = pagination;
+        if (Array.isArray(entities)) {
+            this.snapshot.entities = entities || [];
+            this.snapshot.pagination = pagination;
+        } else {
+            this.snapshot.entity = entities || ({} as TEntity);
+        }
         this.next({ ...this.snapshot });
     }
 
@@ -254,17 +287,23 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         newStateOrFn: ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>,
         references?: TReferences
     ): void {
-        const ids = coerceArray(idsOrFn);
-
         const state = this.snapshot;
-        for (let i = 0; i < state.entities.length; i++) {
-            const oldEntity = state.entities[i];
-            if (ids.includes(oldEntity[this.options.idKey] as any)) {
-                const newState = isFunction(newStateOrFn) ? (newStateOrFn as any)(oldEntity) : newStateOrFn;
-                state.entities[i] = { ...(oldEntity as any), ...newState };
+        if (idsOrFn) {
+            const ids = coerceArray(idsOrFn);
+            for (let i = 0; i < state.entities.length; i++) {
+                const oldEntity = state.entities[i];
+                if (ids.includes(oldEntity[this.options.idKey] as any)) {
+                    const newState = isFunction(newStateOrFn) ? (newStateOrFn as any)(oldEntity) : newStateOrFn;
+                    state.entities[i] = { ...(oldEntity as any), ...newState };
+                }
             }
+            state.entities = [...state.entities];
+        } else {
+            const oldEntity = state.entity;
+            const newState = isFunction(newStateOrFn) ? (newStateOrFn as any)(oldEntity) : newStateOrFn;
+            state.entity = { ...(oldEntity as any), ...newState };
         }
-        state.entities = [...state.entities];
+
         if (state.references) {
             mergeReferences(state.references, references, this.options.referencesIdKeys, {
                 strategy: this.options.mergeReferencesStrategy
@@ -329,12 +368,30 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
      *   name: 'New Name'
      * }, references);
      */
+    updateWithReferences(newStateOrFn: ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>, references: TReferences): void;
     updateWithReferences(
         idsOrFn: Id | Id[] | null,
         newStateOrFn: ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>,
         references: TReferences
+    ): void;
+    updateWithReferences(
+        idsOrFnOrState: Id | Id[] | null | ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>,
+        newStateOrFnOrReferences: ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity> | TReferences,
+        references?: TReferences
     ): void {
-        this.updateInternal(idsOrFn, newStateOrFn, references);
+        if (references) {
+            this.updateInternal(
+                idsOrFnOrState as Id | Id[] | null,
+                newStateOrFnOrReferences as ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>,
+                references
+            );
+        } else {
+            this.updateInternal(
+                null,
+                idsOrFnOrState as ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>,
+                newStateOrFnOrReferences as TReferences
+            );
+        }
     }
 
     /**
@@ -369,6 +426,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     clear() {
         const state = this.snapshot;
         state.entities = [];
+        state.entity = {} as TEntity;
         state.pagination = null;
         state.references = null;
         this.next(state);

@@ -1,0 +1,26 @@
+<header class="header">
+  <h1>Detail Data</h1>
+</header>
+<div *ngIf="detailStore.entityWithRefs$ | async as detailInfo">
+  <h4>标题: {{ detailInfo.title }}</h4>
+  <p>所属父元素: {{ detailInfo?.refs?.test_library?.name }}</p>
+  <p>
+    状态:
+    <span [ngStyle]="{ color: detailInfo?.refs?.state?._id === 'success-state-id' ? '#73d897' : '' }">
+      {{ detailInfo.refs?.state?.name }}
+    </span>
+  </p>
+  <p>
+    所属模块:
+    <span *ngFor="let item of detailInfo.refs?.suites"> {{ item?.name }} / </span>
+  </p>
+  <p>负责人: {{ detailInfo.refs?.maintenance?.name }}</p>
+</div>
+
+<button class="dg-btn dg-btn-primary dg-btn-sm mr-20" (click)="changeLibrary()">修改父元素</button>
+
+<button class="dg-btn dg-btn-primary dg-btn-sm mr-20" (click)="changeState()">完成</button>
+
+<button class="dg-btn dg-btn-danger dg-btn-sm" (click)="reset()">重置</button>
+
+<button class="dg-btn dg-btn-danger dg-btn-sm" (click)="clear()">清空</button>
