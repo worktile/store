@@ -21,11 +21,19 @@ export class ThyStoreDetailExampleComponent implements OnInit {
         this.detailStore.updateLibrary();
     }
 
+    changeTitle(): void {
+        this.detailStore.updateTitle();
+    }
+
     reset(): void {
         this.detailStore.resetDetail();
     }
 
     clear(): void {
         this.detailStore.clear();
+    }
+
+    addEntity(): void {
+        this.detailStore.addEntity();
     }
 }

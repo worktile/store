@@ -611,6 +611,7 @@ describe('Store: EntityStore with refs', () => {
                 name: 'group-4 name'
             };
             taskDetailStore.updateWithReferences(
+                taskDetailStore.entity._id,
                 {
                     title: 'new 1 task',
                     group_id: 'group-4'

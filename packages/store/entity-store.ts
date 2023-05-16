@@ -44,6 +44,8 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
 
     private internalReferencesIdMap: ReferencesIdDictionary<TReferences>;
 
+    private isSingleEntity: boolean;
+
     get entities() {
         return this.snapshot.entities;
     }
@@ -86,20 +88,9 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
             if (!entities) {
                 return entities;
             }
-            return entities.map((entity) => {
-                const newEntity = { ...entity };
-
-                if (this['onCombineRefs']) {
-                    if (!newEntity['refs']) {
-                        newEntity['refs'] = {};
-                    }
-                    this['onCombineRefs'](newEntity, this.internalReferencesIdMap, this.snapshot.references);
-                } else {
-                    throw new Error(`onCombineRefs is not empty`);
-                }
-                return newEntity;
-            });
-        })
+            return entities.map((entity) => this.buildRefs(entity));
+        }),
+        shareReplay(1)
     );
 
     entityWithRefs$ = this.entity$.pipe(
@@ -107,18 +98,23 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
             if (!entity) {
                 return entity;
             }
-            const newEntity = { ...entity };
-            if (this['onCombineRefs']) {
-                if (!newEntity['refs']) {
-                    newEntity['refs'] = {};
-                }
-                this['onCombineRefs'](newEntity, this.internalReferencesIdMap, this.snapshot.references);
-            } else {
-                throw new Error(`onCombineRefs is not empty`);
-            }
-            return newEntity;
-        })
+            return this.buildRefs(entity);
+        }),
+        shareReplay(1)
     );
+
+    private buildRefs(entity: TEntity) {
+        const newEntity = { ...entity };
+        if (this['onCombineRefs']) {
+            if (!newEntity['refs']) {
+                newEntity['refs'] = {};
+            }
+            this['onCombineRefs'](newEntity, this.internalReferencesIdMap, this.snapshot.references);
+        } else {
+            throw new Error(`onCombineRefs is not empty`);
+        }
+        return newEntity;
+    }
 
     private resetPagination(pagination: PaginationInfo, count: number) {
         pagination.count = count;
@@ -170,9 +166,18 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
      * this.store.initialize([Entity, Entity], pagination: PaginationInfo);
      *
      */
-    initialize(entities: TEntity[], pagination?: PaginationInfo) {
-        this.snapshot.entities = entities || [];
-        this.snapshot.pagination = pagination;
+
+    initialize(entity: TEntity): void;
+    initialize(entities: TEntity[], pagination?: PaginationInfo);
+    initialize(entityOrEntities: TEntity | TEntity[], pagination?: PaginationInfo) {
+        if (Array.isArray(entityOrEntities)) {
+            this.isSingleEntity = false;
+            this.snapshot.entities = entityOrEntities || [];
+            this.snapshot.pagination = pagination;
+        } else {
+            this.isSingleEntity = true;
+            this.snapshot.entity = entityOrEntities as TEntity as TEntity;
+        }
         this.next({ ...this.snapshot });
     }
 
@@ -186,14 +191,16 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
      */
     initializeWithReferences(entity: TEntity, references: TReferences): void;
     initializeWithReferences(entities: TEntity[], references: TReferences, pagination?: PaginationInfo);
-    initializeWithReferences(entities: TEntity | TEntity[], references: TReferences, pagination?: PaginationInfo) {
+    initializeWithReferences(entityOrEntities: TEntity | TEntity[], references: TReferences, pagination?: PaginationInfo) {
         this.snapshot.references = references;
         this.buildReferencesIdMap();
-        if (Array.isArray(entities)) {
-            this.snapshot.entities = entities || [];
+        if (Array.isArray(entityOrEntities)) {
+            this.isSingleEntity = false;
+            this.snapshot.entities = entityOrEntities || [];
             this.snapshot.pagination = pagination;
         } else {
-            this.snapshot.entity = entities || ({} as TEntity);
+            this.isSingleEntity = true;
+            this.snapshot.entity = (entityOrEntities || {}) as TEntity;
         }
         this.next({ ...this.snapshot });
     }
@@ -205,6 +212,9 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
      * @param addOptions
      */
     private addInternal(entity: TEntity | TEntity[], references?: Partial<TReferences>, addOptions?: EntityAddOptions) {
+        if (this.isSingleEntity) {
+            throw new Error(`single entity can not add`);
+        }
         const addEntities = coerceArray(entity);
         if (addEntities.length === 0) {
             return;
@@ -281,15 +291,18 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
      */
     private updateInternal(
         idsOrFn: Id | Id[] | null,
-        // | Partial<TState>
-        // | ((state: Readonly<TState>) => Partial<TState>)
-        // | ((entity: Readonly<TEntity>) => boolean),
         newStateOrFn: ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>,
         references?: TReferences
     ): void {
         const state = this.snapshot;
-        if (idsOrFn) {
-            const ids = coerceArray(idsOrFn);
+        const ids = coerceArray(idsOrFn);
+        if (this.isSingleEntity) {
+            const oldEntity = state.entity;
+            if (ids.includes(oldEntity[this.options.idKey] as any)) {
+                const newState = isFunction(newStateOrFn) ? (newStateOrFn as any)(oldEntity) : newStateOrFn;
+                state.entity = { ...(oldEntity as any), ...newState };
+            }
+        } else {
             for (let i = 0; i < state.entities.length; i++) {
                 const oldEntity = state.entities[i];
                 if (ids.includes(oldEntity[this.options.idKey] as any)) {
@@ -298,10 +311,6 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
                 }
             }
             state.entities = [...state.entities];
-        } else {
-            const oldEntity = state.entity;
-            const newState = isFunction(newStateOrFn) ? (newStateOrFn as any)(oldEntity) : newStateOrFn;
-            state.entity = { ...(oldEntity as any), ...newState };
         }
 
         if (state.references) {
@@ -368,30 +377,12 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
      *   name: 'New Name'
      * }, references);
      */
-    updateWithReferences(newStateOrFn: ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>, references: TReferences): void;
     updateWithReferences(
         idsOrFn: Id | Id[] | null,
         newStateOrFn: ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>,
         references: TReferences
-    ): void;
-    updateWithReferences(
-        idsOrFnOrState: Id | Id[] | null | ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>,
-        newStateOrFnOrReferences: ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity> | TReferences,
-        references?: TReferences
-    ): void {
-        if (references) {
-            this.updateInternal(
-                idsOrFnOrState as Id | Id[] | null,
-                newStateOrFnOrReferences as ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>,
-                references
-            );
-        } else {
-            this.updateInternal(
-                null,
-                idsOrFnOrState as ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>,
-                newStateOrFnOrReferences as TReferences
-            );
-        }
+    ) {
+        this.updateInternal(idsOrFn, newStateOrFn, references);
     }
 
     /**
@@ -406,6 +397,9 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     remove(id: Id | Id[]): void;
     remove(predicate: (entity: Readonly<TEntity>) => boolean): void;
     remove(idsOrFn?: Id | Id[] | ((entity: Readonly<TEntity>) => boolean)): void {
+        if (this.isSingleEntity) {
+            throw new Error(`single entity can't remove`);
+        }
         const state = this.snapshot;
         const originalLength = state.entities.length;
         state.entities = produce(state.entities, this.options).remove(idsOrFn as Id | Id[]);
@@ -433,10 +427,14 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     }
 
     private getEntityById(id: Id): TEntity | null {
-        const entity = this.snapshot.entities.find((entity) => {
-            return (entity[this.options.idKey] as any) === id;
-        });
-        return entity ? entity : null;
+        if (this.isSingleEntity) {
+            return (this.snapshot.entity[this.options.idKey] as any) === id ? this.snapshot.entity : null;
+        } else {
+            const entity = this.snapshot.entities.find((entity) => {
+                return (entity[this.options.idKey] as any) === id;
+            });
+            return entity ? entity : null;
+        }
     }
 
     @Action()

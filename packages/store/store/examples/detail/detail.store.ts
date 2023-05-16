@@ -95,6 +95,7 @@ export class DetailStore
     @Action()
     updateLibrary() {
         this.updateWithReferences(
+            this.entity._id,
             {
                 test_library_id: 'update-test-library-id'
             },
@@ -112,6 +113,7 @@ export class DetailStore
     @Action()
     updateState() {
         this.updateWithReferences(
+            this.entity._id,
             { state_id: 'success-state-id' },
             {
                 states: [
@@ -127,6 +129,7 @@ export class DetailStore
     @Action()
     resetDetail() {
         this.updateWithReferences(
+            this.entity._id,
             (entity: DetailInfo) => {
                 return { ...entity, ...responseData.value };
             },
@@ -134,5 +137,15 @@ export class DetailStore
                 ...responseData.references
             }
         );
+    }
+
+    @Action()
+    updateTitle() {
+        this.update(this.entity._id, { title: '新的title' });
+    }
+
+    @Action()
+    addEntity() {
+        this.add({ _id: '123', title: '新的title' });
     }
 }
