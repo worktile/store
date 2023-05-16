@@ -176,7 +176,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
             this.snapshot.pagination = pagination;
         } else {
             this.isSingleEntity = true;
-            this.snapshot.entity = entityOrEntities as TEntity as TEntity;
+            this.snapshot.entity = (entityOrEntities || {}) as TEntity;
         }
         this.next({ ...this.snapshot });
     }
@@ -298,16 +298,16 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         const ids = coerceArray(idsOrFn);
         if (this.isSingleEntity) {
             const oldEntity = state.entity;
-            if (ids.includes(oldEntity[this.options.idKey] as any)) {
+            if (ids.includes(oldEntity[this.options.idKey] as Id)) {
                 const newState = isFunction(newStateOrFn) ? (newStateOrFn as any)(oldEntity) : newStateOrFn;
-                state.entity = { ...(oldEntity as any), ...newState };
+                state.entity = { ...oldEntity, ...newState };
             }
         } else {
             for (let i = 0; i < state.entities.length; i++) {
                 const oldEntity = state.entities[i];
-                if (ids.includes(oldEntity[this.options.idKey] as any)) {
+                if (ids.includes(oldEntity[this.options.idKey] as Id)) {
                     const newState = isFunction(newStateOrFn) ? (newStateOrFn as any)(oldEntity) : newStateOrFn;
-                    state.entities[i] = { ...(oldEntity as any), ...newState };
+                    state.entities[i] = { ...oldEntity, ...newState };
                 }
             }
             state.entities = [...state.entities];
@@ -381,7 +381,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         idsOrFn: Id | Id[] | null,
         newStateOrFn: ((entity: Readonly<TEntity>) => Partial<TEntity>) | Partial<TEntity>,
         references: TReferences
-    ) {
+    ): void {
         this.updateInternal(idsOrFn, newStateOrFn, references);
     }
 
@@ -428,10 +428,10 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
 
     private getEntityById(id: Id): TEntity | null {
         if (this.isSingleEntity) {
-            return (this.snapshot.entity[this.options.idKey] as any) === id ? this.snapshot.entity : null;
+            return (this.snapshot.entity[this.options.idKey] as Id) === id ? this.snapshot.entity : null;
         } else {
             const entity = this.snapshot.entities.find((entity) => {
-                return (entity[this.options.idKey] as any) === id;
+                return (entity[this.options.idKey] as Id) === id;
             });
             return entity ? entity : null;
         }
