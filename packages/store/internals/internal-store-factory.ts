@@ -2,6 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Store } from '../store';
 import { coerceArray } from '../utils';
+import { newWeakRef, WeakRef } from '../weak-ref';
 
 @Injectable()
 export class InternalStoreFactory implements OnDestroy {
@@ -19,7 +20,7 @@ export class InternalStoreFactory implements OnDestroy {
     public state$ = new Subject<{ storeId: string; state: unknown }>();
 
     register(store: Store) {
-        this.storeInstancesMap.set(store.getStoreInstanceId(), new WeakRef(store));
+        this.storeInstancesMap.set(store.getStoreInstanceId(), newWeakRef(store));
     }
 
     unregister(store: Store) {
