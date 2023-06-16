@@ -2,14 +2,14 @@ import { SafeAny } from './inner-types';
 import { Id } from '@tethys/cdk';
 import { keyBy, indexKeyBy } from './utils';
 
-// 抽取数据中的Item类型，不是数组直接返回对象的类型
+// 抽取数据中的 Item 类型，不是数组直接返回对象的类型
 export type ArrayInferExtract<T> = T extends Array<infer P> ? P : T;
 export type ArrayAlwaysExtract<T> = T extends Array<infer P> ? P : never;
 // 抽取 References 中 Object 类型, 如果是数组取数组 Item 类型
 export type ReferenceObjectExtract<T> = {
     [key in keyof T]: ArrayInferExtract<T[key]> extends object ? ArrayInferExtract<T[key]> : never;
 };
-// 收取 References 中所有的属性 Names，如果ArrayInferExtract不是对象，返回 never
+// 抽取 References 中所有的属性 Names，如果 ArrayInferExtract 不是对象，返回 never
 export type ReferenceExtractNames<T> = { [key in keyof T]: ArrayInferExtract<T[key]> extends object ? key : never };
 export type ReferenceArrayExtractNames<T> = { [key in keyof T]: T[key] extends Array<object> ? key : never };
 // 排除 ReferenceExtractNames 抽取 Names 中的 never，只保留是对象的 Names
