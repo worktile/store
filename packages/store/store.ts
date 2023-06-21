@@ -1,6 +1,6 @@
 import { Injectable, isDevMode, OnDestroy } from '@angular/core';
 import { isFunction, isNumber, isObject } from '@tethys/cdk/is';
-import { BehaviorSubject, from, Observable, Observer, Subscription } from 'rxjs';
+import { BehaviorSubject, from, Observable, Observer, Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { Action } from './action';
 import { StoreMetaInfo } from './inner-types';
