@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [15.1.0](https://github.com/worktile/store/compare/v15.0.0...v15.1.0) (2023-07-08)
+
+
+### Bug Fixes
+
+* add compatible for WeakRef ([518a5bc](https://github.com/worktile/store/commit/518a5bcc011923d1a2c6b60c76d944b46811d2a7))
+* fix readme link ([d1d9706](https://github.com/worktile/store/commit/d1d970676ee74627c4622e2bc22bb1ced02be965))
+
+
+### Features
+
+* develop form plugin ([a048249](https://github.com/worktile/store/commit/a0482499a4dbc0c6890b7b996d3d7e521d1477eb))
+* **store:** support auto unregister store #INFR-6873 ([#110](https://github.com/worktile/store/issues/110)) ([648cb85](https://github.com/worktile/store/commit/648cb85a31cccdb6bcf0dedec626c9d04f838ecb)), closes [#INFR-6873](https://github.com/worktile/store/issues/INFR-6873)
+* support Object type entity with references in EntityStore ([#116](https://github.com/worktile/store/issues/116)) ([2314b45](https://github.com/worktile/store/commit/2314b459ce15c75fef2fb76972d0c3166af31409))
+* support references builder #INFR-6930 ([#111](https://github.com/worktile/store/issues/111)) ([1369689](https://github.com/worktile/store/commit/1369689ece75f472b46a6a7fb31cc8a55ac3c906)), closes [#INFR-6930](https://github.com/worktile/store/issues/INFR-6930)
+
+
+
 # [15.0.0](https://github.com/worktile/store/compare/v15.0.0-next.0...v15.0.0) (2023-03-09)
 
 ### Features
