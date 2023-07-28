@@ -75,10 +75,10 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     }
 
     activeEntity$: Observable<TEntity | null> = this.select((state) => {
-        return state.activeId;
+        return state.entities.find((entity) => entity[this.options.idKey] === state.activeId);
     }).pipe(
-        map((id) => {
-            return id ? this.getEntityById(id) : null;
+        map((entity: TEntity) => {
+            return entity || null;
         }),
         shareReplay()
     );

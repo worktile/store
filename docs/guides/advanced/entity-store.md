@@ -139,7 +139,7 @@ this.store.clear();
 ## active
 可以通过`store.activeId$`获取当前选中的实体 Id 流，通过`store.activeId`获取当前选中的实体 Id 快照。
 
-也可以通过`store.activeEntity$`获取当前选中的实体数据流，通过`store.activeEntity`获取当前选中的实体数据快照。
+也可以通过`store.activeEntity$`获取当前选中的实体数据流（该实体内属性变化也会触发，如果只想监听选中状态变化，使用`store.activeId$`），通过`store.activeEntity`获取当前选中的实体数据快照。
 
 使用`setActive`函数设置/清空当前选中实体数据。
 ```ts

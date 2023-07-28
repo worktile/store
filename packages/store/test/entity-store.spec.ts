@@ -1,8 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
 import { produce } from '@tethys/cdk/immutable';
 import { EntityState, EntityStore, EntityStoreOptions } from '../entity-store';
-import { injectStoreForTest, StoreInitialStateToken, StoreOptionsToken } from './inject-store';
+import { StoreInitialStateToken, StoreOptionsToken, injectStoreForTest } from './inject-store';
 
 describe('Store: EntityStore', () => {
     interface TaskInfo {
@@ -510,8 +509,21 @@ describe('Store: EntityStore', () => {
 
                 tasksEntityStore.setActive('1');
                 expect(tasksEntityStore.activeEntity).toEqual({ _id: '1', name: 'task 1' });
-                tasksEntityStore.activeEntity$.subscribe((id) => {
-                    expect(id).toEqual({ _id: '1', name: 'task 1' });
+                tasksEntityStore.activeEntity$.subscribe((entity) => {
+                    expect(entity).toEqual({ _id: '1', name: 'task 1' });
+                });
+            });
+
+            it('should get entity by update', async () => {
+                const tasksEntityStore = injectStoreForTest(TasksEntityStore, {
+                    entities: [...initialTasks]
+                });
+                tasksEntityStore.setActive('1');
+                tasksEntityStore.update('1', {
+                    name: 'task 3'
+                });
+                tasksEntityStore.activeEntity$.subscribe((entity) => {
+                    expect(entity).toEqual({ _id: '1', name: 'task 3' });
                 });
             });
 

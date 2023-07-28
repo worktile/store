@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Id } from '@tethys/cdk/immutable';
 import { Action, EntityState, EntityStore } from '@tethys/store';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -7,6 +6,7 @@ import { tap } from 'rxjs/operators';
 export interface ActiveItem {
     id: number;
     title: string;
+    editing?: boolean;
 }
 
 interface ActiveItemsState extends EntityState<ActiveItem> {}
@@ -38,6 +38,14 @@ export class ActiveItemsStore extends EntityStore<ActiveItemsState, ActiveItem> 
                 this.initialize(items);
             })
         );
+    }
+
+    @Action()
+    updateItem(item: ActiveItem, title: string) {
+        this.update(item.id, {
+            editing: false,
+            title: title
+        });
     }
 }
 

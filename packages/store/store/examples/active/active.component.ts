@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActiveItemsStore } from './active.store';
+import { ActiveItem, ActiveItemsStore } from './active.store';
 
 @Component({
     selector: 'thy-store-active-example',
@@ -25,5 +25,22 @@ export class ThyStoreActiveItemsExampleComponent implements OnInit {
 
     clearActiveItem() {
         this.activeItemsStore.setActive();
+    }
+
+    edit(item: ActiveItem) {
+        item.editing = true;
+    }
+
+    update(item: ActiveItem, newTitle: string) {
+        this.activeItemsStore.updateItem(item, newTitle);
+    }
+
+    stopEditing(item: ActiveItem, editedTitle: string) {
+        item.title = editedTitle;
+        item.editing = false;
+    }
+
+    cancelEditing(item: ActiveItem) {
+        item.editing = false;
     }
 }

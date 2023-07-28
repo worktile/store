@@ -60,6 +60,24 @@ button {
     }
 }
 
+.item-list li.editing {
+    border-bottom: none;
+    padding: 0;
+}
+
+.item-list li.editing .edit {
+    display: block;
+    width: calc(100% - 120px);
+    padding: 12px 16px;
+    margin: 0 0 0 60px;
+    font-size: 24px;
+    box-sizing: border-box;
+}
+
+.item-list li.editing .view {
+    display: none;
+}
+
 .footer {
     padding: 10px 15px;
     height: 20px;
