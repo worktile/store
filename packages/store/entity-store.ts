@@ -80,7 +80,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         map((entity: TEntity) => {
             return entity || null;
         }),
-        shareReplay()
+        shareReplay(1)
     );
 
     entitiesWithRefs$ = this.entities$.pipe(

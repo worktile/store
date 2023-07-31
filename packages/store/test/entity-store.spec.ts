@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { produce } from '@tethys/cdk/immutable';
+import { first } from 'rxjs/operators';
 import { EntityState, EntityStore, EntityStoreOptions } from '../entity-store';
 import { StoreInitialStateToken, StoreOptionsToken, injectStoreForTest } from './inject-store';
 
@@ -507,8 +508,11 @@ describe('Store: EntityStore', () => {
                     entities: [...initialTasks]
                 });
 
-                tasksEntityStore.setActive('1');
-                expect(tasksEntityStore.activeEntity).toEqual({ _id: '1', name: 'task 1' });
+                tasksEntityStore.activeEntity$.pipe(first()).subscribe((entity) => {
+                    expect(entity).toEqual(null);
+                    tasksEntityStore.setActive('1');
+                });
+
                 tasksEntityStore.activeEntity$.subscribe((entity) => {
                     expect(entity).toEqual({ _id: '1', name: 'task 1' });
                 });
@@ -518,10 +522,15 @@ describe('Store: EntityStore', () => {
                 const tasksEntityStore = injectStoreForTest(TasksEntityStore, {
                     entities: [...initialTasks]
                 });
-                tasksEntityStore.setActive('1');
-                tasksEntityStore.update('1', {
-                    name: 'task 3'
+
+                tasksEntityStore.activeEntity$.pipe(first()).subscribe((entity) => {
+                    expect(entity).toEqual(null);
+                    tasksEntityStore.setActive('1');
+                    tasksEntityStore.update('1', {
+                        name: 'task 3'
+                    });
                 });
+
                 tasksEntityStore.activeEntity$.subscribe((entity) => {
                     expect(entity).toEqual({ _id: '1', name: 'task 3' });
                 });
