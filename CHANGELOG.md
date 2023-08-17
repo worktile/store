@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [16.0.0-next.1](https://github.com/worktile/store/compare/v16.0.0-next.0...v16.0.0-next.1) (2023-08-17)
+
+
+### Features
+
+* update @tethys/cdk of dependencies to 16.0.0-next.0 ([16eea81](https://github.com/worktile/store/commit/16eea81c644b34726dfe6a945f264f2b5702ed56))
+
+
+
 # [16.0.0-next.0](https://github.com/worktile/store/compare/v15.1.0...v16.0.0-next.0) (2023-08-15)
 
 
