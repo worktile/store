@@ -258,10 +258,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/cdk@^15.1.2":
-  version "15.1.2"
-  resolved "https://registry.npmjs.org/@angular/cdk/-/cdk-15.1.2.tgz#be0b7c5b6fa093e77a9153b7e7120210b48b85b9"
-  integrity sha512-LO3b/akdcPaRwSa+rbrI02THwQm+O4Z3rDIvbDTHyCf3Vmk3p7gsp8WtKAMMJlkCF88VQ3Wh4ZZcfNAtbVO7EA==
+"@angular/cdk@^16.2.1":
+  version "16.2.1"
+  resolved "https://registry.npmjs.org/@angular/cdk/-/cdk-16.2.1.tgz#f191e16d36881a9d53e0ba461104457c68f36324"
+  integrity sha512-rRVdAdfuQ34Eq7na/q2SIO6Me2p/rtU2zeQOW6wrNf6KJfWSTbU6RvNw09cDygAQLp/WmwQvWLhkjWNWGDSf0w==
   dependencies:
     tslib "^2.3.0"
   optionalDependencies:
@@ -2776,10 +2776,10 @@
   resolved "https://registry.npmjs.org/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
-"@tethys/cdk@^16.0.0@next":
-  version "16.0.0-next.0"
-  resolved "https://registry.npmjs.org/@tethys/cdk/-/cdk-16.0.0-next.0.tgz#a01f3fe93d8fe29a6abb70f0797d618b5c1a13c2"
-  integrity sha512-uKvNBic8vQsToQ7CAbRDu2yw7D08CsbpEOXYZUz6CiUPV7lDdtyKT+9BrtiUY7crQYwIRxVJxuEiGT0sQm+K/A==
+"@tethys/cdk@^16.0.0":
+  version "16.0.0"
+  resolved "https://registry.npmjs.org/@tethys/cdk/-/cdk-16.0.0.tgz#7651689d7f4b3fce70cbfafdcc35c183b4926bf1"
+  integrity sha512-q1BFQV8i3YbUFOM/IUffPZJ0HbhP8ohwORtNlidH19uiyo95JZk81/zXPTXSlY1yhygtPjF8vGymKWi2S+8n/Q==
   dependencies:
     tslib "^2.3.0"
 
