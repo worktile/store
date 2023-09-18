@@ -506,7 +506,6 @@ describe('Store: EntityStore', () => {
                 const tasksEntityStore = injectStoreForTest(TasksEntityStore, {
                     entities: [...initialTasks]
                 });
-
                 let activeEntity: TaskInfo;
                 tasksEntityStore.activeEntity$.subscribe((entity) => {
                     activeEntity = entity;
@@ -528,7 +527,6 @@ describe('Store: EntityStore', () => {
                 const tasksEntityStore = injectStoreForTest(TasksEntityStore, {
                     entities: [...initialTasks]
                 });
-
                 let activeEntity: TaskInfo;
                 tasksEntityStore.activeEntity$.subscribe((entity) => {
                     activeEntity = entity;
