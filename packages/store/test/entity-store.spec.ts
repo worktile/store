@@ -508,14 +508,18 @@ describe('Store: EntityStore', () => {
                     entities: [...initialTasks]
                 });
 
+                let firstEntity: TaskInfo;
                 tasksEntityStore.activeEntity$.pipe(first()).subscribe((entity) => {
-                    expect(entity).toEqual(null);
+                    firstEntity = entity;
                     tasksEntityStore.setActive('1');
                 });
+                expect(firstEntity).toEqual(null);
 
+                let otherEntity: TaskInfo;
                 tasksEntityStore.activeEntity$.subscribe((entity) => {
-                    expect(entity).toEqual({ _id: '1', name: 'task 1' });
+                    otherEntity = entity;
                 });
+                expect(otherEntity).toEqual({ _id: '1', name: 'task 1' });
             });
 
             it('should get entity by update', async () => {
@@ -523,17 +527,21 @@ describe('Store: EntityStore', () => {
                     entities: [...initialTasks]
                 });
 
+                let firstEntity: TaskInfo;
                 tasksEntityStore.activeEntity$.pipe(first()).subscribe((entity) => {
-                    expect(entity).toEqual(null);
+                    firstEntity = entity;
                     tasksEntityStore.setActive('1');
                     tasksEntityStore.update('1', {
                         name: 'task 3'
                     });
                 });
+                expect(firstEntity).toEqual(null);
 
+                let otherEntity: TaskInfo;
                 tasksEntityStore.activeEntity$.subscribe((entity) => {
-                    expect(entity).toEqual({ _id: '1', name: 'task 3' });
+                    otherEntity = entity;
                 });
+                expect(otherEntity).toEqual({ _id: '1', name: 'task 3' });
             });
 
             it('should clear active id and entity', () => {
