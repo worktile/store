@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [16.0.0](https://github.com/worktile/store/compare/v16.0.0-next.1...v16.0.0) (2023-08-24)
+
+
+
+# [16.0.0-next.1](https://github.com/worktile/store/compare/v16.0.0-next.0...v16.0.0-next.1) (2023-08-17)
+
+
+### Features
+
+* update @tethys/cdk of dependencies to 16.0.0-next.0 ([16eea81](https://github.com/worktile/store/commit/16eea81c644b34726dfe6a945f264f2b5702ed56))
+
+
+
+# [16.0.0-next.0](https://github.com/worktile/store/compare/v15.1.0...v16.0.0-next.0) (2023-08-15)
+
+
+### Features
+
+* upgrade ng to 16 ([#126](https://github.com/worktile/store/issues/126)) ([c5afdda](https://github.com/worktile/store/commit/c5afddadcc7f333f6152c7e47b2b46759a92062b))
+
+
+
 # [15.1.0](https://github.com/worktile/store/compare/v15.0.0...v15.1.0) (2023-07-08)
 
 
