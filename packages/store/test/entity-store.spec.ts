@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
 import { produce } from '@tethys/cdk/immutable';
-import { first } from 'rxjs/operators';
 import { EntityState, EntityStore, EntityStoreOptions } from '../entity-store';
 import { StoreInitialStateToken, StoreOptionsToken, injectStoreForTest } from './inject-store';
 
@@ -508,18 +507,21 @@ describe('Store: EntityStore', () => {
                     entities: [...initialTasks]
                 });
 
-                let firstEntity: TaskInfo;
-                tasksEntityStore.activeEntity$.pipe(first()).subscribe((entity) => {
-                    firstEntity = entity;
-                    tasksEntityStore.setActive('1');
-                });
-                expect(firstEntity).toEqual(null);
-
-                let otherEntity: TaskInfo;
+                let activeEntity: TaskInfo;
                 tasksEntityStore.activeEntity$.subscribe((entity) => {
-                    otherEntity = entity;
+                    activeEntity = entity;
                 });
-                expect(otherEntity).toEqual({ _id: '1', name: 'task 1' });
+                expect(activeEntity).toEqual(null);
+                tasksEntityStore.setActive('1');
+                expect(activeEntity).toEqual({ _id: '1', name: 'task 1' });
+                // 订阅的时候已经存在 active 的场景
+                let activeEntityAfterSubscribe: TaskInfo;
+                tasksEntityStore.activeEntity$.subscribe((entity) => {
+                    activeEntityAfterSubscribe = entity;
+                });
+                expect(activeEntityAfterSubscribe).toEqual({ _id: '1', name: 'task 1' });
+                tasksEntityStore.setActive('not-found-id');
+                expect(activeEntity).toEqual(null);
             });
 
             it('should get entity by update', async () => {
@@ -527,21 +529,17 @@ describe('Store: EntityStore', () => {
                     entities: [...initialTasks]
                 });
 
-                let firstEntity: TaskInfo;
-                tasksEntityStore.activeEntity$.pipe(first()).subscribe((entity) => {
-                    firstEntity = entity;
-                    tasksEntityStore.setActive('1');
-                    tasksEntityStore.update('1', {
-                        name: 'task 3'
-                    });
-                });
-                expect(firstEntity).toEqual(null);
-
-                let otherEntity: TaskInfo;
+                let activeEntity: TaskInfo;
                 tasksEntityStore.activeEntity$.subscribe((entity) => {
-                    otherEntity = entity;
+                    activeEntity = entity;
                 });
-                expect(otherEntity).toEqual({ _id: '1', name: 'task 3' });
+                expect(activeEntity).toEqual(null);
+                tasksEntityStore.setActive('1');
+                expect(activeEntity).toEqual({ _id: '1', name: 'task 1' });
+                tasksEntityStore.update('1', {
+                    name: 'task 3'
+                });
+                expect(activeEntity).toEqual({ _id: '1', name: 'task 3' });
             });
 
             it('should clear active id and entity', () => {
