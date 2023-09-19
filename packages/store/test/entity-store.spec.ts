@@ -1,8 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
 import { produce } from '@tethys/cdk/immutable';
 import { EntityState, EntityStore, EntityStoreOptions } from '../entity-store';
-import { injectStoreForTest, StoreInitialStateToken, StoreOptionsToken } from './inject-store';
+import { StoreInitialStateToken, StoreOptionsToken, injectStoreForTest } from './inject-store';
 
 describe('Store: EntityStore', () => {
     interface TaskInfo {
@@ -507,12 +506,38 @@ describe('Store: EntityStore', () => {
                 const tasksEntityStore = injectStoreForTest(TasksEntityStore, {
                     entities: [...initialTasks]
                 });
-
-                tasksEntityStore.setActive('1');
-                expect(tasksEntityStore.activeEntity).toEqual({ _id: '1', name: 'task 1' });
-                tasksEntityStore.activeEntity$.subscribe((id) => {
-                    expect(id).toEqual({ _id: '1', name: 'task 1' });
+                let activeEntity: TaskInfo;
+                tasksEntityStore.activeEntity$.subscribe((entity) => {
+                    activeEntity = entity;
                 });
+                expect(activeEntity).toEqual(null);
+                tasksEntityStore.setActive('1');
+                expect(activeEntity).toEqual({ _id: '1', name: 'task 1' });
+                // 订阅的时候已经存在 active 的场景
+                let activeEntityAfterSubscribe: TaskInfo;
+                tasksEntityStore.activeEntity$.subscribe((entity) => {
+                    activeEntityAfterSubscribe = entity;
+                });
+                expect(activeEntityAfterSubscribe).toEqual({ _id: '1', name: 'task 1' });
+                tasksEntityStore.setActive('not-found-id');
+                expect(activeEntity).toEqual(null);
+            });
+
+            it('should get entity by update', async () => {
+                const tasksEntityStore = injectStoreForTest(TasksEntityStore, {
+                    entities: [...initialTasks]
+                });
+                let activeEntity: TaskInfo;
+                tasksEntityStore.activeEntity$.subscribe((entity) => {
+                    activeEntity = entity;
+                });
+                expect(activeEntity).toEqual(null);
+                tasksEntityStore.setActive('1');
+                expect(activeEntity).toEqual({ _id: '1', name: 'task 1' });
+                tasksEntityStore.update('1', {
+                    name: 'task 3'
+                });
+                expect(activeEntity).toEqual({ _id: '1', name: 'task 3' });
             });
 
             it('should clear active id and entity', () => {

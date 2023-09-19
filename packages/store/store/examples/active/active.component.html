@@ -1,10 +1,23 @@
 <section class="item-app" *ngIf="items$ | async as items">
   <section class="main">
     <ul class="item-list">
-      <li *ngFor="let item of items; trackBy: activeItemsStore.trackByFn" [class.active]="activeItemsStore.activeId === item.id">
+      <li
+        *ngFor="let item of items; trackBy: activeItemsStore.trackByFn"
+        [class.active]="activeItemsStore.activeId === item.id"
+        [class.editing]="item.editing"
+      >
         <div class="view">
-          <label (click)="setActiveItem(item.id)">{{ item.title }}</label>
+          <label (click)="setActiveItem(item.id)" (dblclick)="edit(item)">{{ item.title }}</label>
         </div>
+        <input
+          class="edit"
+          *ngIf="item.editing"
+          [value]="item.title"
+          #editor
+          (blur)="stopEditing(item, editor.value)"
+          (keyup.enter)="update(item, editor.value)"
+          (keyup.escape)="cancelEditing(item)"
+        />
       </li>
     </ul>
   </section>
