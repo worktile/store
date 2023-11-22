@@ -30,7 +30,7 @@ module.exports = {
             name: 'store',
             abbrName: 'thy',
             rootDir: './packages/store',
-            include: ['src', 'examples'],
+            include: [''],
             exclude: '',
             categories: []
         }
