@@ -1,5 +1,7 @@
 import { findAndCreateStoreMetadata } from './utils';
 import { InternalDispatcher } from './internals/dispatcher';
+import { ActionCreator } from './action/action-definition';
+import { isFunction, isObject, isUndefinedOrNull } from '@tethys/cdk';
 // import { Observable, of, throwError } from 'rxjs';
 // import { catchError, exhaustMap, shareReplay} from 'rxjs/operators';
 // import { ActionContext, ActionStatus } from './actions-stream';
@@ -18,10 +20,17 @@ export interface DecoratorActionOptions {
     payload?: any;
 }
 
+function isActionCreator(action: DecoratorActionOptions | string | ActionCreator): action is ActionCreator {
+    return isFunction(action) && isObject(action()) && !isUndefinedOrNull(action().type);
+}
+
 /**
  * Decorates a method with a action information.
  */
-export function Action(action?: DecoratorActionOptions | string) {
+
+export function Action(
+    action?: DecoratorActionOptions | string | ActionCreator
+): (target: Object, name: string, descriptor: TypedPropertyDescriptor<any>) => void {
     return function (target: Object, name: string, descriptor: TypedPropertyDescriptor<any>) {
         const metadata = findAndCreateStoreMetadata(target);
 
@@ -34,7 +43,13 @@ export function Action(action?: DecoratorActionOptions | string) {
         // support string for type
         if (typeof action === 'string') {
             action = {
-                type: action
+                type: action as string
+            };
+        }
+
+        if (isActionCreator(action)) {
+            action = {
+                type: action().type
             };
         }
         if (!action.type) {
