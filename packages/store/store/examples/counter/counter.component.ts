@@ -1,7 +1,6 @@
 import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { CounterStore } from './counter.store';
-import { DoubleCountStore } from './doubleCount.store';
 
 @Component({
     selector: 'thy-store-counter-example',
@@ -11,9 +10,7 @@ import { DoubleCountStore } from './doubleCount.store';
 export class ThyStoreCounterExampleComponent implements OnInit {
     count$: Observable<number> = this.counterStore.select(CounterStore.countSelector);
 
-    doubleCount$: Observable<number> = this.doubleCountStore.doubleCount$;
-
-    constructor(public counterStore: CounterStore, public doubleCountStore: DoubleCountStore) {}
+    constructor(public counterStore: CounterStore) {}
 
     // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
     ngOnInit(): void {}

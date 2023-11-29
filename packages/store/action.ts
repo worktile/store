@@ -49,7 +49,7 @@ export function Action(
 
         if (isActionCreator(action)) {
             action = {
-                type: action().type
+                type: action.prototype.id
             };
         }
         if (!action.type) {

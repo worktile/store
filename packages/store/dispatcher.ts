@@ -28,10 +28,10 @@ export function dispatch(action: ActionRef) {
 function invokeActions(action: ActionRef) {
     InternalStoreFactory.instance.getAllStores().forEach((store) => {
         const meta = store[META_KEY] as StoreMetaInfo;
-        if (!meta || !meta.actions || !meta.actions[action.type]) {
+        if (!meta || !meta.actions || !meta.actions[action['id']]) {
             return;
         }
-        const actionMeta = meta.actions[action.type];
+        const actionMeta = meta.actions[action['id']];
         InternalDispatcher.instance.dispatch(store.defaultStoreInstanceId, actionMeta, () => {
             return actionMeta.originalFn.call(store, ...action.payload);
         });

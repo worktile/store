@@ -1,8 +1,7 @@
-import { Injectable, inject } from '@angular/core';
-import { Action, dispatch, Store } from '@tethys/store';
+import { Injectable } from '@angular/core';
+import { Action, Store } from '@tethys/store';
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { updateCounter } from './actions';
 
 interface CounterState {
     count: number;
@@ -18,16 +17,11 @@ export class CounterStore extends Store<CounterState> {
         super({ count: 0 });
     }
 
-    @Action(updateCounter)
-    customUpdateCounter(type: string, count: number) {
-        this.update({ count: this.snapshot.count + count });
-    }
-
     @Action()
     increase() {
         return of(true).pipe(
             tap(() => {
-                dispatch(updateCounter('increase', 1));
+                this.update({ count: this.snapshot.count + 1 });
             })
         );
     }
@@ -36,7 +30,11 @@ export class CounterStore extends Store<CounterState> {
     decrease() {
         return of(true).pipe(
             tap(() => {
-                dispatch(updateCounter('decrease', -1));
+                this.update((state) => {
+                    return {
+                        count: state.count - 1
+                    };
+                });
             })
         );
     }

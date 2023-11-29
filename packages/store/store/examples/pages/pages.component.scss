@@ -1,0 +1,23 @@
+.page-container {
+    width: 700px;
+    display: flex;
+    flex-direction: row;
+    background: #fafafa;
+    .sidebar {
+        max-width: 200px;
+        border-right: 1px solid;
+        padding-right: 20px;
+        p {
+            padding: 4px;
+            border-bottom: 1px solid #ccc;
+        }
+    }
+    .detail {
+        flex: 1;
+        padding-left: 20px;
+        .dg-btn {
+            margin-top: 10px;
+            margin-right: 8px;
+        }
+    }
+}
