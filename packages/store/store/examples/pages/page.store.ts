@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Action, dispatch, Store } from '@tethys/store';
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { updateContent, updateTitle } from './actions';
+import { groupActions, updateContent, updateTitle } from './actions';
 
 interface PageDetailState {
     detail: { _id: string; title: string; content: string };
@@ -18,7 +18,7 @@ export class PageDetailStore extends Store<PageDetailState> {
         super({});
     }
 
-    @Action(updateTitle)
+    @Action(groupActions.updateTitle)
     pureUpdateTitle(_id: string, payload: { title: string }) {
         if (_id === this.snapshot.detail._id) {
             this.update({
@@ -63,7 +63,7 @@ export class PageDetailStore extends Store<PageDetailState> {
     updateTitle() {
         return of(true).pipe(
             tap(() => {
-                dispatch(updateTitle('1', { title: 'New First Page Title' }));
+                dispatch(groupActions.updateTitle('1', { title: 'New First Page Title' }));
             })
         );
     }
