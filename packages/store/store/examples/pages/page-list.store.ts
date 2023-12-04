@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Action, EntityState, EntityStore } from '@tethys/store';
 import { of } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { updateTitle } from './actions';
+import { groupActions } from './actions';
 
 export interface Page {
     _id: string;
@@ -34,7 +34,7 @@ export class PagesStore extends EntityStore<PagesState, Page> {
         );
     }
 
-    @Action(updateTitle)
+    @Action(groupActions.updateTitle)
     pureUpdateTitle(_id: string, payload: { title: string }) {
         this.update(_id, { title: payload.title });
     }

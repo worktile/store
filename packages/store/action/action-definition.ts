@@ -1,5 +1,5 @@
 import { ACTION_ID_PREFIX } from '../types';
-type ExtractTypeToPayload<T> = T extends [...infer A, never] ? ExtractTypeToPayload<A> : T extends Array<any> ? T : never;
+export type ExtractTypeToPayload<T> = T extends [...infer A, never] ? ExtractTypeToPayload<A> : T extends Array<any> ? T : never;
 
 export interface ActionRef<T = any> {
     type: string;
