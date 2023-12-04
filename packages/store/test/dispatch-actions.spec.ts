@@ -12,8 +12,8 @@ const upvote = defineAction<string>('like page');
 const likePage = defineAction<string>('like page');
 
 const commentActions = defineActions('PAGE', {
-    add: payload<string, { _id: string, content: string }>,
-    delete: payload<string, string>
+    add: payload<string, { _id: string; content: string }>(),
+    delete: payload<string, string>()
 });
 
 interface Page {
@@ -88,7 +88,7 @@ export class PageDetailStore extends Store<PageDetailState> {
 
     @Action(commentActions.add)
     pureAddComment(_id: string, payload: { _id: string; content: string }) {
-        detailAddCommentSpy(_id, payload)
+        detailAddCommentSpy(_id, payload);
         this.update({
             detail: {
                 ...this.snapshot.detail,
@@ -140,7 +140,7 @@ export class PagesStore extends EntityStore<PagesState, Page> {
 
     @Action(commentActions.add)
     pureAddComment(_id: string) {
-        listAddCommentSpy(_id)
+        listAddCommentSpy(_id);
         this.update(_id, (entity) => ({
             ...entity,
             commentCount: (entity.commentCount || 0) + 1
