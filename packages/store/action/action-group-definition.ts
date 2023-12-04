@@ -1,20 +1,19 @@
 import { ActionCreator, ExtractTypeToPayload, defineAction } from './action-definition';
 
-export const payload = <T1 = never, T2 = never, T3 = never, T4 = never>() => {
-    return (...args: ExtractTypeToPayload<[T1, T2, T3, T4]>) => args;
-};
+const payloadSymbol = '__payloadSymbol';
 
-type ParamsType<T> = T extends (...args: infer P) => any ? P : never;
+type PayloadRef = { [payloadSymbol]: true };
 
-export function defineActions<T extends string, A>(
-    prefix: T,
-    actionsPayload: A
-): {
-    [K in keyof A]?: ActionCreator<ExtractTypeToPayload<ParamsType<A[K]>>>;
-} {
-    let result: { [K in keyof A]?: ActionCreator<ExtractTypeToPayload<ParamsType<A[K]>>> } = {};
-    for (const key in actionsPayload) {
-        const type = `${prefix}_${key}`;
+type ExtractActionCreators<T> = { [key in keyof T]?: ActionCreator<T[key] extends { payload: infer P } ? P : T[key]> };
+
+export function payload<T1 = never, T2 = never, T3 = never, T4 = never>() {
+    return null as unknown as PayloadRef & { payload: ExtractTypeToPayload<[T1, T2, T3, T4]> };
+}
+
+export function defineActions<T extends Record<string, PayloadRef>>(groupName: string, actions: T) {
+    let result: ExtractActionCreators<T> = {};
+    for (const key in actions) {
+        const type = `${groupName}_${key}`;
         result[key] = defineAction(type) as ActionCreator;
     }
     return result;
