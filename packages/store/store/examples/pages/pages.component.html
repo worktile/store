@@ -1,0 +1,18 @@
+<div class="page-container">
+  <div class="sidebar">
+    <ng-container *ngIf="pagesStore.entities$ | async as pages">
+      <p *ngFor="let page of pages">
+        {{ page.title }}
+      </p>
+    </ng-container>
+  </div>
+
+  <div class="detail">
+    <ng-container *ngIf="pageDetail$ | async as pageDetail">
+      <h3>{{ pageDetail.title }}</h3>
+      <p>{{ pageDetail.content }}</p>
+    </ng-container>
+    <button class="dg-btn dg-btn-primary dg-btn-xsm" (click)="updateTitle()">更新First标题</button>
+    <button class="dg-btn dg-btn-primary dg-btn-xsm" (click)="updateContent()">更新First内容</button>
+  </div>
+</div>

@@ -5,6 +5,8 @@ export const META_KEY = '__THY_META__';
 export const ROOT_STORES_TOKEN = new InjectionToken<any>('ROOT_STORES_TOKEN');
 export const FEATURE_STORES_TOKEN = new InjectionToken<any>('FEATURE_STORES_TOKEN');
 
+export const ACTION_ID_PREFIX = 'ACTION_';
+
 export type Id = CDKId;
 
 export interface PaginationInfo {
