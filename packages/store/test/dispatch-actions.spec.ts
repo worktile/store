@@ -1,26 +1,33 @@
 import { Injectable } from '@angular/core';
-import { Action, dispatch, Store, defineAction, EntityState, EntityStore } from '@tethys/store';
+import { Action, dispatch, Store, defineAction, EntityState, EntityStore, defineActions, payload } from '@tethys/store';
 import { TestBed } from '@angular/core/testing';
+import { produce } from '@tethys/cdk';
 
-export const updateTitle = defineAction<string, { title: string }>('updateTitle');
+const updateTitle = defineAction<string, { title: string }>('updateTitle');
 
-export const updateContent = defineAction<string, { content: string }>('updateContent');
+const updateContent = defineAction<string, { content: string }>('updateContent');
 
-export const upvote = defineAction<string>('like page');
+const upvote = defineAction<string>('like page');
 
-export const likePage = defineAction<string>('like page');
+const likePage = defineAction<string>('like page');
+
+const commentActions = defineActions('PAGE', {
+    add: payload<string, { _id: string, content: string }>,
+    delete: payload<string, string>
+});
 
 interface Page {
     _id: string;
     title: string;
     voteCount?: number;
+    commentCount?: number;
 }
 
 interface PageDetailState {
-    detail: { _id: string; title: string; content: string; like?: boolean };
+    detail: { _id: string; title: string; content: string; like?: boolean; comments?: { _id: string; content: string }[] };
 }
 
-const pageDetail = { _id: '1', title: 'First Page Title', content: 'First Page Detail Content' };
+const pageDetail = { _id: '1', title: 'First Page Title', content: 'First Page Detail Content', comments: [] };
 
 const pageList = [
     { _id: '1', title: 'First Page Title' },
@@ -38,6 +45,10 @@ const detailContentChangeSpy = jasmine.createSpy('detail content change');
 const likePageSpy = jasmine.createSpy('like page');
 
 const upvoteSpy = jasmine.createSpy('upvote');
+
+const detailAddCommentSpy = jasmine.createSpy('detail add comment');
+
+const listAddCommentSpy = jasmine.createSpy('list add comment');
 
 @Injectable({ providedIn: 'root' })
 export class PageDetailStore extends Store<PageDetailState> {
@@ -75,6 +86,17 @@ export class PageDetailStore extends Store<PageDetailState> {
         }
     }
 
+    @Action(commentActions.add)
+    pureAddComment(_id: string, payload: { _id: string; content: string }) {
+        detailAddCommentSpy(_id, payload)
+        this.update({
+            detail: {
+                ...this.snapshot.detail,
+                comments: produce(this.snapshot.detail.comments).add(payload)
+            }
+        });
+    }
+
     @Action(likePage)
     pureGiveALike(_id: string) {
         likePageSpy(_id);
@@ -86,6 +108,10 @@ export class PageDetailStore extends Store<PageDetailState> {
 
     dispatchUpdateContent(_id: string, payload: { content: string }) {
         dispatch(updateContent(_id, payload));
+    }
+
+    dispatchAddComment(_id: string, payload: { _id: string; content: string }) {
+        dispatch(commentActions.add(_id, payload));
     }
 }
 
@@ -109,6 +135,15 @@ export class PagesStore extends EntityStore<PagesState, Page> {
         this.update(_id, (entity) => ({
             ...entity,
             voteCount: (entity.voteCount || 0) + 1
+        }));
+    }
+
+    @Action(commentActions.add)
+    pureAddComment(_id: string) {
+        listAddCommentSpy(_id)
+        this.update(_id, (entity) => ({
+            ...entity,
+            commentCount: (entity.commentCount || 0) + 1
         }));
     }
 
@@ -159,6 +194,19 @@ describe('#dispatchActions', () => {
             expect(likePageSpy).not.toHaveBeenCalled();
             const entity = listStore.snapshot.entities.find((item) => item._id === '1');
             expect(entity.voteCount).toEqual(1);
+        });
+    });
+
+    describe('#dispatch group action', () => {
+        it('should action functions invoke when dispatch', () => {
+            detailStore = TestBed.inject(PageDetailStore);
+            listStore = TestBed.inject(PagesStore);
+            detailStore.dispatchAddComment('1', { _id: 'comment_1', content: 'A New Comment' });
+            expect(detailAddCommentSpy).toHaveBeenCalledWith('1', { _id: 'comment_1', content: 'A New Comment' });
+            expect(listAddCommentSpy).toHaveBeenCalledWith('1');
+            expect(detailStore.snapshot.detail.comments[0]).toEqual({ _id: 'comment_1', content: 'A New Comment' });
+            const entity = listStore.snapshot.entities.find((item) => item._id === '1');
+            expect(entity.commentCount).toEqual(1);
         });
     });
 });
