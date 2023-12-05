@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [16.1.0-next.0](https://github.com/worktile/store/compare/v16.0.0...v16.1.0-next.0) (2023-12-05)
+
+
+### Features
+
+* active entity$ support trigger by update entity ([#125](https://github.com/worktile/store/issues/125)) ([2018d06](https://github.com/worktile/store/commit/2018d0659d83b04c8ad1dc68a74d46d64cea95b8))
+* support define actions by group ([#2](https://github.com/worktile/store/issues/2)) ([#135](https://github.com/worktile/store/issues/135)) ([d132973](https://github.com/worktile/store/commit/d1329735ff20be859a8e44975686f03fa4d81329))
+* support dispatch multiple actions ([#133](https://github.com/worktile/store/issues/133)) ([784a87c](https://github.com/worktile/store/commit/784a87c13d267b89315874bdf45a36d54298425b))
+
+
+
 # [16.0.0](https://github.com/worktile/store/compare/v16.0.0-next.1...v16.0.0) (2023-08-24)
 
 
