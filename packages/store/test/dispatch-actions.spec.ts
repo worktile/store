@@ -11,6 +11,8 @@ const upvote = defineAction<string>('like page');
 
 const likePage = defineAction<string>('like page');
 
+const actionInChildClass = defineAction('action in child class');
+
 const commentActions = defineActions('PAGE', {
     add: payload<string, { _id: string; content: string }>(),
     delete: payload<string, string>()
@@ -50,14 +52,27 @@ const detailAddCommentSpy = jasmine.createSpy('detail add comment');
 
 const listAddCommentSpy = jasmine.createSpy('list add comment');
 
+const actionInChildClassSpy = jasmine.createSpy('action in child class');
+
 @Injectable({ providedIn: 'root' })
-export class PageDetailStore extends Store<PageDetailState> {
+export class PageDetailBaseStore extends Store<PageDetailState> {
+    constructor() {
+        super({ detail: pageDetail });
+    }
+
+    @Action(actionInChildClass)
+    pureUpdateSpecialProperty() {
+        actionInChildClassSpy();
+    }
+}
+@Injectable({ providedIn: 'root' })
+export class PageDetailStore extends PageDetailBaseStore {
     static detailSelector(state: PageDetailState) {
         return state.detail;
     }
 
     constructor() {
-        super({ detail: pageDetail });
+        super();
     }
 
     @Action(updateTitle)
@@ -207,6 +222,14 @@ describe('#dispatchActions', () => {
             expect(detailStore.snapshot.detail.comments[0]).toEqual({ _id: 'comment_1', content: 'A New Comment' });
             const entity = listStore.snapshot.entities.find((item) => item._id === '1');
             expect(entity.commentCount).toEqual(1);
+        });
+    });
+
+    describe('#action in child class', () => {
+        it('should action functions invoke when Action in child class', () => {
+            detailStore = TestBed.inject(PageDetailStore);
+            dispatch(actionInChildClass());
+            expect(actionInChildClassSpy).toHaveBeenCalledTimes(1);
         });
     });
 });

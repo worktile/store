@@ -3,8 +3,7 @@ import { ActionRef } from './action/action-definition';
 import { isObject, isUndefinedOrNull } from '@tethys/cdk';
 import { InternalStoreFactory } from './internals/internal-store-factory';
 import { InternalDispatcher } from './internals/dispatcher';
-import { StoreMetaInfo } from './inner-types';
-import { META_KEY } from './types';
+import { findActionMetadata } from './utils';
 @Injectable({
     providedIn: 'root'
 })
@@ -27,11 +26,10 @@ export function dispatch(action: ActionRef) {
 
 function invokeActions(action: ActionRef) {
     InternalStoreFactory.instance.getAllStores().forEach((store) => {
-        const meta = store[META_KEY] as StoreMetaInfo;
-        if (!meta || !meta.actions || !meta.actions[action['id']]) {
+        const actionMeta = findActionMetadata(store, action['id']);
+        if (!actionMeta) {
             return;
         }
-        const actionMeta = meta.actions[action['id']];
         InternalDispatcher.instance.dispatch(store.defaultStoreInstanceId, actionMeta, () => {
             return actionMeta.originalFn.call(store, ...action.payload);
         });
