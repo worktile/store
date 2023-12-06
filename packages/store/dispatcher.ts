@@ -5,6 +5,7 @@ import { InternalStoreFactory } from './internals/internal-store-factory';
 import { InternalDispatcher } from './internals/dispatcher';
 import { StoreMetaInfo } from './inner-types';
 import { META_KEY } from './types';
+import { Store } from './store';
 @Injectable({
     providedIn: 'root'
 })
@@ -27,13 +28,26 @@ export function dispatch(action: ActionRef) {
 
 function invokeActions(action: ActionRef) {
     InternalStoreFactory.instance.getAllStores().forEach((store) => {
-        const meta = store[META_KEY] as StoreMetaInfo;
-        if (!meta || !meta.actions || !meta.actions[action['id']]) {
+        const actionMeta = findActionMetaFromStore(store, action['id']);
+        if (!actionMeta) {
             return;
         }
-        const actionMeta = meta.actions[action['id']];
         InternalDispatcher.instance.dispatch(store.defaultStoreInstanceId, actionMeta, () => {
             return actionMeta.originalFn.call(store, ...action.payload);
         });
     });
+}
+
+function findActionMetaFromStore(store: Store, actionId: string) {
+    var currentObj = store;
+    while (currentObj !== null) {
+        if (currentObj.hasOwnProperty(META_KEY)) {
+            const meta = currentObj[META_KEY] as StoreMetaInfo;
+            if (meta.actions && meta.actions[actionId]) {
+                return meta.actions[actionId];
+            }
+        }
+        currentObj = Object.getPrototypeOf(currentObj);
+    }
+    return undefined;
 }
