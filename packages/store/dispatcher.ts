@@ -3,9 +3,7 @@ import { ActionRef } from './action/action-definition';
 import { isObject, isUndefinedOrNull } from '@tethys/cdk';
 import { InternalStoreFactory } from './internals/internal-store-factory';
 import { InternalDispatcher } from './internals/dispatcher';
-import { StoreMetaInfo } from './inner-types';
-import { META_KEY } from './types';
-import { Store } from './store';
+import { findActionMetadata } from './utils';
 @Injectable({
     providedIn: 'root'
 })
@@ -28,7 +26,7 @@ export function dispatch(action: ActionRef) {
 
 function invokeActions(action: ActionRef) {
     InternalStoreFactory.instance.getAllStores().forEach((store) => {
-        const actionMeta = findActionMetaFromStore(store, action['id']);
+        const actionMeta = findActionMetadata(store, action['id']);
         if (!actionMeta) {
             return;
         }
@@ -36,18 +34,4 @@ function invokeActions(action: ActionRef) {
             return actionMeta.originalFn.call(store, ...action.payload);
         });
     });
-}
-
-function findActionMetaFromStore(store: Store, actionId: string) {
-    var currentObj = store;
-    while (currentObj !== null) {
-        if (currentObj.hasOwnProperty(META_KEY)) {
-            const meta = currentObj[META_KEY] as StoreMetaInfo;
-            if (meta.actions && meta.actions[actionId]) {
-                return meta.actions[actionId];
-            }
-        }
-        currentObj = Object.getPrototypeOf(currentObj);
-    }
-    return undefined;
 }

@@ -1,5 +1,5 @@
 import { isObject } from '@tethys/cdk';
-import { SafeAny, StoreMetaInfo } from './inner-types';
+import { ActionMetadata, SafeAny, StoreMetaInfo } from './inner-types';
 import { META_KEY } from './types';
 
 export function findAndCreateStoreMetadata(target: Object): StoreMetaInfo {
@@ -13,6 +13,20 @@ export function findAndCreateStoreMetadata(target: Object): StoreMetaInfo {
         target[META_KEY] = defaultMetadata;
     }
     return target[META_KEY];
+}
+
+export function findActionMetadata(target: Object, actionId: string): ActionMetadata {
+    let currentObj = target;
+    while (currentObj !== null) {
+        if (currentObj.hasOwnProperty(META_KEY)) {
+            const meta = currentObj[META_KEY];
+            if (meta.actions && meta.actions[actionId]) {
+                return meta.actions[actionId];
+            }
+        }
+        currentObj = Object.getPrototypeOf(currentObj);
+    }
+    return undefined;
 }
 
 export function keyBy<T>(array: T[], key: T extends object ? keyof T : never): { [key: string]: T } {
