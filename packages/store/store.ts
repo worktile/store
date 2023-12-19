@@ -211,23 +211,24 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     }
 
     private createStoreInstanceId(): string {
-        const instanceMaxCount = this.getInstanceMaxCount();
         const name = this.getName();
-        if (!InternalStoreFactory.instance.get(name)) {
-            return name;
-        }
-        let j = 0;
-        for (let i = 1; i <= instanceMaxCount - 1; i++) {
-            if (!InternalStoreFactory.instance.get(`${name}-${i}`)) {
-                j = i;
-                break;
+        const id = InternalStoreFactory.instance.generateId();
+        if (isDevMode()) {
+            const instanceMaxCount = this.getInstanceMaxCount();
+            let count = 1;
+            for (let i = 1; i < id; i++) {
+                if (InternalStoreFactory.instance.get(`${name}-${i}`)) {
+                    count++;
+                    if (count > instanceMaxCount) {
+                        break;
+                    }
+                }
+            }
+            if (count > instanceMaxCount) {
+                throw new Error(`store '${name}' created more than ${instanceMaxCount}, please check it.`);
             }
         }
-
-        if (j === 0 && isDevMode()) {
-            throw new Error(`store '${name}' created more than ${instanceMaxCount}, please check it.`);
-        }
-        return `${name}-${j}`;
+        return `${name}-${id}`;
     }
 
     private getInstanceMaxCount() {

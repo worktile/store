@@ -8,6 +8,8 @@ import { newWeakRef, WeakRef } from '../weak-ref';
 export class InternalStoreFactory implements OnDestroy {
     private static factory: InternalStoreFactory;
 
+    private currentId: number = 0;
+
     static get instance() {
         if (!this.factory) {
             this.factory = new InternalStoreFactory();
@@ -18,6 +20,11 @@ export class InternalStoreFactory implements OnDestroy {
     private storeInstancesMap = new Map<string, WeakRef<Store>>();
 
     public state$ = new Subject<{ storeId: string; state: unknown }>();
+
+    generateId(): number {
+        this.currentId += 1;
+        return this.currentId;
+    }
 
     register(store: Store) {
         this.storeInstancesMap.set(store.getStoreInstanceId(), newWeakRef(store));
