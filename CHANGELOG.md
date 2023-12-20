@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [16.1.0-next.2](https://github.com/worktile/store/compare/v16.1.0-next.1...v16.1.0-next.2) (2023-12-20)
+
+
+
 # [16.1.0-next.1](https://github.com/worktile/store/compare/v16.0.0...v16.1.0-next.1) (2023-12-06)
 
 
