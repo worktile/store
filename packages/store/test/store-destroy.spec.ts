@@ -25,33 +25,37 @@ describe('store-auto-destroy', () => {
     it('should inject store', () => {
         const store = TestBed.inject(GardenStore);
         expect(store).toBeDefined();
-        expect(store.getStoreInstanceId()).toBe('GardenStore');
+        const expectedInstanceIdPattern = /^GardenStore-\d+$/;
+        expect(store.getStoreInstanceId()).toMatch(expectedInstanceIdPattern);
     });
 
     it('should get same id for inject store again', () => {
         const store = TestBed.inject(GardenStore);
         expect(store).toBeDefined();
-        expect(store.getStoreInstanceId()).toBe('GardenStore');
+        const expectedInstanceIdPattern = /^GardenStore-\d+$/;
+        expect(store.getStoreInstanceId()).toMatch(expectedInstanceIdPattern);
     });
 
     it('should store destroy', () => {
         let store = TestBed.inject(GardenStore);
         const storeName = store.getName();
+        const storeInstanceId = store.getStoreInstanceId();
         expect(store).toBeDefined();
-        expect(InternalStoreFactory.instance.get(storeName)).toBeTruthy();
+        expect(InternalStoreFactory.instance.get(storeInstanceId)).toBeTruthy();
         expect(InternalStoreFactory.instance.getStoresByNames(storeName)).toBeTruthy();
         store.ngOnDestroy();
-        expect(InternalStoreFactory.instance.get(storeName)).toBeFalsy();
+        expect(InternalStoreFactory.instance.get(storeInstanceId)).toBeFalsy();
     });
 
     it('should weakRef effective', () => {
         InternalStoreFactory.instance['storeInstancesMap'] = new Map<string, WeakRef<Store>>();
         const store = TestBed.inject(GardenStore);
         const storeName = store.getName();
+        const storeInstanceId = store.getStoreInstanceId();
         expect(store).toBeDefined();
         expect(InternalStoreFactory.instance.getStoresByNames(storeName)).toBeTruthy();
         expect(InternalStoreFactory.instance['storeInstancesMap'].size).toBe(1);
-        spyOn(InternalStoreFactory.instance['storeInstancesMap'].get(storeName), 'deref').and.returnValue(null);
+        spyOn(InternalStoreFactory.instance['storeInstancesMap'].get(storeInstanceId), 'deref').and.returnValue(null);
         expect(InternalStoreFactory.instance.getStoresByNames(storeName)).toEqual([]);
         expect(InternalStoreFactory.instance['storeInstancesMap'].size).toBe(0);
     });

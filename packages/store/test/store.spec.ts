@@ -446,7 +446,8 @@ describe('#store', () => {
     describe('#getStoreInstanceId', () => {
         it('should get correct InstanceId', () => {
             store = injectStoreForTest(ZoomStore, {});
-            expect(store.getStoreInstanceId()).toEqual('ZoomStore');
+            const expectedInstanceIdPattern = /^ZoomStore-\d+$/;
+            expect(store.getStoreInstanceId()).toMatch(expectedInstanceIdPattern);
         });
     });
 
