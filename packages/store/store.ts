@@ -13,6 +13,10 @@ import { META_KEY, StoreOptions, UpdateStatePredicate } from './types';
  */
 @Injectable()
 export class Store<T = unknown> implements Observer<T>, OnDestroy {
+    private static curInstanceCount = 0;
+
+    private static instanceNameCountMap = new Map<string, number>();
+
     private initialStateCache: T;
 
     public state$: BehaviorSubject<T>;
@@ -26,6 +30,8 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     constructor(initialState: Partial<T>, options?: StoreOptions) {
         this.storeOptions = options;
         this.name = this.setName();
+        Store.curInstanceCount++;
+        Store.instanceNameCountMap.set(this.name, (Store.instanceNameCountMap.get(this.name) || 0) + 1);
         this.defaultStoreInstanceId = this.createStoreInstanceId();
         this.state$ = new BehaviorSubject<T>(initialState as T);
         // use json format function to deep clone an object, but it can't clone something correctly, such as NaN, function, Date and so on
@@ -179,6 +185,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     }
 
     ngOnDestroy() {
+        Store.instanceNameCountMap.set(this.name, Store.instanceNameCountMap.get(this.name) - 1);
         InternalStoreFactory.instance.unregister(this);
         this.cancelUncompleted();
     }
@@ -212,23 +219,13 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
 
     private createStoreInstanceId(): string {
         const name = this.getName();
-        const id = InternalStoreFactory.instance.generateId();
         if (isDevMode()) {
             const instanceMaxCount = this.getInstanceMaxCount();
-            let count = 1;
-            for (let i = 1; i < id; i++) {
-                if (InternalStoreFactory.instance.get(`${name}-${i}`)) {
-                    count++;
-                    if (count > instanceMaxCount) {
-                        break;
-                    }
-                }
-            }
-            if (count > instanceMaxCount) {
+            if (Store.instanceNameCountMap.get(name) > instanceMaxCount) {
                 throw new Error(`store '${name}' created more than ${instanceMaxCount}, please check it.`);
             }
         }
-        return `${name}-${id}`;
+        return `${name}-${Store.curInstanceCount}`;
     }
 
     private getInstanceMaxCount() {
