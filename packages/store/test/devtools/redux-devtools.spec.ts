@@ -47,73 +47,73 @@ describe('redux-devtools', () => {
 
         it('should catch actions correctly', () => {
             const counterStore = TestBed.inject(CounterStore);
-            expect(devtools.currentState.counter).toEqual({ count: 0 });
+            expect(devtools.currentState[`${counterStore.getStoreInstanceId()}`]).toEqual({ count: 0 });
             expect(devtools.devtoolsStack).toEqual([
                 {
                     id: 1,
-                    type: 'counter@INIT',
+                    type: jasmine.stringMatching(/^counter-\d+@INIT$/),
                     payload: undefined,
                     state: null,
-                    newState: jasmine.objectContaining({ counter: { count: 0 } }),
+                    newState: jasmine.objectContaining({ [`${counterStore.getStoreInstanceId()}`]: { count: 0 } }),
                     jumped: false
                 }
             ]);
             counterStore.increment();
-            expect(devtools.currentState.counter).toEqual({ count: 1 });
+            expect(devtools.currentState[`${counterStore.getStoreInstanceId()}`]).toEqual({ count: 1 });
             expect(devtools.devtoolsStack).toEqual([
                 {
                     id: 1,
-                    type: 'counter@INIT',
+                    type: jasmine.stringMatching(/^counter-\d+@INIT$/),
                     payload: undefined,
                     state: null,
-                    newState: jasmine.objectContaining({ counter: { count: 0 } }),
+                    newState: jasmine.objectContaining({ [`${counterStore.getStoreInstanceId()}`]: { count: 0 } }),
                     jumped: false
                 },
                 {
                     id: 2,
-                    type: 'counter@increment',
+                    type: jasmine.stringMatching(/^counter-\d+@increment$/),
                     payload: undefined,
-                    state: jasmine.objectContaining({ counter: { count: 0 } }),
-                    newState: jasmine.objectContaining({ counter: { count: 1 } }),
+                    state: jasmine.objectContaining({ [`${counterStore.getStoreInstanceId()}`]: { count: 0 } }),
+                    newState: jasmine.objectContaining({ [`${counterStore.getStoreInstanceId()}`]: { count: 1 } }),
                     jumped: false
                 }
             ]);
             counterStore.increment();
-            expect(devtools.currentState.counter).toEqual({ count: 2 });
+            expect(devtools.currentState[`${counterStore.getStoreInstanceId()}`]).toEqual({ count: 2 });
             counterStore.decrement(2);
-            expect(devtools.currentState.counter).toEqual({ count: 0 });
+            expect(devtools.currentState[`${counterStore.getStoreInstanceId()}`]).toEqual({ count: 0 });
 
             expect(devtools.devtoolsStack).toEqual([
                 {
                     id: 1,
-                    type: 'counter@INIT',
+                    type: jasmine.stringMatching(/^counter-\d+@INIT$/),
                     payload: undefined,
                     state: null,
-                    newState: jasmine.objectContaining({ counter: { count: 0 } }),
+                    newState: jasmine.objectContaining({ [`${counterStore.getStoreInstanceId()}`]: { count: 0 } }),
                     jumped: false
                 },
                 {
                     id: 2,
-                    type: 'counter@increment',
+                    type: jasmine.stringMatching(/^counter-\d+@increment$/),
                     payload: undefined,
-                    state: jasmine.objectContaining({ counter: { count: 0 } }),
-                    newState: jasmine.objectContaining({ counter: { count: 1 } }),
+                    state: jasmine.objectContaining({ [`${counterStore.getStoreInstanceId()}`]: { count: 0 } }),
+                    newState: jasmine.objectContaining({ [`${counterStore.getStoreInstanceId()}`]: { count: 1 } }),
                     jumped: false
                 },
                 {
                     id: 3,
-                    type: 'counter@increment',
+                    type: jasmine.stringMatching(/^counter-\d+@increment$/),
                     payload: undefined,
-                    state: jasmine.objectContaining({ counter: { count: 1 } }),
-                    newState: jasmine.objectContaining({ counter: { count: 2 } }),
+                    state: jasmine.objectContaining({ [`${counterStore.getStoreInstanceId()}`]: { count: 1 } }),
+                    newState: jasmine.objectContaining({ [`${counterStore.getStoreInstanceId()}`]: { count: 2 } }),
                     jumped: false
                 },
                 {
                     id: 4,
-                    type: 'counter@decrement',
+                    type: jasmine.stringMatching(/^counter-\d+@decrement$/),
                     payload: undefined,
-                    state: jasmine.objectContaining({ counter: { count: 2 } }),
-                    newState: jasmine.objectContaining({ counter: { count: 0 } }),
+                    state: jasmine.objectContaining({ [`${counterStore.getStoreInstanceId()}`]: { count: 2 } }),
+                    newState: jasmine.objectContaining({ [`${counterStore.getStoreInstanceId()}`]: { count: 0 } }),
                     jumped: false
                 }
             ]);
