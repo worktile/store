@@ -46,13 +46,15 @@ describe('store-with-options', () => {
     it(`should set store name with options's name`, () => {
         const store = TestBed.inject(GardenStore);
         expect(store).toBeDefined();
-        expect(store.getStoreInstanceId()).toBe('garden');
+        const expectedInstanceIdPattern = /^garden-\d+$/;
+        expect(store.getStoreInstanceId()).toMatch(expectedInstanceIdPattern);
     });
 
     it(`should set entity store name with options's name`, () => {
         const store = TestBed.inject(GardensStore);
         expect(store).toBeDefined();
-        expect(store.getStoreInstanceId()).toBe('gardens');
+        const expectedInstanceIdPattern = /^gardens-\d+$/;
+        expect(store.getStoreInstanceId()).toMatch(expectedInstanceIdPattern);
     });
 
     it('should throw errors when store instance count > 20', () => {
