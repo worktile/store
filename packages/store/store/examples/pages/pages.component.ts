@@ -1,37 +1,36 @@
 import { Component, OnInit } from '@angular/core';
-import { PageDetailStore } from './page.store';
-import { PagesStore } from './page-list.store';
+import { PageDetailStore } from './page-detail.store';
+import { Catalog, CatalogsStore } from './catalogs.store';
 import { Observable } from 'rxjs';
 
 @Component({
     selector: 'thy-store-pages-example',
     templateUrl: './pages.component.html',
     styleUrls: ['./pages.component.scss'],
-    providers: [PageDetailStore, PagesStore]
+    providers: [PageDetailStore, CatalogsStore]
 })
 export class ThyStorePagesExampleComponent implements OnInit {
-    constructor(public pagesStore: PagesStore, public pageDetailStore: PageDetailStore) {}
+    constructor(public catalogsStore: CatalogsStore, public pageDetailStore: PageDetailStore) {}
 
     pageDetail$: Observable<any> = this.pageDetailStore.select(PageDetailStore.detailSelector);
 
+    selectedCatalog: Catalog;
+
     ngOnInit() {
-        this.fetchPages();
-        this.fetchPageDetail();
+        this.catalogsStore.fetchCatalogs();
+        this.select({ _id: '1' });
     }
 
-    fetchPages() {
-        this.pagesStore.fetchPages();
+    updateTitle(id: string) {
+        this.pageDetailStore.updateTitle(id);
     }
 
-    fetchPageDetail() {
-        this.pageDetailStore.fetchPageDetail();
+    resetTitle(id: string) {
+        this.pageDetailStore.resetTitle(id);
     }
 
-    updateTitle() {
-        this.pageDetailStore.updateTitle();
-    }
-
-    updateContent() {
-        this.pageDetailStore.updateContent();
+    select(catalog: Catalog) {
+        this.selectedCatalog = catalog;
+        this.pageDetailStore.fetchPageDetail(catalog._id);
     }
 }

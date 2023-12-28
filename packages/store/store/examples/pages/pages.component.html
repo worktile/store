@@ -1,18 +1,29 @@
 <div class="page-container">
   <div class="sidebar">
-    <ng-container *ngIf="pagesStore.entities$ | async as pages">
-      <p *ngFor="let page of pages">
-        {{ page.title }}
-      </p>
+    <ng-container *ngIf="catalogsStore.entities$ | async as catalogs">
+      <div
+        class="catalog-card"
+        *ngFor="let catalog of catalogs"
+        [ngClass]="{ active: catalog._id === selectedCatalog._id }"
+        (click)="select(catalog)"
+      >
+        <h4>
+          {{ catalog.title }}
+        </h4>
+        <p>
+          {{ catalog.summary }}
+        </p>
+        <div class="page-update-at">更新于: {{ catalog.update_at }}</div>
+      </div>
     </ng-container>
   </div>
 
-  <div class="detail">
-    <ng-container *ngIf="pageDetail$ | async as pageDetail">
-      <h3>{{ pageDetail.title }}</h3>
-      <p>{{ pageDetail.content }}</p>
-    </ng-container>
-    <button class="dg-btn dg-btn-primary dg-btn-xsm" (click)="updateTitle()">更新First标题</button>
-    <button class="dg-btn dg-btn-primary dg-btn-xsm" (click)="updateContent()">更新First内容</button>
+  <div class="detail" *ngIf="pageDetail$ | async as pageDetail">
+    <h2 class="page-title">{{ pageDetail.title }}</h2>
+    <p>{{ pageDetail.content }}</p>
+    <div>
+      <button class="dg-btn dg-btn-primary dg-btn-xsm" (click)="updateTitle(pageDetail._id)">更新标题</button>
+      <button class="dg-btn dg-btn-primary dg-btn-xsm" (click)="resetTitle(pageDetail._id)">重置</button>
+    </div>
   </div>
 </div>
