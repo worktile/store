@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [16.1.0](https://github.com/worktile/store/compare/v16.1.0-next.2...v16.1.0) (2024-03-04)
+
+
+### Bug Fixes
+
+* **store:** optimize dispatch actions example ([7e69087](https://github.com/worktile/store/commit/7e69087158abfb60640c09a20058ec2ddf1838a8))
+
+
+### Features
+
+* simplify the loop count for detecting identical store registrations ([ebf0a35](https://github.com/worktile/store/commit/ebf0a355859417ec7454cdd8d55b8aef40f4add2))
+
+
+
 # [16.1.0-next.2](https://github.com/worktile/store/compare/v16.1.0-next.1...v16.1.0-next.2) (2023-12-20)
 
 
