@@ -16,7 +16,7 @@
     "pretty": "pretty-quick",
     "release": "wpm release",
     "pub": "wpm publish && npm run pub-only",
-    "pub-only": "npm publish ./dist/store",
+    "pub-only": "cd ./dist/store && npm publish",
     "pub-next": "wpm publish && npm run pub-only-next",
     "pub-only-next": "cd ./dist/store && npm publish --tag next"
   },
