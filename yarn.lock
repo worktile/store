@@ -259,10 +259,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/cdk@^16.2.1":
-  version "16.2.14"
-  resolved "https://registry.npmjs.org/@angular/cdk/-/cdk-16.2.14.tgz#d26f8f1e7d2466b509e60489b6acf31bfe923acf"
-  integrity sha512-n6PrGdiVeSTEmM/HEiwIyg6YQUUymZrb5afaNLGFRM5YL0Y8OBqd+XhCjb0OfD/AfgCUtedVEPwNqrfW8KzgGw==
+"@angular/cdk@^17.2.0":
+  version "17.3.0"
+  resolved "https://registry.npmjs.org/@angular/cdk/-/cdk-17.3.0.tgz#c05d57d4c59a313d74d9aeaf09a44ca5dd3723fd"
+  integrity sha512-/RIEzP7D3wCGgk2FEvSWTvcKMa+4L7djMF6ZnOKqU6CiJLX3Ksr3+RXqXuiVkdVZBoRXEWRofS/DYEai+nIW8A==
   dependencies:
     tslib "^2.3.0"
   optionalDependencies:
@@ -2478,10 +2478,10 @@
   resolved "https://registry.npmjs.org/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
-"@tethys/cdk@^16.0.0":
-  version "16.2.4"
-  resolved "https://registry.npmjs.org/@tethys/cdk/-/cdk-16.2.4.tgz#9bcd355b16d3637f9826e8572957dfdb4b7224ee"
-  integrity sha512-ElTuoitYTBDSVDIB94DhJKTg7gMMyAxgkAe09qqKwvuAaaVceZjay8LCHzJKa19SRwRXs3V1j6/Wcpf7gOLhOA==
+"@tethys/cdk@^17.0.0":
+  version "17.0.0"
+  resolved "https://registry.npmjs.org/@tethys/cdk/-/cdk-17.0.0.tgz#3ef620a6e2ba867467af733bb246e61998171a76"
+  integrity sha512-9+D7C5DW4RGHdTsEXnHCoOO3ZW6hrMbLPNU1EGeFpbaqmV0kJJYs/R+EAbbyb4tOZmdJdW9lCHZTnycE7zgt2A==
   dependencies:
     tslib "^2.3.0"
 
@@ -2672,10 +2672,12 @@
   dependencies:
     undici-types "~5.26.4"
 
-"@types/node@^12.11.1":
-  version "12.20.55"
-  resolved "https://registry.npmjs.org/@types/node/-/node-12.20.55.tgz#c329cbd434c42164f846b909bd6f85b5537f6240"
-  integrity sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==
+"@types/node@^20.0.0":
+  version "20.11.27"
+  resolved "https://registry.npmjs.org/@types/node/-/node-20.11.27.tgz#debe5cfc8a507dd60fe2a3b4875b1604f215c2ac"
+  integrity sha512-qyUZfMnCg1KEz57r7pzFtSGt49f6RPkPBis3Vo4PbS7roQEDn22hiHzl/Lo1q4i4hDEgBJmBF/NTNg2XR0HbFg==
+  dependencies:
+    undici-types "~5.26.4"
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.4"
