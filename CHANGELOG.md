@@ -3,6 +3,9 @@
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 # [17.0.0](https://github.com/worktile/store/compare/v17.0.0-next.0...v17.0.0) (2024-03-15)
+### Features
+
+* upgrade ng to 17 ([#149](https://github.com/worktile/store/issues/149)) ([4776aaf](https://github.com/worktile/store/commit/4776aaf62997001b9e1267db4e7388c92edc1b32))
 
 
 
