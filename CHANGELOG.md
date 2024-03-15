@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [17.0.0](https://github.com/worktile/store/compare/v17.0.0-next.0...v17.0.0) (2024-03-15)
+
+
+
 # [17.0.0-next.0](https://github.com/worktile/store/compare/v16.1.0...v17.0.0-next.0) (2024-03-05)
 
 
