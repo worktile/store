@@ -7,7 +7,7 @@ order: 30
 - 通过组件的状态选择器可以确定当前组件的状态依赖关系，提高代码可读性
 - 只订阅组件依赖的数据触发脏检查，提高应用程序的性能
 
-在`Store`中，提供了`select()`函数选择需要的状态：
+在`Store`中，提供了`select$()`函数选择需要的状态：
 
 ```ts
 const todos$ = store.select$((state)=> { return state.todos; });
