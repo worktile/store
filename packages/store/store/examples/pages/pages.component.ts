@@ -18,7 +18,7 @@ export class ThyStorePagesExampleComponent implements OnInit {
 
     ngOnInit() {
         this.catalogsStore.fetchCatalogs();
-        this.select$({ _id: '1' });
+        this.select({ _id: '1' });
     }
 
     updateTitle(id: string) {
