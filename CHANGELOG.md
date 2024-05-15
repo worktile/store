@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [17.1.0](https://github.com/worktile/store/compare/v17.0.0...v17.1.0) (2024-05-15)
+
+
+### Features
+
+* add select$ instead of select for Store #INFR-12380 ([#157](https://github.com/worktile/store/issues/157)) ([566c142](https://github.com/worktile/store/commit/566c1425f1da3693deec5962b42c3b61087c43cf)), closes [#INFR-12380](https://github.com/worktile/store/issues/INFR-12380)
+
+
+
 # [17.0.0](https://github.com/worktile/store/compare/v17.0.0-next.0...v17.0.0) (2024-03-15)
 ### Features
 
