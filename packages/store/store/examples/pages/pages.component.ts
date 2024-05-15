@@ -12,13 +12,13 @@ import { Observable } from 'rxjs';
 export class ThyStorePagesExampleComponent implements OnInit {
     constructor(public catalogsStore: CatalogsStore, public pageDetailStore: PageDetailStore) {}
 
-    pageDetail$: Observable<any> = this.pageDetailStore.select(PageDetailStore.detailSelector);
+    pageDetail$: Observable<any> = this.pageDetailStore.select$(PageDetailStore.detailSelector);
 
     selectedCatalog: Catalog;
 
     ngOnInit() {
         this.catalogsStore.fetchCatalogs();
-        this.select({ _id: '1' });
+        this.select$({ _id: '1' });
     }
 
     updateTitle(id: string) {

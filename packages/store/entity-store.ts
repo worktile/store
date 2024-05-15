@@ -54,11 +54,11 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         return this.snapshot.entity;
     }
 
-    entities$ = this.select((state) => {
+    entities$ = this.select$((state) => {
         return state.entities;
     });
 
-    entity$ = this.select((state) => {
+    entity$ = this.select$((state) => {
         return state.entity;
     });
 
@@ -66,7 +66,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         return this.snapshot.activeId || null;
     }
 
-    activeId$: Observable<Id | null> = this.select((state) => {
+    activeId$: Observable<Id | null> = this.select$((state) => {
         return state.activeId || null;
     });
 
@@ -74,7 +74,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         return this.snapshot.activeId ? this.getEntityById(this.snapshot.activeId) : null;
     }
 
-    activeEntity$: Observable<TEntity | null> = this.select((state) => {
+    activeEntity$: Observable<TEntity | null> = this.select$((state) => {
         return state.entities.find((entity) => entity[this.options.idKey] === state.activeId);
     }).pipe(
         map((entity: TEntity) => {

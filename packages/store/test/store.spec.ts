@@ -141,7 +141,7 @@ describe('#store', () => {
                 foo: foo
             });
             const animalsSpy = jasmine.createSpy('animals spy');
-            store.select(ZoomStore.animalsSelector).subscribe(animalsSpy);
+            store.select$(ZoomStore.animalsSelector).subscribe(animalsSpy);
             expect(animalsSpy).toHaveBeenCalled();
             expect(animalsSpy).toHaveBeenCalledWith(animals);
         });
@@ -407,7 +407,7 @@ describe('#store', () => {
                 animals: animals
             });
             const animalsSpy = jasmine.createSpy('animals selector spy');
-            store.select(ZoomStore.animalsSelector).subscribe(animalsSpy);
+            store.select$(ZoomStore.animalsSelector).subscribe(animalsSpy);
             expect(animalsSpy).toHaveBeenCalledTimes(1);
             store.addAnimal(addAnimalMonster).subscribe();
             expect(animalsSpy).toHaveBeenCalledTimes(2);
@@ -422,7 +422,7 @@ describe('#store', () => {
             });
             const animalsSpy = jasmine.createSpy('animals selector spy');
             const addAnimalSpy = jasmine.createSpy('add animal next spy');
-            store.select(ZoomStore.animalsSelector).subscribe(animalsSpy);
+            store.select$(ZoomStore.animalsSelector).subscribe(animalsSpy);
             expect(animalsSpy).toHaveBeenCalledTimes(1);
             store.addAnimal(addAnimalMonster).subscribe(addAnimalSpy);
             expect(animalsSpy).toHaveBeenCalledTimes(2);

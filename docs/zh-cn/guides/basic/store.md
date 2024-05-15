@@ -89,7 +89,7 @@ export class ThyStoreCounterExampleComponent implements OnInit {
     constructor(public counter: CounterStore) {}
 
     ngOnInit(): void {
-      this.count$ = this.counter.select((state)=> { return state.count; }))
+      this.count$ = this.counter.select$((state)=> { return state.count; }))
     }
 }
 ```

@@ -118,7 +118,7 @@ describe('Store: Store', () => {
         const appStore = injectStoreForTest(AppStateStore);
         let timer = 0;
         appStore
-            .select((state: AppState) => {
+            .select$((state: AppState) => {
                 return state.team;
             })
             .subscribe((team) => {
@@ -140,7 +140,7 @@ describe('Store: Store', () => {
         const appStore = injectStoreForTest(AppStateStore);
         let timer = 0;
         appStore
-            .select((state: AppState) => {
+            .select$((state: AppState) => {
                 return state.me;
             })
             .subscribe((me) => {
@@ -161,7 +161,7 @@ describe('Store: Store', () => {
     it('should get value when store dispatch an action that return observable', () => {
         const appStore = injectStoreForTest(AppStateStore);
         appStore
-            .select((state: AppState) => {
+            .select$((state: AppState) => {
                 return state.team;
             })
             .pipe(skip(1))
@@ -181,7 +181,7 @@ describe('Store: Store', () => {
         const appStore = injectStoreForTest(AppStateStore);
         let timer = 0;
         appStore
-            .select((state: AppState) => {
+            .select$((state: AppState) => {
                 return state.me;
             })
             .subscribe((me) => {
@@ -203,7 +203,7 @@ describe('Store: Store', () => {
         const appStore = injectStoreForTest(AppStateStore);
         let timer = 0;
         appStore
-            .select((state: AppState) => {
+            .select$((state: AppState) => {
                 return state.me;
             })
             .subscribe((me) => {
@@ -224,7 +224,7 @@ describe('Store: Store', () => {
         const appStore = injectStoreForTest(AppStateStore);
         let timer = 0;
         appStore
-            .select((state) => state.me)
+            .select$((state) => state.me)
             .subscribe((me) => {
                 if (timer === 2) {
                     expect(me).toEqual(null);

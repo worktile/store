@@ -90,7 +90,7 @@ import { CounterStore } from './counter.store';
     styleUrls: ['./counter.component.scss']
 })
 export class ThyStoreCounterExampleComponent implements OnInit {
-    count$: Observable<number> = this.counterStore.select((state) => { return state.count });
+    count$: Observable<number> = this.counterStore.select$((state) => { return state.count });
 
     constructor(public counterStore: CounterStore) {}
 

@@ -7,7 +7,7 @@ import { Todo, TodosStore } from './todos.store';
     styleUrls: ['./todos.component.scss']
 })
 export class ThyStoreTodosExampleComponent implements OnInit {
-    todos$ = this.todosStore.select(TodosStore.todosSelector);
+    todos$ = this.todosStore.select$(TodosStore.todosSelector);
 
     newTodoText!: string;
 

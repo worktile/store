@@ -33,11 +33,11 @@ class StringSelectComponent {
     subState: Observable<string>;
 
     constructor(store: StringSelectStore) {
-        this.state = store.select((state) => {
+        this.state = store.select$((state) => {
             return state;
         }) as Observable<StringSelectState>;
 
-        this.subState = store.select((state: StringSelectState) => {
+        this.subState = store.select$((state: StringSelectState) => {
             return state.baz;
         });
     }

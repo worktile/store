@@ -67,7 +67,7 @@ describe('module', () => {
 
         const store = TestBed.inject(RootStore) as RootStore;
         expect(store).toBeTruthy();
-        store.select(store.getFoo).subscribe((foo) => expect(foo).toEqual('Hello'));
+        store.select$(store.getFoo).subscribe((foo) => expect(foo).toEqual('Hello'));
     }));
 
     it('should configure feature module and return `RootStore` and `FeatureStore`', () => {
