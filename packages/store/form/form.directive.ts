@@ -11,9 +11,9 @@ export class StoreFormDirective implements OnInit, OnDestroy {
 
     @Input() thyStatePath: string;
 
-    @Input() thyClearDestroy = true
+    @Input() thyClearDestroy = true;
 
-    @Input() thyDynamic = false
+    @Input() thyDynamic = false;
 
     /**
      * 当表单控件的updateOn属性为change时，使用debounce值来提高性能，如果希望change后store同步反应变化，请将debounce设为-1
@@ -23,24 +23,21 @@ export class StoreFormDirective implements OnInit, OnDestroy {
         this._debounce = Number(debounce);
     }
 
-    get debounce(): number{
-        return this._debounce
+    get debounce(): number {
+        return this._debounce;
     }
 
     private _debounce = 100;
 
     private updating = false;
 
-    private get path(){
-        return this.thyStatePath
+    private get path() {
+        return this.thyStatePath;
     }
 
     private destroy$ = new Subject<void>();
 
-    constructor(
-        private formGroup: FormGroupDirective,
-        private _cdr: ChangeDetectorRef
-    ) {}
+    constructor(private formGroup: FormGroupDirective, private _cdr: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         // TODO 之后完善FormStore的时候，这里仍需要对表单状态相关操作的响应
@@ -53,49 +50,51 @@ export class StoreFormDirective implements OnInit, OnDestroy {
         //     })
 
         // 如果是动态表单，意味着用户会根据一些获取到的数据初始化表单控件，此时，无法在store中提前确定表单model的内容，故需要指令初始化时，将组件内的表单内容同步到store中
-        if(this.thyDynamic) {
+        if (this.thyDynamic) {
             this.getStateStream(`${this.path}`)
                 .pipe(take(1))
                 .subscribe(() => {
-                    this.store.update(state => {
-                        let obj = produce(state).set(`${this.path}.model`, this.form.getRawValue())
-                        obj = produce(obj).set(`${this.path}.status`, this.form.status)
-                        obj = produce(obj).set(`${this.path}.dirty`, this.form.dirty)
-                        return obj
-                    })
+                    this.store.update((state) => {
+                        let obj = produce(state).set(`${this.path}.model`, this.form.getRawValue());
+                        obj = produce(obj).set(`${this.path}.status`, this.form.status);
+                        obj = produce(obj).set(`${this.path}.dirty`, this.form.dirty);
+                        return obj;
+                    });
                 });
         }
 
-        this.getStateStream(`${this.path}.model`).subscribe(model => {
-            if(this.updating) {
-                return
+        this.getStateStream(`${this.path}.model`).subscribe((model) => {
+            if (this.updating) {
+                return;
             }
-            this.form.patchValue(model)
-            this._cdr.markForCheck()
-        })
-        this.getStateStream(`${this.path}.dirty`).subscribe(dirty => {
+            this.form.patchValue(model);
+            this._cdr.markForCheck();
+        });
+        this.getStateStream(`${this.path}.dirty`).subscribe((dirty) => {
             if (this.form.dirty === dirty || typeof dirty !== 'boolean') {
                 return;
-              }
-              if (dirty) {
-                this.form.markAsDirty();
-              } else {
-                this.form.markAsPristine();
-              }
-              this._cdr.markForCheck();
-        })
-        // disabled状态源自于status，故不另设disabled属性，保持简洁
-        this.getStateStream(`${this.path}.status`).pipe(map(status => status === 'DISABLED')).subscribe(disabled => {
-            if (this.form.disabled === disabled || typeof disabled !== 'boolean') {
-                return;
             }
-            if (disabled) {
-                this.form.disable();
+            if (dirty) {
+                this.form.markAsDirty();
             } else {
-                this.form.enable();
+                this.form.markAsPristine();
             }
             this._cdr.markForCheck();
-        })
+        });
+        // disabled状态源自于status，故不另设disabled属性，保持简洁
+        this.getStateStream(`${this.path}.status`)
+            .pipe(map((status) => status === 'DISABLED'))
+            .subscribe((disabled) => {
+                if (this.form.disabled === disabled || typeof disabled !== 'boolean') {
+                    return;
+                }
+                if (disabled) {
+                    this.form.disable();
+                } else {
+                    this.form.enable();
+                }
+                this._cdr.markForCheck();
+            });
 
         /**
          * ngOnInit里的这几个部分有顺序要求，从store订阅数据并向formGroup同步的代码必须放置于订阅formGroup之前，从而保证初始化的时候可以将store中的数据准确初始化至formGroup。
@@ -111,13 +110,11 @@ export class StoreFormDirective implements OnInit, OnDestroy {
                 this.updateStateWithRawValue();
             });
 
-        this.formGroup
-            .statusChanges!.pipe(distinctUntilChanged(), this.debounceChange())
-            .subscribe((status: string) => {
-                this.store.update(state => {
-                    return produce(state).set(`${this.path}.status`, status)
-                })
+        this.formGroup.statusChanges!.pipe(distinctUntilChanged(), this.debounceChange()).subscribe((status: string) => {
+            this.store.update((state) => {
+                return produce(state).set(`${this.path}.status`, status);
             });
+        });
     }
 
     // 只有当表单reset的时候，才会将formStatus与value一起同步到store中。其他情况，分别处理value与status的变化
@@ -139,11 +136,11 @@ export class StoreFormDirective implements OnInit, OnDestroy {
         this.updating = true;
 
         this.store.update((state) => {
-            let obj = produce(state).set(`${this.path}.model`, updateState.model)
-            obj = produce(obj).set(`${this.path}.status`, updateState.status)
-            obj = produce(obj).set(`${this.path}.dirty`, updateState.dirty)
-            obj = produce(obj).set(`${this.path}.errors`, updateState.errors)
-            return obj
+            let obj = produce(state).set(`${this.path}.model`, updateState.model);
+            obj = produce(obj).set(`${this.path}.status`, updateState.status);
+            obj = produce(obj).set(`${this.path}.dirty`, updateState.dirty);
+            obj = produce(obj).set(`${this.path}.errors`, updateState.errors);
+            return obj;
         });
         this.updating = false;
     }
@@ -152,14 +149,14 @@ export class StoreFormDirective implements OnInit, OnDestroy {
         this.destroy$.next();
         this.destroy$.complete();
         if (this.thyClearDestroy) {
-            this.store.update(state => {
-                let obj = produce(state).set(`${this.path}.model`, null)
-                obj = produce(obj).set(`${this.path}.status`, null)
-                obj = produce(obj).set(`${this.path}.dirty`, null)
-                obj = produce(obj).set(`${this.path}.errors`, null)
-                return obj
-            })
-          }
+            this.store.update((state) => {
+                let obj = produce(state).set(`${this.path}.model`, null);
+                obj = produce(obj).set(`${this.path}.status`, null);
+                obj = produce(obj).set(`${this.path}.dirty`, null);
+                obj = produce(obj).set(`${this.path}.errors`, null);
+                return obj;
+            });
+        }
     }
 
     private debounceChange() {
@@ -175,6 +172,6 @@ export class StoreFormDirective implements OnInit, OnDestroy {
     }
 
     private getStateStream(path: string) {
-        return this.store.select(state => produce(state).get(path)).pipe(takeUntil(this.destroy$));
+        return this.store.select$((state) => produce(state).get(path)).pipe(takeUntil(this.destroy$));
     }
 }

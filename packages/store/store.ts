@@ -90,6 +90,11 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         return result.pipe(shareReplay());
     }
 
+    select$<TResult>(selector: (state: T) => TResult): Observable<TResult> | Observable<TResult>;
+    select$(selector: string | any): Observable<any> {
+        return this.state$.pipe(map(selector), distinctUntilChanged());
+    }
+
     select<TResult>(selector: (state: T) => TResult): Observable<TResult> | Observable<TResult>;
     select(selector: string | any): Observable<any> {
         return this.state$.pipe(map(selector), distinctUntilChanged());

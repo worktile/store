@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 export class ThyStorePagesExampleComponent implements OnInit {
     constructor(public catalogsStore: CatalogsStore, public pageDetailStore: PageDetailStore) {}
 
-    pageDetail$: Observable<any> = this.pageDetailStore.select(PageDetailStore.detailSelector);
+    pageDetail$: Observable<any> = this.pageDetailStore.select$(PageDetailStore.detailSelector);
 
     selectedCatalog: Catalog;
 

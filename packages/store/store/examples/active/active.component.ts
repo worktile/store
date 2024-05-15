@@ -7,9 +7,9 @@ import { ActiveItem, ActiveItemsStore } from './active.store';
     styleUrls: ['./active.component.scss']
 })
 export class ThyStoreActiveItemsExampleComponent implements OnInit {
-    items$ = this.activeItemsStore.select(ActiveItemsStore.itemsSelector);
+    items$ = this.activeItemsStore.select$(ActiveItemsStore.itemsSelector);
 
-    activeId$ = this.activeItemsStore.select(ActiveItemsStore.activeIdSelector);
+    activeId$ = this.activeItemsStore.select$(ActiveItemsStore.activeIdSelector);
 
     activeEntity$ = this.activeItemsStore.activeEntity$;
 

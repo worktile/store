@@ -16,7 +16,7 @@ export class ThyStoreCancellationExampleComponent implements OnInit {
 
     messages: string[] = [];
 
-    todos$ = this.todosStore.select((state) => {
+    todos$ = this.todosStore.select$((state) => {
         return state.items;
     });
 
