@@ -107,6 +107,7 @@ describe('#store', () => {
         it('should get initial state value is null with initialize', () => {
             store = injectStoreForTest(ZoomStore, null);
             expect(store.getState()).toEqual(null);
+            expect(store.state()).toEqual(null);
         });
 
         it('should get initial state value is empty with initialize', () => {
@@ -115,6 +116,10 @@ describe('#store', () => {
                 foo: null
             });
             expect(store.getState()).toEqual({
+                animals: [],
+                foo: null
+            });
+            expect(store.state()).toEqual({
                 animals: [],
                 foo: null
             });
@@ -128,6 +133,10 @@ describe('#store', () => {
                 foo: foo
             });
             expect(store.getState()).toEqual({
+                animals: animals,
+                foo: foo
+            });
+            expect(store.state()).toEqual({
                 animals: animals,
                 foo: foo
             });
@@ -145,6 +154,17 @@ describe('#store', () => {
             expect(animalsSpy).toHaveBeenCalled();
             expect(animalsSpy).toHaveBeenCalledWith(animals);
         });
+
+        it('should get correct data through select animals state', () => {
+            const animals = createSomeAnimals();
+            const foo = { id: 1, name: 'Foo', description: 'This is a foo' };
+            store = injectStoreForTest(ZoomStore, {
+                animals: animals,
+                foo: foo
+            });
+            const animalsState = store.select(ZoomStore.animalsSelector);
+            expect(animalsState()).toEqual(animals);
+        });
     });
 
     describe('#state', () => {
@@ -156,6 +176,10 @@ describe('#store', () => {
                 foo: foo
             });
             expect(store.getState()).toEqual({
+                animals: animals,
+                foo: foo
+            });
+            expect(store.state()).toEqual({
                 animals: animals,
                 foo: foo
             });
@@ -190,6 +214,10 @@ describe('#store', () => {
                 animals: animals,
                 foo: newFoo
             });
+            expect(store.state()).toEqual({
+                animals: animals,
+                foo: newFoo
+            });
         });
 
         it('should update state success through invoke update function', () => {
@@ -210,6 +238,10 @@ describe('#store', () => {
                 animals: [...animals, addAnimalMonster],
                 foo: newFoo
             });
+            expect(store.state()).toEqual({
+                animals: [...animals, addAnimalMonster],
+                foo: newFoo
+            });
         });
 
         it('should update state success through invoke update function which return partial state object', () => {
@@ -225,6 +257,10 @@ describe('#store', () => {
                 };
             });
             expect(store.getState()).toEqual({
+                animals: animals,
+                foo: newFoo
+            });
+            expect(store.state()).toEqual({
                 animals: animals,
                 foo: newFoo
             });
@@ -307,6 +343,10 @@ describe('#store', () => {
                 animals: animals,
                 foo: foo
             });
+            expect(store.state()).toEqual({
+                animals: animals,
+                foo: foo
+            });
         });
 
         it('should clear state success after only change an animal name', () => {
@@ -384,18 +424,21 @@ describe('#store', () => {
 
         it('should get initial state', () => {
             expect(store.getState()).toEqual(0);
+            expect(store.state()).toEqual(0);
         });
 
         it('should increase', () => {
             expect(store.getState()).toEqual(0);
             store.increase();
             expect(store.getState()).toEqual(1);
+            expect(store.state()).toEqual(1);
         });
 
         it('should decrease', () => {
             expect(store.getState()).toEqual(0);
             store.decrease();
             expect(store.getState()).toEqual(-1);
+            expect(store.state()).toEqual(-1);
         });
     });
 
