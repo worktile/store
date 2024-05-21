@@ -1,4 +1,4 @@
-import { Inject, Injectable, Optional, InjectionToken } from '@angular/core';
+import { Component, Inject, Injectable, Optional, effect } from '@angular/core';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { produce } from '@tethys/cdk/immutable';
 import { of, throwError } from 'rxjs';
@@ -28,6 +28,14 @@ class ZoomState {
 class ZoomStore extends Store<ZoomState> {
     static animalsSelector = (state: ZoomState) => {
         return state.animals;
+    };
+
+    static fooNameSelector = (state: ZoomState) => {
+        return state.foo?.name;
+    };
+
+    static fooDescriptionSelector = (state: ZoomState) => {
+        return state.foo?.description;
     };
 
     constructor(
@@ -89,6 +97,28 @@ class ZoomStore extends Store<ZoomState> {
             animals: produce(this.getState().animals).add(animal)
         });
         return animal;
+    }
+}
+
+@Component({
+    selector: 'thy-test-zoom',
+    template: ``
+})
+class TesZoomComponent {
+    fooNameStateSpy = jasmine.createSpy('foo name spy');
+    fooNameState = this.store.select(ZoomStore.fooNameSelector);
+
+    fooDescriptionStateSpy = jasmine.createSpy('foo description spy');
+    fooDescriptionState = this.store.select(ZoomStore.fooDescriptionSelector);
+
+    constructor(public store: ZoomStore) {
+        effect(() => {
+            this.fooNameStateSpy(this.fooNameState());
+        });
+
+        effect(() => {
+            this.fooDescriptionStateSpy(this.fooDescriptionState());
+        });
     }
 }
 
@@ -164,6 +194,36 @@ describe('#store', () => {
             });
             const animalsState = store.select(ZoomStore.animalsSelector);
             expect(animalsState()).toEqual(animals);
+        });
+
+        it('should effect fooNameState and not effect fooDescriptionState', () => {
+            const animals = createSomeAnimals();
+            const foo = { id: 1, name: 'Foo', description: 'This is a foo' };
+            const newFoo = { ...foo, name: 'new foo name' };
+
+            TestBed.resetTestingModule();
+            TestBed.configureTestingModule({
+                declarations: [TesZoomComponent],
+                providers: [ZoomStore, { provide: StoreInitialStateToken, useValue: { animals: animals, foo: foo } }]
+            });
+
+            const store = TestBed.inject(ZoomStore);
+
+            const fixture = TestBed.createComponent(TesZoomComponent);
+            const component = fixture.componentInstance;
+
+            fixture.detectChanges();
+
+            expect(component.fooNameStateSpy).toHaveBeenCalledTimes(1);
+            expect(component.fooNameStateSpy).toHaveBeenCalledWith(foo.name);
+            expect(component.fooDescriptionStateSpy).toHaveBeenCalledTimes(1);
+
+            store.update({ foo: newFoo });
+            fixture.detectChanges();
+
+            expect(component.fooNameStateSpy).toHaveBeenCalledTimes(2);
+            expect(component.fooNameStateSpy).toHaveBeenCalledWith(newFoo.name);
+            expect(component.fooDescriptionStateSpy).toHaveBeenCalledTimes(1);
         });
     });
 
