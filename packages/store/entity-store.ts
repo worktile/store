@@ -168,8 +168,8 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
      */
 
     initialize(entity: TEntity): void;
-    initialize(entities: TEntity[], pagination?: PaginationInfo);
-    initialize(entityOrEntities: TEntity | TEntity[], pagination?: PaginationInfo) {
+    initialize(entities: TEntity[], pagination?: PaginationInfo): void;
+    initialize(entityOrEntities: TEntity | TEntity[], pagination?: PaginationInfo): void {
         if (Array.isArray(entityOrEntities)) {
             this.isSingleEntity = false;
             this.snapshot.entities = entityOrEntities || [];
@@ -190,8 +190,8 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
      *
      */
     initializeWithReferences(entity: TEntity, references: TReferences): void;
-    initializeWithReferences(entities: TEntity[], references: TReferences, pagination?: PaginationInfo);
-    initializeWithReferences(entityOrEntities: TEntity | TEntity[], references: TReferences, pagination?: PaginationInfo) {
+    initializeWithReferences(entities: TEntity[], references: TReferences, pagination?: PaginationInfo): void;
+    initializeWithReferences(entityOrEntities: TEntity | TEntity[], references: TReferences, pagination?: PaginationInfo): void {
         this.snapshot.references = references;
         this.buildReferencesIdMap();
         if (Array.isArray(entityOrEntities)) {
@@ -319,7 +319,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
             });
             this.buildReferencesIdMap();
         }
-        this.next({...state});
+        this.next({ ...state });
     }
 
     /**
@@ -414,7 +414,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     clearPagination() {
         const state = this.snapshot;
         state.pagination = null;
-        this.next({...state});
+        this.next({ ...state });
     }
 
     clear() {
