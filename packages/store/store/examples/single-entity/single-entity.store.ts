@@ -38,6 +38,10 @@ export class DetailStore
     extends EntityStore<DetailState, DetailInfo, DetailReferences>
     implements OnCombineRefs<DetailInfo, DetailReferences>
 {
+    static titleSelector(state: DetailState) {
+        return state.entity?.title;
+    }
+
     constructor() {
         super({});
     }

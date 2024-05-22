@@ -1,5 +1,5 @@
-import { Injectable, isDevMode, OnDestroy } from '@angular/core';
-import { isFunction, isNumber, isObject } from '@tethys/cdk/is';
+import { computed, Injectable, isDevMode, OnDestroy, Signal } from '@angular/core';
+import { isArray, isFunction, isNumber, isObject } from '@tethys/cdk/is';
 import { BehaviorSubject, from, Observable, Observer, Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { Action } from './action';
@@ -7,6 +7,7 @@ import { StoreMetaInfo } from './inner-types';
 import { InternalDispatcher } from './internals/dispatcher';
 import { InternalStoreFactory } from './internals/internal-store-factory';
 import { META_KEY, StoreOptions, UpdateStatePredicate } from './types';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 /**
  * @dynamic
@@ -23,11 +24,16 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
 
     private storeOptions: StoreOptions;
 
+    public readonly state: Signal<T>;
+
     constructor(initialState: Partial<T>, options?: StoreOptions) {
         this.storeOptions = options;
         this.name = this.setName();
         this.defaultStoreInstanceId = this.createStoreInstanceId();
         this.state$ = new BehaviorSubject<T>(initialState as T);
+
+        this.state = toSignal(this.state$, { requireSync: true });
+
         // use json format function to deep clone an object, but it can't clone something correctly, such as NaN, function, Date and so on
         // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
         // https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
@@ -95,9 +101,8 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         return this.state$.pipe(map(selector), distinctUntilChanged());
     }
 
-    select<TResult>(selector: (state: T) => TResult): Observable<TResult> | Observable<TResult>;
-    select(selector: string | any): Observable<any> {
-        return this.state$.pipe(map(selector), distinctUntilChanged());
+    select<TResult>(selector: (state: T) => TResult): Signal<TResult> {
+        return computed(() => selector(this.state()));
     }
 
     next(state: T) {

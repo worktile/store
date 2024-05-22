@@ -1,7 +1,8 @@
-import { Inject, Injectable } from '@angular/core';
+import { Component, Inject, Injectable, effect } from '@angular/core';
 import { produce } from '@tethys/cdk/immutable';
 import { EntityState, EntityStore, EntityStoreOptions } from '../entity-store';
 import { StoreInitialStateToken, StoreOptionsToken, injectStoreForTest } from './inject-store';
+import { TestBed } from '@angular/core/testing';
 
 describe('Store: EntityStore', () => {
     interface TaskInfo {
@@ -30,6 +31,24 @@ describe('Store: EntityStore', () => {
             @Inject(StoreOptionsToken) options?: EntityStoreOptions<TaskInfo>
         ) {
             super(initialState, options);
+        }
+    }
+
+    @Component({
+        selector: 'thy-test-task-detail',
+        template: ``
+    })
+    class TesTaskDetailComponent {
+        taskNameState = this.store.select((state) => {
+            return state.entity.name;
+        });
+
+        taskNameStateSpy = jasmine.createSpy('task name spy');
+
+        constructor(public store: TaskDetailStore) {
+            effect(() => {
+                this.taskNameStateSpy(this.taskNameState());
+            });
         }
     }
 
@@ -589,6 +608,31 @@ describe('Store: EntityStore', () => {
                 };
             });
             expect(taskDetailStore.entity).toEqual({ _id: '1', name: 'task 1 new' });
+        });
+
+        it('should effect taskNameState when update entity name', () => {
+            TestBed.resetTestingModule();
+            TestBed.configureTestingModule({
+                declarations: [TesTaskDetailComponent],
+                providers: [
+                    TaskDetailStore,
+                    { provide: StoreInitialStateToken, useValue: {} },
+                    { provide: StoreOptionsToken, useValue: null }
+                ]
+            });
+
+            const taskDetailStore = TestBed.inject(TaskDetailStore);
+            taskDetailStore.initialize(initialTaskDetail);
+
+            const fixture = TestBed.createComponent(TesTaskDetailComponent);
+            const component = fixture.componentInstance;
+            fixture.detectChanges();
+            const newTaskName = 'task 1 new';
+            taskDetailStore.update(taskDetailStore.entity._id, { name: newTaskName });
+            fixture.detectChanges();
+
+            expect(component.taskNameStateSpy).toHaveBeenCalled();
+            expect(component.taskNameStateSpy).toHaveBeenCalledWith(newTaskName);
         });
 
         it(`should throw an error when add or remove`, () => {
