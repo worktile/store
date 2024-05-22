@@ -319,7 +319,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
             });
             this.buildReferencesIdMap();
         }
-        this.next(state);
+        this.next({...state});
     }
 
     /**
@@ -414,7 +414,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     clearPagination() {
         const state = this.snapshot;
         state.pagination = null;
-        this.next(state);
+        this.next({...state});
     }
 
     clear() {

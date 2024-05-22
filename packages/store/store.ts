@@ -106,8 +106,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     }
 
     next(state: T) {
-        const newState: T = isArray(state) ? ([...state] as T) : isObject(state) ? { ...state } : state;
-        this.state$.next(newState);
+        this.state$.next(state);
     }
 
     error(error: any) {
