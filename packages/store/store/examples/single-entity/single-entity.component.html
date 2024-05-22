@@ -1,5 +1,5 @@
 <header class="header">
-  <h1>Single Entity Data</h1>
+  <h1>Single Entity Data (Stream)</h1>
 </header>
 <div *ngIf="detailStore.entityWithRefs$ | async as detailInfo">
   <h4>标题: {{ detailInfo.title }}</h4>
@@ -12,6 +12,22 @@
 </div>
 
 <hr />
+
+<header class="header">
+  <h1>Single Entity Data (State)</h1>
+</header>
+<div>
+  <h4>标题: {{ titleState() }}</h4>
+  <p>
+    状态:
+    <span [ngStyle]="{ color: stateIdState() === 'success-state-id' ? '#73d897' : '' }">
+      {{ (detailStore.entityWithRefs$ | async).refs?.state?.name }}
+    </span>
+  </p>
+</div>
+
+<hr />
+
 <button class="dg-btn dg-btn-primary dg-btn-sm mr-20" (click)="changeTitle()">修改标题</button>
 <button class="dg-btn dg-btn-success dg-btn-sm mr-20" (click)="changeState()">完成</button>
 <button class="dg-btn dg-btn-danger dg-btn-sm" (click)="clear()">清空</button>

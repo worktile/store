@@ -1,5 +1,5 @@
 import { computed, Injectable, isDevMode, OnDestroy, Signal } from '@angular/core';
-import { isFunction, isNumber, isObject } from '@tethys/cdk/is';
+import { isArray, isFunction, isNumber, isObject } from '@tethys/cdk/is';
 import { BehaviorSubject, from, Observable, Observer, Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { Action } from './action';
@@ -32,7 +32,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         this.defaultStoreInstanceId = this.createStoreInstanceId();
         this.state$ = new BehaviorSubject<T>(initialState as T);
 
-        this.state = toSignal(this.state$);
+        this.state = toSignal(this.state$, { requireSync: true });
 
         // use json format function to deep clone an object, but it can't clone something correctly, such as NaN, function, Date and so on
         // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
@@ -106,7 +106,8 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     }
 
     next(state: T) {
-        this.state$.next(state);
+        const newState: T = isArray(state) ? ([...state] as T) : isObject(state) ? { ...state } : state;
+        this.state$.next(newState);
     }
 
     error(error: any) {
