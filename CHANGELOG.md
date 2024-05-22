@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [17.2.0-next.0](https://github.com/worktile/store/compare/v17.1.0...v17.2.0-next.0) (2024-05-22)
+
+
+### Features
+
+* support signal #INFR-12381 ([#159](https://github.com/worktile/store/issues/159)) ([102b79a](https://github.com/worktile/store/commit/102b79af725ec4617fb3b1cd6b820131d31a66c0)), closes [#INFR-12381](https://github.com/worktile/store/issues/INFR-12381)
+
+
+
 # [17.1.0](https://github.com/worktile/store/compare/v17.0.0...v17.1.0) (2024-05-15)
 
 
