@@ -1,5 +1,5 @@
 import { Component, Injectable } from '@angular/core';
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { Observable } from 'rxjs';
 import { ThyStoreModule, Store } from '../index';
 
@@ -44,7 +44,7 @@ class StringSelectComponent {
 }
 
 describe('select', () => {
-    it('should select the correct state using string', async(() => {
+    it('should select the correct state using string', waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [ThyStoreModule.forRoot([StringSelectStore])],
             declarations: [StringSelectComponent]
