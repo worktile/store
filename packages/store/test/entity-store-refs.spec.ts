@@ -22,9 +22,9 @@ describe('Store: EntityStore with refs', () => {
         updated_by?: string;
         refs?: {
             group?: GroupInfo;
-            created_by: UserInfo;
+            created_by?: UserInfo;
             project?: { _id: string; name: string };
-            parents: string[];
+            parents?: string[];
         };
     }
 
@@ -67,8 +67,8 @@ describe('Store: EntityStore with refs', () => {
         }
 
         onCombineRefs(entity: TaskInfo, referencesIdMap: ReferencesIdDictionary<TaskReferences>, references: TaskReferences) {
-            entity.refs.group = referencesIdMap.groups[entity.group_id];
-            entity.refs.created_by = referencesIdMap.users[entity.created_by];
+            entity.refs.group = referencesIdMap.groups && referencesIdMap.groups[entity.group_id];
+            entity.refs.created_by = referencesIdMap.users && referencesIdMap.users[entity.created_by];
         }
     }
 
@@ -164,7 +164,7 @@ describe('Store: EntityStore with refs', () => {
             const entitiesWithRefsSub = jasmine.createSpy('entitiesWithRefsSub');
             tasksStore.entitiesWithRefs$.subscribe(entitiesWithRefsSub);
             expect(entitiesWithRefsSub).toHaveBeenCalledTimes(1);
-            expect(entitiesWithRefsSub).toHaveBeenCalledWith([
+            const expectedEntitiesWithRefs: TaskInfo[] = [
                 {
                     _id: 'task-1',
                     title: 'task 1',
@@ -185,12 +185,14 @@ describe('Store: EntityStore with refs', () => {
                         created_by: { uid: '2', name: 'user 2' }
                     }
                 }
-            ]);
+            ];
+            expect(entitiesWithRefsSub).toHaveBeenCalledWith(expectedEntitiesWithRefs);
 
             expect(tasksStore.snapshot.references).toEqual({
                 groups: initialGroups,
                 users: initialUsers
             });
+            expect(tasksStore.entitiesWithRefs()).toEqual(expectedEntitiesWithRefs);
         });
 
         it('should get correct refs with directly visit references by entitiesWithRefs$', () => {
@@ -198,6 +200,7 @@ describe('Store: EntityStore with refs', () => {
                 _id: `project-new-1`,
                 name: `project-new name 1`
             };
+
             const tasksStore = injectStoreForTest(
                 TasksStore,
                 {
@@ -227,7 +230,7 @@ describe('Store: EntityStore with refs', () => {
             const entitiesWithRefsSub = jasmine.createSpy('entitiesWithRefsSub');
             tasksStore.entitiesWithRefs$.subscribe(entitiesWithRefsSub);
             expect(entitiesWithRefsSub).toHaveBeenCalledTimes(1);
-            expect(entitiesWithRefsSub).toHaveBeenCalledWith([
+            const expectedEntitiesWithRefs = [
                 {
                     _id: 'task-1',
                     title: 'task 1',
@@ -246,7 +249,9 @@ describe('Store: EntityStore with refs', () => {
                         project: project
                     }
                 }
-            ]);
+            ];
+            expect(entitiesWithRefsSub).toHaveBeenCalledWith(expectedEntitiesWithRefs);
+            expect(tasksStore.entitiesWithRefs()).toEqual(expectedEntitiesWithRefs);
         });
 
         describe('add', () => {
@@ -543,10 +548,10 @@ describe('Store: EntityStore with refs', () => {
                     }
                 }
             );
-            const entitiesWithRefsSub = jasmine.createSpy('entitiesWithRefsSub');
-            taskDetailStore.entityWithRefs$.subscribe(entitiesWithRefsSub);
-            expect(entitiesWithRefsSub).toHaveBeenCalledTimes(1);
-            expect(entitiesWithRefsSub).toHaveBeenCalledWith({
+            const entityWithRefsSub = jasmine.createSpy('entityWithRefs');
+            taskDetailStore.entityWithRefs$.subscribe(entityWithRefsSub);
+            expect(entityWithRefsSub).toHaveBeenCalledTimes(1);
+            const expectedEntityWithRefs = {
                 _id: 'task-3',
                 title: 'task 3',
                 group_id: 'group-1',
@@ -555,12 +560,14 @@ describe('Store: EntityStore with refs', () => {
                     group: { _id: 'group-1', name: 'group 1' },
                     created_by: { uid: '1', name: 'user 1' }
                 }
-            });
+            };
+            expect(entityWithRefsSub).toHaveBeenCalledWith(expectedEntityWithRefs);
 
             expect(taskDetailStore.snapshot.references).toEqual({
                 groups: initialGroups,
                 users: initialUsers
             });
+            expect(taskDetailStore.entityWithRefs()).toEqual(expectedEntityWithRefs);
         });
 
         it('should get correct refs with directly visit references by entitiesWithRefs$', () => {
@@ -589,10 +596,10 @@ describe('Store: EntityStore with refs', () => {
                 entity.refs.project = references.project;
             };
 
-            const entitiesWithRefsSub = jasmine.createSpy('entitiesWithRefsSub');
-            taskDetailStore.entityWithRefs$.subscribe(entitiesWithRefsSub);
-            expect(entitiesWithRefsSub).toHaveBeenCalledTimes(1);
-            expect(entitiesWithRefsSub).toHaveBeenCalledWith({
+            const entityWithRefsSub = jasmine.createSpy('entityWithRefsSub');
+            taskDetailStore.entityWithRefs$.subscribe(entityWithRefsSub);
+            expect(entityWithRefsSub).toHaveBeenCalledTimes(1);
+            const expectedEntitiesWithRefs = {
                 _id: 'task-3',
                 title: 'task 3',
                 group_id: 'group-1',
@@ -600,7 +607,9 @@ describe('Store: EntityStore with refs', () => {
                 refs: {
                     project: project
                 }
-            });
+            };
+            expect(entityWithRefsSub).toHaveBeenCalledWith(expectedEntitiesWithRefs);
+            expect(taskDetailStore.entityWithRefs()).toEqual(expectedEntitiesWithRefs);
         });
 
         it(`update with new group`, () => {

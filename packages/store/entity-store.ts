@@ -1,3 +1,4 @@
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Id, produce, ProducerOptions } from '@tethys/cdk/immutable';
 import { isFunction } from '@tethys/cdk/is';
 import { Observable } from 'rxjs';
@@ -13,6 +14,7 @@ import {
 import { Store } from './store';
 import { PaginationInfo, StoreOptions, UpdateStatePredicate } from './types';
 import { coerceArray } from './utils';
+import { Signal, computed } from '@angular/core';
 
 export interface EntityStoreOptions<TEntity = unknown, TReferences = unknown> extends ProducerOptions<TEntity>, StoreOptions {
     referencesIdKeys?: ReferenceArrayExtractAllowKeys<TReferences>;
@@ -46,10 +48,16 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
 
     private isSingleEntity: boolean;
 
+    /**
+     * @deprecated 请使用 snapshot.entities
+     */
     get entities() {
         return this.snapshot.entities;
     }
 
+    /**
+     * @deprecated 请使用 snapshot.entity
+     */
     get entity() {
         return this.snapshot.entity;
     }
@@ -58,10 +66,19 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         return state.entities;
     });
 
+    // 临时添加，后期使用 entities 替代你
+    private entitiesSignal: Signal<TEntity[]>;
+
     entity$ = this.select$((state) => {
         return state.entity;
     });
 
+    // 临时添加，后期使用 entity 替代你
+    private entitySignal: Signal<TEntity>;
+
+    /**
+     * @deprecated 请使用 snapshot.activeId
+     */
     get activeId(): Id | null {
         return this.snapshot.activeId || null;
     }
@@ -69,6 +86,10 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     activeId$: Observable<Id | null> = this.select$((state) => {
         return state.activeId || null;
     });
+
+    /**
+     * @deprecated 请使用 snapshot
+     */
 
     get activeEntity(): TEntity | null {
         return this.snapshot.activeId ? this.getEntityById(this.snapshot.activeId) : null;
@@ -93,6 +114,14 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         shareReplay(1)
     );
 
+    entitiesWithRefs = computed(() => {
+        const entities = this.entitiesSignal();
+        if (!entities) {
+            return entities;
+        }
+        return entities.map((entity) => this.buildRefs(entity));
+    });
+
     entityWithRefs$ = this.entity$.pipe(
         map((entity) => {
             if (!entity) {
@@ -102,6 +131,14 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         }),
         shareReplay(1)
     );
+
+    entityWithRefs = computed(() => {
+        const entity = this.entitySignal();
+        if (!entity) {
+            return entity;
+        }
+        return this.buildRefs(entity);
+    });
 
     private buildRefs(entity: TEntity) {
         const newEntity = { ...entity };
@@ -156,6 +193,12 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
             throw new Error(`idKey is required in EntityStore`);
         }
         this.buildReferencesIdMap();
+        this.entitiesSignal = toSignal(this.entities$);
+        this.entitySignal = toSignal(this.entity$);
+        // this.entities = toSignal(this.entities$);
+        // this.entity = toSignal(this.entity$);
+        // this.activeId = toSignal(this.activeId$);
+        // this.activeEntity = toSignal(this.activeEntity$);
     }
 
     /**
@@ -426,7 +469,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         this.next(state);
     }
 
-    private getEntityById(id: Id): TEntity | null {
+    protected getEntityById(id: Id): TEntity | null {
         if (this.isSingleEntity) {
             return (this.snapshot.entity[this.options.idKey] as Id) === id ? this.snapshot.entity : null;
         } else {
