@@ -1,5 +1,5 @@
 import { NgModule, Injector, Injectable } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { waitForAsync, TestBed } from '@angular/core/testing';
 
 import { ThyStoreModule, Store } from '../index';
 import { getInjector } from '../internals/static-injector';
@@ -60,7 +60,7 @@ describe('module', () => {
         expect(TestBed.inject(RootStore)).toEqual(getInjector().get(RootStore));
     });
 
-    it('should initialize all modules state', async(() => {
+    it('should initialize all modules state', waitForAsync(() => {
         TestBed.configureTestingModule({
             imports: [RootModule]
         });
