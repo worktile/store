@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [18.0.0-next.0](https://github.com/worktile/store/compare/v17.2.0...v18.0.0-next.0) (2024-08-19)
+
+
+### Features
+
+* add entityWithRefs and entitiesWithRefs signals, mark entities, entity, activeId and activeEntity as deprecated #TINFR-401 ([d94bf31](https://github.com/worktile/store/commit/d94bf31e196f5c7876ebb26ccf77e658ab5d25cd)), closes [#TINFR-401](https://github.com/worktile/store/issues/TINFR-401)
+
+
+
 # [17.2.0](https://github.com/worktile/store/compare/v17.2.0-next.0...v17.2.0) (2024-07-03)
 
 
