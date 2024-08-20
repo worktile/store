@@ -86,6 +86,7 @@ describe('Store: EntityStore', () => {
             const state = taskEntityStore.snapshot;
             expect(state.pagination).toEqual(undefined);
             expect(state.entities).toEqual([]);
+            expect(taskEntityStore.entities()).toEqual([]);
 
             expect(taskEntityStore.trackBy(0, { _id: '111', name: 'name1' })).toEqual('111');
         });
@@ -513,9 +514,10 @@ describe('Store: EntityStore', () => {
                 const tasksEntityStore = injectStoreForTest(TasksEntityStore, {
                     entities: [...initialTasks]
                 });
-                expect(tasksEntityStore.activeId).toEqual(null);
+                expect(tasksEntityStore.activeId()).toEqual(null);
                 tasksEntityStore.setActive('1');
-                expect(tasksEntityStore.activeId).toEqual('1');
+                expect(tasksEntityStore.snapshot.activeId).toEqual('1');
+                expect(tasksEntityStore.activeId()).toEqual('1');
                 tasksEntityStore.activeId$.subscribe((id) => {
                     expect(id).toEqual('1');
                 });
@@ -565,11 +567,11 @@ describe('Store: EntityStore', () => {
                 });
                 tasksEntityStore.setActive('1');
                 tasksEntityStore.setActive(null);
-                expect(tasksEntityStore.activeId).toEqual(null);
+                expect(tasksEntityStore.activeId()).toEqual(null);
                 tasksEntityStore.activeId$.subscribe((id) => {
                     expect(id).toEqual(null);
                 });
-                expect(tasksEntityStore.activeEntity).toEqual(null);
+                expect(tasksEntityStore.activeEntity()).toEqual(null);
                 tasksEntityStore.activeEntity$.subscribe((entity) => {
                     expect(entity).toEqual(null);
                 });
@@ -583,20 +585,21 @@ describe('Store: EntityStore', () => {
             taskDetailStore.initialize(initialTaskDetail);
             const state = taskDetailStore.snapshot;
             expect(state.entity).toEqual({ _id: '1', name: 'task 1' });
+            expect(taskDetailStore.entity()).toEqual({ _id: '1', name: 'task 1' });
         });
 
         it('should update by id', () => {
             const taskDetailStore = injectStoreForTest(TaskDetailStore);
             taskDetailStore.initialize(initialTaskDetail);
-            taskDetailStore.update(taskDetailStore.entity._id, { name: 'task 1 new' });
-            expect(taskDetailStore.entity).toEqual({ _id: '1', name: 'task 1 new' });
+            taskDetailStore.update(taskDetailStore.entity()._id, { name: 'task 1 new' });
+            expect(taskDetailStore.entity()).toEqual({ _id: '1', name: 'task 1 new' });
         });
 
         it('should update whole entity by predicate state', () => {
             const taskDetailStore = injectStoreForTest(TaskDetailStore);
             taskDetailStore.initialize(initialTaskDetail);
             taskDetailStore.update({ entity: { _id: '1', name: 'task 1 new' } });
-            expect(taskDetailStore.entity).toEqual({ _id: '1', name: 'task 1 new' });
+            expect(taskDetailStore.entity()).toEqual({ _id: '1', name: 'task 1 new' });
         });
 
         it('should update whole entity by predicate function', () => {
@@ -607,7 +610,8 @@ describe('Store: EntityStore', () => {
                     entity: { ...state.entity, name: 'task 1 new' }
                 };
             });
-            expect(taskDetailStore.entity).toEqual({ _id: '1', name: 'task 1 new' });
+            expect(taskDetailStore.snapshot.entity).toEqual({ _id: '1', name: 'task 1 new' });
+            expect(taskDetailStore.entity()).toEqual({ _id: '1', name: 'task 1 new' });
         });
 
         it('should effect taskNameState when update entity name', () => {
@@ -628,7 +632,7 @@ describe('Store: EntityStore', () => {
             const component = fixture.componentInstance;
             fixture.detectChanges();
             const newTaskName = 'task 1 new';
-            taskDetailStore.update(taskDetailStore.entity._id, { name: newTaskName });
+            taskDetailStore.update(taskDetailStore.entity()._id, { name: newTaskName });
             fixture.detectChanges();
 
             expect(component.taskNameStateSpy).toHaveBeenCalled();
@@ -652,9 +656,10 @@ describe('Store: EntityStore', () => {
         it('should set active and get id', () => {
             const taskDetailStore = injectStoreForTest(TaskDetailStore);
             taskDetailStore.initialize(initialTaskDetail);
-            expect(taskDetailStore.activeId).toEqual(null);
+            expect(taskDetailStore.activeId()).toEqual(null);
             taskDetailStore.setActive('1');
-            expect(taskDetailStore.activeId).toEqual('1');
+            expect(taskDetailStore.snapshot.activeId).toEqual('1');
+            expect(taskDetailStore.activeId()).toEqual('1');
             taskDetailStore.activeId$.subscribe((id) => {
                 expect(id).toEqual('1');
             });

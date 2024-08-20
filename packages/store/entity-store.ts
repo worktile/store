@@ -48,52 +48,28 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
 
     private isSingleEntity: boolean;
 
-    /**
-     * @deprecated 请使用 snapshot.entities
-     */
-    get entities() {
-        return this.snapshot.entities;
-    }
-
-    /**
-     * @deprecated 请使用 snapshot.entity
-     */
-    get entity() {
-        return this.snapshot.entity;
-    }
-
     entities$ = this.select$((state) => {
         return state.entities;
     });
 
-    // 临时添加，后期使用 entities 替代你
-    private entitiesSignal: Signal<TEntity[]>;
+    entities: Signal<TEntity[]>;
 
     entity$ = this.select$((state) => {
         return state.entity;
     });
 
-    // 临时添加，后期使用 entity 替代你
-    private entitySignal: Signal<TEntity>;
-
-    /**
-     * @deprecated 请使用 snapshot.activeId
-     */
-    get activeId(): Id | null {
-        return this.snapshot.activeId || null;
-    }
+    entity: Signal<TEntity>;
 
     activeId$: Observable<Id | null> = this.select$((state) => {
         return state.activeId || null;
     });
 
-    /**
-     * @deprecated 请使用 snapshot
-     */
+    activeId: Signal<Id | null>;
 
-    get activeEntity(): TEntity | null {
-        return this.snapshot.activeId ? this.getEntityById(this.snapshot.activeId) : null;
-    }
+    activeEntity = computed(() => {
+        const activeId = this.activeId();
+        return activeId ? this.getEntityById(activeId) : null;
+    });
 
     activeEntity$: Observable<TEntity | null> = this.select$((state) => {
         return state.entities.find((entity) => entity[this.options.idKey] === state.activeId);
@@ -115,7 +91,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     );
 
     entitiesWithRefs = computed(() => {
-        const entities = this.entitiesSignal();
+        const entities = this.entities();
         if (!entities) {
             return entities;
         }
@@ -133,7 +109,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     );
 
     entityWithRefs = computed(() => {
-        const entity = this.entitySignal();
+        const entity = this.entity();
         if (!entity) {
             return entity;
         }
@@ -193,12 +169,9 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
             throw new Error(`idKey is required in EntityStore`);
         }
         this.buildReferencesIdMap();
-        this.entitiesSignal = toSignal(this.entities$);
-        this.entitySignal = toSignal(this.entity$);
-        // this.entities = toSignal(this.entities$);
-        // this.entity = toSignal(this.entity$);
-        // this.activeId = toSignal(this.activeId$);
-        // this.activeEntity = toSignal(this.activeEntity$);
+        this.entities = toSignal(this.entities$);
+        this.entity = toSignal(this.entity$);
+        this.activeId = toSignal(this.activeId$);
     }
 
     /**

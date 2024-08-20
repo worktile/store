@@ -62,7 +62,7 @@ export class DetailStore
     @Action()
     updateState() {
         this.updateWithReferences(
-            this.entity._id,
+            this.entity()._id,
             { state_id: 'success-state-id' },
             {
                 states: [
@@ -77,6 +77,6 @@ export class DetailStore
 
     @Action()
     updateTitle() {
-        this.update(this.entity._id, { title: '新的title' });
+        this.update(this.entity()._id, { title: '新的title' });
     }
 }
