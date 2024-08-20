@@ -37,7 +37,7 @@ export class TodosStore extends EntityStore<TodosState, Todo> {
     }
 
     private getWithCompleted(completed: Boolean) {
-        return this.entities.filter((todo: Todo) => todo.completed === completed);
+        return this.entities().filter((todo: Todo) => todo.completed === completed);
     }
 
     getCompleted() {
@@ -111,7 +111,7 @@ export class TodosStore extends EntityStore<TodosState, Todo> {
     @Action()
     setAllTo(completed: boolean) {
         this.update(
-            this.entities.map((todo) => {
+            this.entities().map((todo) => {
                 return todo.id;
             }),
             {
