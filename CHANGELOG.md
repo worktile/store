@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [18.0.0-next.1](https://github.com/worktile/store/compare/v18.0.0-next.0...v18.0.0-next.1) (2024-08-20)
+
+
+### Features
+
+* update getters (entities, entity, activeId, activeEntity) to signals #TINFR-417 ([ec38717](https://github.com/worktile/store/commit/ec3871783b8d87ad8c6cdc670c3503a9cd08e5ca)), closes [#TINFR-417](https://github.com/worktile/store/issues/TINFR-417)
+
+
+
 # [18.0.0-next.0](https://github.com/worktile/store/compare/v17.2.0...v18.0.0-next.0) (2024-08-19)
 
 
