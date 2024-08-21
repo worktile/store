@@ -1,6 +1,6 @@
 {
   "name": "@tethys/store",
-  "version": "18.0.0-next.1",
+  "version": "18.0.0",
   "scripts": {
     "ng": "ng",
     "start": "npm run start:docs",
