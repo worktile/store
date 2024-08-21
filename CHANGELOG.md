@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file. See [standa
 
 # [18.0.0](https://github.com/worktile/store/compare/v18.0.0-next.1...v18.0.0) (2024-08-21)
 
+### Features
+
+* update getters (entities, entity, activeId, activeEntity) of EntityStore to signals #TINFR-417 ([ec38717](https://github.com/worktile/store/commit/ec3871783b8d87ad8c6cdc670c3503a9cd08e5ca)), closes [#TINFR-417](https://github.com/worktile/store/issues/TINFR-417)
+* add entityWithRefs and entitiesWithRefs signals, mark entities, entity, activeId and activeEntity as deprecated #TINFR-401 ([d94bf31](https://github.com/worktile/store/commit/d94bf31e196f5c7876ebb26ccf77e658ab5d25cd)), closes [#TINFR-401](https://github.com/worktile/store/issues/TINFR-401)
+* upgrade @angular/* to 18.x
+
+BREAKING CHANGES:
+update getters (entities, entity, activeId, activeEntity) of EntityStore to signals
+- entityStore.entities => entityStore.entities() or entityStore.snapshot.entities
+- entityStore.entity => entityStore.entity() or entityStore.snapshot.entity
+- entityStore.activeId => entityStore.activeId() or entityStore.snapshot.activeId
+- entityStore.activeEntity => entityStore.activeEntity() 
 
 
 # [18.0.0-next.1](https://github.com/worktile/store/compare/v18.0.0-next.0...v18.0.0-next.1) (2024-08-20)
