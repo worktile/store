@@ -420,7 +420,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         const originalLength = state.entities.length;
         state.entities = produce(state.entities, this.options).remove(idsOrFn as Id | Id[]);
         this.decreasePagination(originalLength - state.entities.length);
-        this.next(state);
+        this.next({ ...state });
     }
 
     trackBy = (_index: number, entity: TEntity) => {
@@ -439,7 +439,7 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         state.entity = {} as TEntity;
         state.pagination = null;
         state.references = null;
-        this.next(state);
+        this.next({ ...state });
     }
 
     protected getEntityById(id: Id): TEntity | null {
