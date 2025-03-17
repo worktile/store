@@ -4,7 +4,8 @@ import { createReferencesBuilder } from '@tethys/store/references-builder';
 @Component({
     selector: 'thy-store-references-builder-example',
     templateUrl: './references-builder.component.html',
-    styleUrls: []
+    styleUrls: [],
+    standalone: false
 })
 export class ThyStoreReferencesBuilderExampleComponent implements OnInit {
     constructor() {}

@@ -7,7 +7,8 @@ import { MonoTypeOperatorFunction, of, Subject, Observable } from 'rxjs';
     selector: 'thy-store-cancellation-example',
     templateUrl: './cancellation.component.html',
     styleUrls: ['./cancellation.component.scss'],
-    providers: [TodosStore]
+    providers: [TodosStore],
+    standalone: false
 })
 export class ThyStoreCancellationExampleComponent implements OnInit {
     destroy$ = new Subject<void>();

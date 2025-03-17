@@ -4,34 +4,14 @@
   "overrides": [
     {
       "files": ["*.ts"],
-      "parserOptions": {
-        "project": ["tsconfig.json"],
-        "createDefaultProgram": true
-      },
+      "parserOptions": { "project": ["tsconfig.json"], "createDefaultProgram": true },
       "extends": ["plugin:@angular-eslint/recommended", "plugin:@angular-eslint/template/process-inline-templates"],
       "rules": {
-        "@angular-eslint/directive-selector": [
-          "error",
-          {
-            "type": "attribute",
-            "prefix": ["thy"],
-            "style": "camelCase"
-          }
-        ],
-        "@angular-eslint/component-selector": [
-          "error",
-          {
-            "type": "element",
-            "prefix": ["thy"],
-            "style": "kebab-case"
-          }
-        ]
+        "@angular-eslint/directive-selector": ["error", { "type": "attribute", "prefix": ["thy"], "style": "camelCase" }],
+        "@angular-eslint/component-selector": ["error", { "type": "element", "prefix": ["thy"], "style": "kebab-case" }],
+        "@angular-eslint/prefer-standalone": "off"
       }
     },
-    {
-      "files": ["*.html"],
-      "extends": ["plugin:@angular-eslint/template/recommended"],
-      "rules": {}
-    }
+    { "files": ["*.html"], "extends": ["plugin:@angular-eslint/template/recommended"], "rules": {} }
   ]
 }

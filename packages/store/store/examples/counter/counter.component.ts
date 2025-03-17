@@ -5,7 +5,8 @@ import { CounterStore } from './counter.store';
 @Component({
     selector: 'thy-store-counter-example',
     templateUrl: './counter.component.html',
-    styleUrls: ['./counter.component.scss']
+    styleUrls: ['./counter.component.scss'],
+    standalone: false
 })
 export class ThyStoreCounterExampleComponent implements OnInit {
     count$: Observable<number> = this.counterStore.select$(CounterStore.countSelector);
