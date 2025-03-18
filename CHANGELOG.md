@@ -4,7 +4,9 @@ All notable changes to this project will be documented in this file. See [standa
 
 # [19.0.0-next.0](https://github.com/worktile/store/compare/v18.0.1...v19.0.0-next.0) (2025-03-18)
 
+### Features
 
+* upgrade @angular/* to 19.x
 
 ## [18.0.1](https://github.com/worktile/store/compare/v18.0.0...v18.0.1) (2024-10-15)
 
