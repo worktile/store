@@ -102,7 +102,8 @@ class ZoomStore extends Store<ZoomState> {
 
 @Component({
     selector: 'thy-test-zoom',
-    template: ``
+    template: ``,
+    standalone: false
 })
 class TesZoomComponent {
     fooNameStateSpy = jasmine.createSpy('foo name spy');
