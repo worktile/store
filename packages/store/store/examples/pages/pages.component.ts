@@ -7,10 +7,14 @@ import { Observable } from 'rxjs';
     selector: 'thy-store-pages-example',
     templateUrl: './pages.component.html',
     styleUrls: ['./pages.component.scss'],
-    providers: [PageDetailStore, CatalogsStore]
+    providers: [PageDetailStore, CatalogsStore],
+    standalone: false
 })
 export class ThyStorePagesExampleComponent implements OnInit {
-    constructor(public catalogsStore: CatalogsStore, public pageDetailStore: PageDetailStore) {}
+    constructor(
+        public catalogsStore: CatalogsStore,
+        public pageDetailStore: PageDetailStore
+    ) {}
 
     pageDetail$: Observable<any> = this.pageDetailStore.select$(PageDetailStore.detailSelector);
 

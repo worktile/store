@@ -4,7 +4,8 @@ import { DetailInfo, DetailStore } from './single-entity.store';
 @Component({
     selector: 'thy-store-single-entity-example',
     templateUrl: './single-entity.component.html',
-    styleUrls: ['./single-entity.component.scss']
+    styleUrls: ['./single-entity.component.scss'],
+    standalone: false
 })
 export class ThyStoreSingleEntityExampleComponent implements OnInit {
     titleState: Signal<string> = this.detailStore.select(DetailStore.titleSelector);

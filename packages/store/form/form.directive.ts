@@ -5,7 +5,10 @@ import { produce } from '@tethys/cdk/immutable';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, map, take, takeUntil } from 'rxjs/operators';
 
-@Directive({ selector: '[thyStoreForm]' })
+@Directive({
+    selector: '[thyStoreForm]',
+    standalone: false
+})
 export class StoreFormDirective implements OnInit, OnDestroy {
     @Input('thyStoreForm') store: Store;
 
@@ -37,7 +40,10 @@ export class StoreFormDirective implements OnInit, OnDestroy {
 
     private destroy$ = new Subject<void>();
 
-    constructor(private formGroup: FormGroupDirective, private _cdr: ChangeDetectorRef) {}
+    constructor(
+        private formGroup: FormGroupDirective,
+        private _cdr: ChangeDetectorRef
+    ) {}
 
     ngOnInit(): void {
         // TODO 之后完善FormStore的时候，这里仍需要对表单状态相关操作的响应

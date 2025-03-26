@@ -36,7 +36,8 @@ describe('Store: EntityStore', () => {
 
     @Component({
         selector: 'thy-test-task-detail',
-        template: ``
+        template: ``,
+        standalone: false
     })
     class TesTaskDetailComponent {
         taskNameState = this.store.select((state) => {
