@@ -4,7 +4,8 @@ import { Todo, TodosStore } from './todos.store';
 @Component({
     selector: 'thy-store-todos-example',
     templateUrl: './todos.component.html',
-    styleUrls: ['./todos.component.scss']
+    styleUrls: ['./todos.component.scss'],
+    standalone: false
 })
 export class ThyStoreTodosExampleComponent implements OnInit {
     todos$ = this.todosStore.select$(TodosStore.todosSelector);

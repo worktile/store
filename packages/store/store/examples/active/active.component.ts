@@ -4,7 +4,8 @@ import { ActiveItem, ActiveItemsStore } from './active.store';
 @Component({
     selector: 'thy-store-active-example',
     templateUrl: './active.component.html',
-    styleUrls: ['./active.component.scss']
+    styleUrls: ['./active.component.scss'],
+    standalone: false
 })
 export class ThyStoreActiveItemsExampleComponent implements OnInit {
     items$ = this.activeItemsStore.select$(ActiveItemsStore.itemsSelector);

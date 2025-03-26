@@ -6,7 +6,8 @@ import { UserFormStore } from './form.store';
     selector: 'thy-store-form-example',
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.scss'],
-    providers: [UserFormStore]
+    providers: [UserFormStore],
+    standalone: false
 })
 export class ThyStoreFormExampleComponent implements OnInit {
     newUserForm = new FormGroup({

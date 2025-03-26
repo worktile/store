@@ -4,7 +4,8 @@ import { TasksStore } from './tasks.store';
 @Component({
     selector: 'thy-store-tasks-example',
     templateUrl: './tasks.component.html',
-    styleUrls: ['./tasks.component.scss']
+    styleUrls: ['./tasks.component.scss'],
+    standalone: false
 })
 export class ThyStoreTasksExampleComponent implements OnInit {
     newTaskTitle!: string;
