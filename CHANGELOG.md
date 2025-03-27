@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [19.0.0-next.3](https://github.com/worktile/store/compare/v18.0.1...v19.0.0-next.3) (2025-03-27)
+
+
+### Features
+
+* upgrade ng 19 ([#182](https://github.com/worktile/store/issues/182)) ([74dc705](https://github.com/worktile/store/commit/74dc70514d98b57018520d55e19b753e09bbe658))
+
+
+
 # [19.0.0-next.0](https://github.com/worktile/store/compare/v18.0.1...v19.0.0-next.0) (2025-03-27)
 
 
