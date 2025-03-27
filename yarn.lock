@@ -2867,10 +2867,10 @@
   resolved "https://registry.npmjs.org/@socket.io/component-emitter/-/component-emitter-3.1.2.tgz#821f8442f4175d8f0467b9daf26e3a18e2d02af2"
   integrity sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==
 
-"@tethys/cdk@^19.0.0-next.1":
-  version "19.0.0-next.2"
-  resolved "https://registry.npmjs.org/@tethys/cdk/-/cdk-19.0.0-next.2.tgz#200ff66727b45c33cb80289ed15c9ea13254f6f1"
-  integrity sha512-xQLB1/aFCB9bZoln6L/YxHiRMxdh4cwpH7FnMnKMaIHUvm62VbZUT1UZK82vor9MKuOWBZJScSmqfAasAf5hUw==
+"@tethys/cdk@^19.0.0":
+  version "19.0.0"
+  resolved "https://registry.npmjs.org/@tethys/cdk/-/cdk-19.0.0.tgz#4d309dfb0312e6cd7942fd05a70baa27e1a9e141"
+  integrity sha512-H0hNbU/Mlrrp5CA5+emBqmes6/NwJ+EnpDffRcmfbo2uurnrY9cYRTJbdlqjAqzEHpfnKMMB/ek+v04HMhd1Yg==
   dependencies:
     tslib "^2.3.0"
 
