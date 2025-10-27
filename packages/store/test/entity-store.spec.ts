@@ -524,7 +524,7 @@ describe('Store: EntityStore', () => {
                 });
             });
 
-            it('should get entity', async () => {
+            it('should get active entity', async () => {
                 const tasksEntityStore = injectStoreForTest(TasksEntityStore, {
                     entities: [...initialTasks]
                 });
@@ -556,10 +556,12 @@ describe('Store: EntityStore', () => {
                 expect(activeEntity).toEqual(null);
                 tasksEntityStore.setActive('1');
                 expect(activeEntity).toEqual({ _id: '1', name: 'task 1' });
+                expect(tasksEntityStore.activeEntity()).toEqual({ _id: '1', name: 'task 1' });
                 tasksEntityStore.update('1', {
                     name: 'task 3'
                 });
                 expect(activeEntity).toEqual({ _id: '1', name: 'task 3' });
+                expect(tasksEntityStore.activeEntity()).toEqual({ _id: '1', name: 'task 3' });
             });
 
             it('should clear active id and entity', () => {

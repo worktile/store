@@ -444,9 +444,9 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
 
     protected getEntityById(id: Id): TEntity | null {
         if (this.isSingleEntity) {
-            return (this.snapshot.entity[this.options.idKey] as Id) === id ? this.snapshot.entity : null;
+            return (this.entity()[this.options.idKey] as Id) === id ? this.snapshot.entity : null;
         } else {
-            const entity = this.snapshot.entities.find((entity) => {
+            const entity = this.entities().find((entity) => {
                 return (entity[this.options.idKey] as Id) === id;
             });
             return entity ? entity : null;
