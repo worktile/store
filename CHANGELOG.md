@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [19.0.1](https://github.com/worktile/store/compare/v19.0.0...v19.0.1) (2025-10-27)
+
+
+### Bug Fixes
+
+* should update activeEntity signal when entity updated ([13d1300](https://github.com/worktile/store/commit/13d13005e02d633c5b82755c5931a143d91f6de1))
+
+
+
 # [19.0.0](https://github.com/worktile/store/compare/v19.0.0-next.3...v19.0.0) (2025-03-27)
 
 
