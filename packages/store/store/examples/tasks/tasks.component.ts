@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { TasksStore } from './tasks.store';
 
 @Component({
@@ -8,9 +8,9 @@ import { TasksStore } from './tasks.store';
     standalone: false
 })
 export class ThyStoreTasksExampleComponent implements OnInit {
-    newTaskTitle!: string;
+    tasksStore = inject(TasksStore);
 
-    constructor(public tasksStore: TasksStore) {}
+    newTaskTitle!: string;
 
     ngOnInit(): void {
         this.tasksStore.fetchTasks();

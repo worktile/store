@@ -1,4 +1,4 @@
-import { Component, OnInit, Signal, effect } from '@angular/core';
+import { Component, OnInit, Signal, effect, inject } from '@angular/core';
 import { DetailInfo, DetailStore } from './single-entity.store';
 
 @Component({
@@ -8,6 +8,8 @@ import { DetailInfo, DetailStore } from './single-entity.store';
     standalone: false
 })
 export class ThyStoreSingleEntityExampleComponent implements OnInit {
+    public detailStore = inject(DetailStore);
+
     titleState: Signal<string> = this.detailStore.select(DetailStore.titleSelector);
 
     stateIdState: Signal<string> = this.detailStore.select((state) => {
@@ -18,7 +20,7 @@ export class ThyStoreSingleEntityExampleComponent implements OnInit {
         return state.entity;
     });
 
-    constructor(public detailStore: DetailStore) {
+    constructor() {
         effect(() => {
             console.log(`Entity name is: ${this.titleState()}`);
         });

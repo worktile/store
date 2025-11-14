@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActiveItem, ActiveItemsStore } from './active.store';
 
 @Component({
@@ -8,13 +8,13 @@ import { ActiveItem, ActiveItemsStore } from './active.store';
     standalone: false
 })
 export class ThyStoreActiveItemsExampleComponent implements OnInit {
+    public activeItemsStore = inject(ActiveItemsStore);
+
     items$ = this.activeItemsStore.select$(ActiveItemsStore.itemsSelector);
 
     activeId$ = this.activeItemsStore.select$(ActiveItemsStore.activeIdSelector);
 
     activeEntity$ = this.activeItemsStore.activeEntity$;
-
-    constructor(public activeItemsStore: ActiveItemsStore) {}
 
     ngOnInit(): void {
         this.activeItemsStore.fetchItems();
