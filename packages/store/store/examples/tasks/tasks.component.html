@@ -2,6 +2,10 @@
   <h1>Tasks</h1>
   <input class="new-task" placeholder="Add new task?" autofocus="" [(ngModel)]="newTaskTitle" (keyup.enter)="addTask()" />
 </header>
-<div *ngIf="tasksStore.entitiesWithRefs$ | async as tasks">
-  <div *ngFor="let task of tasks; trackBy: tasksStore.trackBy">{{ task.title }} - {{ task.refs.assignee?.name }}</div>
-</div>
+@if (tasksStore.entitiesWithRefs$ | async; as tasks) {
+  <div>
+    @for (task of tasks; track tasksStore.trackBy($index, task)) {
+      <div>{{ task.title }} - {{ task.refs.assignee?.name }}</div>
+    }
+  </div>
+}

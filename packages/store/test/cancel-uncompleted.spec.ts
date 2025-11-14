@@ -89,7 +89,7 @@ class GardenStore extends Store<GardenState> {
     fetchFlowers$ = new Subject<string[]>();
 
     completeFetch(flowers: string[]) {
-        this.fetchFlowers$.next();
+        this.fetchFlowers$.next([]);
         this.fetchFlowers$.complete();
     }
 
