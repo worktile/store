@@ -9,9 +9,7 @@ class GardenState {
 @Injectable()
 class GardenStore extends Store<GardenState> {
     constructor() {
-        super({
-            flowers: []
-        });
+        super({ flowers: [] }, { name: 'GardenStore' });
     }
 }
 

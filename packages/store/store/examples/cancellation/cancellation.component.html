@@ -1,18 +1,22 @@
 <button class="dg-btn dg-btn-primary dg-btn-sm" (click)="fetchItems()">Fetch Items</button>
 <button class="dg-btn dg-btn-primary dg-btn-sm" (click)="cancel()">Cancel</button>
 
-<div *ngIf="loadingDone; else loading">
-  <div *ngFor="let item of todos$ | async">
-    {{ item.title }}
+@if (loadingDone) {
+  <div>
+    @for (item of todos$ | async; track item.title) {
+      <div>
+        {{ item.title }}
+      </div>
+    }
   </div>
-</div>
-
-<ng-template #loading>
+} @else {
   <div>Loading...</div>
-</ng-template>
+}
 
 <div class="messages">
-  <div *ngFor="let message of messages">
-    {{ message }}
-  </div>
+  @for (message of messages; track message) {
+    <div>
+      {{ message }}
+    </div>
+  }
 </div>

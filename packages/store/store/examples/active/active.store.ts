@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Action, EntityState, EntityStore } from '@tethys/store';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -13,6 +13,8 @@ interface ActiveItemsState extends EntityState<ActiveItem> {}
 
 @Injectable({ providedIn: 'root' })
 export class ActiveItemsStore extends EntityStore<ActiveItemsState, ActiveItem> {
+    private activeItemsApiService = inject(ActiveItemsApiService);
+
     static itemsSelector(state: ActiveItemsState) {
         return state.entities;
     }
@@ -21,7 +23,7 @@ export class ActiveItemsStore extends EntityStore<ActiveItemsState, ActiveItem> 
         return state.activeId;
     }
 
-    constructor(private activeItemsApiService: ActiveItemsApiService) {
+    constructor() {
         super(
             {
                 entities: [],

@@ -46,7 +46,7 @@ class ZoomStore extends Store<ZoomState> {
             foo: null
         }
     ) {
-        super(initialState);
+        super(initialState, { name: 'ZoomStore' });
     }
 
     @Action()

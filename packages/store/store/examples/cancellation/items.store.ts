@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Action, Store } from '@tethys/store';
 import { of } from 'rxjs';
@@ -16,7 +16,9 @@ interface TodosState {
 
 @Injectable()
 export class TodosStore extends Store<TodosState> {
-    constructor(private http: HttpClient) {
+    private http = inject(HttpClient);
+
+    constructor() {
         super({
             items: []
         });

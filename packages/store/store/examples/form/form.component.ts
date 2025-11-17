@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserFormStore } from './form.store';
 
@@ -10,11 +10,11 @@ import { UserFormStore } from './form.store';
     standalone: false
 })
 export class ThyStoreFormExampleComponent implements OnInit {
+    userFormStore = inject(UserFormStore);
+
     newUserForm = new FormGroup({
         name: new FormControl()
     });
-
-    constructor(public userFormStore: UserFormStore) {}
 
     // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
     ngOnInit(): void {}

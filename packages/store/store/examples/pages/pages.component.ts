@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { PageDetailStore } from './page-detail.store';
 import { Catalog, CatalogsStore } from './catalogs.store';
 import { Observable } from 'rxjs';
@@ -11,10 +11,8 @@ import { Observable } from 'rxjs';
     standalone: false
 })
 export class ThyStorePagesExampleComponent implements OnInit {
-    constructor(
-        public catalogsStore: CatalogsStore,
-        public pageDetailStore: PageDetailStore
-    ) {}
+    public catalogsStore = inject(CatalogsStore);
+    public pageDetailStore = inject(PageDetailStore);
 
     pageDetail$: Observable<any> = this.pageDetailStore.select$(PageDetailStore.detailSelector);
 

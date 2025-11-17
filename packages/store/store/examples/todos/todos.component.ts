@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Todo, TodosStore } from './todos.store';
 
 @Component({
@@ -8,11 +8,11 @@ import { Todo, TodosStore } from './todos.store';
     standalone: false
 })
 export class ThyStoreTodosExampleComponent implements OnInit {
+    public todosStore = inject(TodosStore);
+
     todos$ = this.todosStore.select$(TodosStore.todosSelector);
 
     newTodoText!: string;
-
-    constructor(public todosStore: TodosStore) {}
 
     ngOnInit(): void {
         this.todosStore.fetchTodos().subscribe();
