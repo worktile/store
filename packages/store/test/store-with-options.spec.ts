@@ -32,7 +32,7 @@ class GardenStoreWithUnlimitedCount extends Store<GardenState> {
 @Injectable()
 class GardenStoreWithCustomLimitedCount extends Store<GardenState> {
     constructor() {
-        super(undefined, { instanceMaxCount: 50 });
+        super(undefined, { instanceMaxCount: 50, name: 'GardenStoreWithCustomLimitedCount' });
     }
 }
 
