@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [20.0.0-next.0](https://github.com/worktile/store/compare/v19.0.1...v20.0.0-next.0) (2025-11-17)
+
+
+### Features
+
+* upgrade angular v20 ([2431e91](https://github.com/worktile/store/commit/2431e914bede7333353d6dd6d6137ad90dd19a3f))
+
+
+
 ## [19.0.1](https://github.com/worktile/store/compare/v19.0.0...v19.0.1) (2025-10-27)
 
 
