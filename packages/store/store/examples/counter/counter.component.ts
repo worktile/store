@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Component, OnInit, Signal, effect } from '@angular/core';
+import { Component, OnInit, Signal, effect, inject } from '@angular/core';
 import { CounterStore } from './counter.store';
 
 @Component({
@@ -9,11 +9,13 @@ import { CounterStore } from './counter.store';
     standalone: false
 })
 export class ThyStoreCounterExampleComponent implements OnInit {
+    public counterStore = inject(CounterStore);
+
     count$: Observable<number> = this.counterStore.select$(CounterStore.countSelector);
 
     count: Signal<number> = this.counterStore.select(CounterStore.countSelector);
 
-    constructor(public counterStore: CounterStore) {
+    constructor() {
         effect(() => {
             console.log(`The count is: ${this.count()}`);
         });

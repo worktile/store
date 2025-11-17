@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { TodosStore } from './items.store';
 import { takeUntil, finalize, switchMap, catchError } from 'rxjs/operators';
 import { MonoTypeOperatorFunction, of, Subject, Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import { MonoTypeOperatorFunction, of, Subject, Observable } from 'rxjs';
     standalone: false
 })
 export class ThyStoreCancellationExampleComponent implements OnInit {
+    public todosStore = inject(TodosStore);
     destroy$ = new Subject<void>();
 
     loadingDone = false;
@@ -21,7 +22,7 @@ export class ThyStoreCancellationExampleComponent implements OnInit {
         return state.items;
     });
 
-    constructor(public todosStore: TodosStore) {}
+    constructor() {}
 
     ngOnInit(): void {
         this.fetchItems();

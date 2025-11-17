@@ -1,29 +1,28 @@
 <div class="page-container">
   <div class="sidebar">
-    <ng-container *ngIf="catalogsStore.entities$ | async as catalogs">
-      <div
-        class="catalog-card"
-        *ngFor="let catalog of catalogs"
-        [ngClass]="{ active: catalog._id === selectedCatalog._id }"
-        (click)="select(catalog)"
-      >
-        <h4>
-          {{ catalog.title }}
-        </h4>
-        <p>
-          {{ catalog.summary }}
-        </p>
-        <div class="page-update-at">更新于: {{ catalog.update_at }}</div>
-      </div>
-    </ng-container>
+    @if (catalogsStore.entities$ | async; as catalogs) {
+      @for (catalog of catalogs; track catalog._id) {
+        <div class="catalog-card" [ngClass]="{ active: catalog._id === selectedCatalog._id }" (click)="select(catalog)">
+          <h4>
+            {{ catalog.title }}
+          </h4>
+          <p>
+            {{ catalog.summary }}
+          </p>
+          <div class="page-update-at">更新于: {{ catalog.update_at }}</div>
+        </div>
+      }
+    }
   </div>
 
-  <div class="detail" *ngIf="pageDetail$ | async as pageDetail">
-    <h2 class="page-title">{{ pageDetail.title }}</h2>
-    <p>{{ pageDetail.content }}</p>
-    <div>
-      <button class="dg-btn dg-btn-primary dg-btn-xsm" (click)="updateTitle(pageDetail._id)">更新标题</button>
-      <button class="dg-btn dg-btn-primary dg-btn-xsm" (click)="resetTitle(pageDetail._id)">重置</button>
+  @if (pageDetail$ | async; as pageDetail) {
+    <div class="detail">
+      <h2 class="page-title">{{ pageDetail.title }}</h2>
+      <p>{{ pageDetail.content }}</p>
+      <div>
+        <button class="dg-btn dg-btn-primary dg-btn-xsm" (click)="updateTitle(pageDetail._id)">更新标题</button>
+        <button class="dg-btn dg-btn-primary dg-btn-xsm" (click)="resetTitle(pageDetail._id)">重置</button>
+      </div>
     </div>
-  </div>
+  }
 </div>

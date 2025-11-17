@@ -1,15 +1,17 @@
 <header class="header">
   <h1>Single Entity Data (Stream)</h1>
 </header>
-<div *ngIf="detailStore.entityWithRefs$ | async as detailInfo">
-  <h4>标题: {{ detailInfo.title }}</h4>
-  <p>
-    状态:
-    <span [ngStyle]="{ color: detailInfo?.refs?.state?._id === 'success-state-id' ? '#73d897' : '' }">
-      {{ detailInfo.refs?.state?.name }}
-    </span>
-  </p>
-</div>
+@if (detailStore.entityWithRefs$ | async; as detailInfo) {
+  <div>
+    <h4>标题: {{ detailInfo.title }}</h4>
+    <p>
+      状态:
+      <span [ngStyle]="{ color: detailInfo?.refs?.state?._id === 'success-state-id' ? '#73d897' : '' }">
+        {{ detailInfo.refs?.state?.name }}
+      </span>
+    </p>
+  </div>
+}
 
 <hr />
 

@@ -10,7 +10,8 @@
     "moduleResolution": "node",
     "esModuleInterop": false,
     "importHelpers": true,
-    "target": "es2015",
+    "target": "ES2022",
+    "useDefineForClassFields": true,
     "lib": ["esnext", "dom"],
     "types": ["node"],
     "paths": {
