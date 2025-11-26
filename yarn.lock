@@ -857,16 +857,16 @@
   dependencies:
     chalk "^4.0.0"
 
-"@docgeni/cli@2.6.0-next.0":
-  version "2.6.0-next.0"
-  resolved "https://registry.npmjs.org/@docgeni/cli/-/cli-2.6.0-next.0.tgz#d4cc4b7408a2237bd26538e8fb68157f4b79cffd"
-  integrity sha512-MZzytHuP4oxWplWG/DY2NMspARKhhKXhJ/a1gCbIVWmNfeeP6bUj9B6f0u+zKYiTVR6E2Es2FrTe5hK6EgZjdw==
+"@docgeni/cli@2.6.0":
+  version "2.6.0"
+  resolved "https://registry.npmjs.org/@docgeni/cli/-/cli-2.6.0.tgz#771e8555ed5b65dac66f712bc6f2af14a95da60f"
+  integrity sha512-4TOH3saE8NujG0AFQ9HZwC2mQe000W208iXYVnoR7yhdY0+SISbBNjNXv8RD9Q3zBCNDrvs1cIGASvmKKocZNQ==
   dependencies:
     "@angular-devkit/schematics" "^20.3.10"
     "@angular-devkit/schematics-cli" "^20.3.10"
-    "@docgeni/core" "^2.6.0-next.0"
-    "@docgeni/template" "^2.6.0-next.0"
-    "@docgeni/toolkit" "^2.6.0-next.0"
+    "@docgeni/core" "^2.6.0"
+    "@docgeni/template" "^2.6.0"
+    "@docgeni/toolkit" "^2.6.0"
     "@schematics/angular" "^20.3.10"
     chokidar "^3.3.1"
     cosmiconfig "^6.0.0"
@@ -879,16 +879,16 @@
     yargs "15.3.1"
     zone.js "^0.10.2"
 
-"@docgeni/core@^2.6.0-next.0":
-  version "2.6.0-next.0"
-  resolved "https://registry.npmjs.org/@docgeni/core/-/core-2.6.0-next.0.tgz#c463dd0a0beab8188b690e626adcc2792294d9e0"
-  integrity sha512-x6bA00nvEtjF4EEWWV+o1z0GTipjw3MgsgEAEFDCuKy0ZFndcnaX9vu69PKh5NaKO3R5tfC4/yQAp6cIh/tzGw==
+"@docgeni/core@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.npmjs.org/@docgeni/core/-/core-2.6.0.tgz#6148118a5999d9b227736dd70b72a0728c470271"
+  integrity sha512-8B74lJMxKbksKlYGxopiIdWNiGue+ysHpDXPuXLlBN48Yb1r4yPUaUy5Nm7wAOzAxfunpSF56pYDwzDcEn47QA==
   dependencies:
     "@angular-devkit/core" "^20.3.10"
     "@angular-devkit/schematics" "^20.3.10"
     "@angular/build" "^20.3.10"
-    "@docgeni/ngdoc" "^2.6.0-next.0"
-    "@docgeni/toolkit" "^2.6.0-next.0"
+    "@docgeni/ngdoc" "^2.6.0"
+    "@docgeni/toolkit" "^2.6.0"
     "@schematics/angular" "^20.3.10"
     "@types/text-table" "^0.2.2"
     ansi-colors "^4.1.1"
@@ -910,19 +910,19 @@
     vinyl "^2.2.0"
     vinyl-fs "^3.0.3"
 
-"@docgeni/ngdoc@^2.6.0-next.0":
-  version "2.6.0-next.0"
-  resolved "https://registry.npmjs.org/@docgeni/ngdoc/-/ngdoc-2.6.0-next.0.tgz#ce318eb608b5ddf55d3ce1802837095c7ca7905f"
-  integrity sha512-4kl91gmaYpLlFVHcOuWQHOtWThYUGWx0EhShUbpI7S/c7ugHIPfypZ7VyHyK5YWlwbwGFCf4eJjx3CJrpMrMhw==
+"@docgeni/ngdoc@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.npmjs.org/@docgeni/ngdoc/-/ngdoc-2.6.0.tgz#4383473b10e9167b1b09bdd98cd496d97a4ccef8"
+  integrity sha512-Tk/AdlZPN+9B3K0TZgIMzRYBrAyIlF54FDWlm7BOGsZS72IGBy0iffgHp/VUAx1TWJTrlM1CnSdCE7Itaeyo2w==
   dependencies:
-    "@docgeni/toolkit" "^2.6.0-next.0"
+    "@docgeni/toolkit" "^2.6.0"
     ts-morph "12.1.0"
     typescript "5.9.3"
 
-"@docgeni/template@2.6.0-next.0", "@docgeni/template@^2.6.0-next.0":
-  version "2.6.0-next.0"
-  resolved "https://registry.npmjs.org/@docgeni/template/-/template-2.6.0-next.0.tgz#189f1ef9339667b67916e0b4011e68507bc986e7"
-  integrity sha512-fuP8MNkeZgmhfyRR2gG6llxZpgWkXbd65ubOx1y8qd49RgiavJJueu1vrsLklR9rSxCMJD25ECuhFkPYaLWh0g==
+"@docgeni/template@2.6.0", "@docgeni/template@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.npmjs.org/@docgeni/template/-/template-2.6.0.tgz#3c753246a385ce9566073f6c89f067bffc825aad"
+  integrity sha512-pdmvvyAK7ChzolG4dIqs0JwIvHs2yFHF9TAnE6EwgDXTjr3U2msPZQ0iwsUFksoxkSIzGWqOh3xHDZmXiRvZNg==
   dependencies:
     docsearch.js "2.6.3"
     tslib "^2.3.0"
@@ -950,10 +950,10 @@
     time-stamp "^2.2.0"
     title-case "^3.0.2"
 
-"@docgeni/toolkit@^2.6.0-next.0":
-  version "2.6.0-next.0"
-  resolved "https://registry.npmjs.org/@docgeni/toolkit/-/toolkit-2.6.0-next.0.tgz#c6da06aa43d181763a8174f5c6e39968a5e357b5"
-  integrity sha512-MzJGV4uUIpyyiwdeghNBjMWUowF9buWaI6THEK8x8byHx/tX/fklv7HyiFGNtYP1KTxl58wp6RuZS2wr1ujOAQ==
+"@docgeni/toolkit@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.npmjs.org/@docgeni/toolkit/-/toolkit-2.6.0.tgz#57c9d1df6fca87508a848c50e41faa737077caac"
+  integrity sha512-EqcGNlPPbKkOxbQgvcwv+3bRC6qEmEw3n0PFVH/hBJe4jVJjN3AnplH0Z3uM+brWny4zFUZJh9CcYNfDOLqV1w==
   dependencies:
     "@angular-devkit/core" "^20.3.10"
     camelcase "^6.0.0"
@@ -2358,10 +2358,10 @@
   resolved "https://registry.npmjs.org/@socket.io/component-emitter/-/component-emitter-3.1.2.tgz#821f8442f4175d8f0467b9daf26e3a18e2d02af2"
   integrity sha512-9BCxFwvbGg/RsZK9tjXd8s4UcwR0MWeFQ1XEKIQVVvAGJyINdrqKMcTRyLoK8Rse1GjzLV9cwjWV1olXRWEXVA==
 
-"@tethys/cdk@^20.0.0-next.0":
-  version "20.0.0-next.0"
-  resolved "https://registry.npmjs.org/@tethys/cdk/-/cdk-20.0.0-next.0.tgz#f6b4e0a6012613927511f4c0789f8305d2209559"
-  integrity sha512-vhf6w/74+cgP4+6edTp/mkANLGQPGNIcpzWblpFpidnx06n/4Fy/MxrTjjeGrUenkLNirmw/oQHGrQ6D+Rts/g==
+"@tethys/cdk@^20.0.0":
+  version "20.0.0"
+  resolved "https://registry.npmjs.org/@tethys/cdk/-/cdk-20.0.0.tgz#84e9ce6cd14fa48dcacf66ddf2438655117d5655"
+  integrity sha512-LaIgf468QOoJ8CoyZpRwELM/2rtu6UC6DPLJJyCNN6rqu7Of+d4Pg5oGQmFXdpiYI4z0rdCRB3/8qRd86NEnWg==
   dependencies:
     tslib "^2.3.0"
 
@@ -8942,6 +8942,7 @@ wordwrap@^1.0.0:
   integrity sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==
 
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+  name wrap-ansi-cjs
   version "7.0.0"
   resolved "https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==

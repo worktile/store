@@ -4,7 +4,7 @@
   "peerDependencies": {
     "@angular/common": "^20.0.0",
     "@angular/core": "^20.0.0",
-    "@tethys/cdk": ">=20.0.0-next.0"
+    "@tethys/cdk": ">=20.0.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"
