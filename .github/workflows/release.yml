@@ -35,7 +35,7 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v1
               with:
-                  node-version: 24
+                  node-version: 20
                   registry-url: 'https://registry.npmjs.org'
             - name: Install dependencies
               run: yarn install
@@ -65,7 +65,7 @@ jobs:
               uses: joelwmale/webhook-action@master
               with:
                   url: 'https://hook-rc.pingcode.com/api/flow/w/http/357bdd4f00f34bfab2f878ad3b9e8b48'
-                  body: '{ "version": "${{ steps.read-version.outputs.prop }}", "name": "tethys-pro" }'
+                  body: '{ "version": "${{ steps.read-version.outputs.prop }}", "name": "tethys-store" }'
     autoMerge:
         if: startsWith(github.head_ref, 'release-auto-')
         needs: [publish]
