@@ -1,4 +1,4 @@
-<form [formGroup]="newUserForm" [thyStoreForm]="userFormStore" thyStateKey="user" (ngSubmit)="onSubmit()">
+<form [formGroup]="newUserForm" [thyStoreForm]="userFormStore" thyStatePath="user" (ngSubmit)="onSubmit()">
   <input type="text" formControlName="name" />
   <button type="submit">Create</button>
 </form>
