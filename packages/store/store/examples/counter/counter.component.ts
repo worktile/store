@@ -13,7 +13,6 @@ export class ThyStoreCounterExampleComponent implements OnInit {
     public counterStore = inject(CounterStore);
 
     count$: Observable<number> = this.counterStore.select$(CounterStore.countSelector);
-
     count: Signal<number> = this.counterStore.select(CounterStore.countSelector);
 
     constructor() {

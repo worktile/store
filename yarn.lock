@@ -1963,10 +1963,10 @@
   resolved "https://registry.npmmirror.com/@standard-schema/spec/-/spec-1.1.0.tgz#a79b55dbaf8604812f52d140b2c9ab41bc150bb8"
   integrity sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==
 
-"@tethys/cdk@^20.0.0":
-  version "20.0.9"
-  resolved "https://registry.npmmirror.com/@tethys/cdk/-/cdk-20.0.9.tgz#1fbb91e6928cc9d0e710c92945255c14778b9bb3"
-  integrity sha512-cvGsANIH/KH3UNZVsTbKFDMFgl4mEHzYSBYV6Ze2//t0JUEGTAqK4bJVFpwzM9zhRTMQfJqFSelzCClBiYqKfA==
+"@tethys/cdk@^21.0.0-next.0":
+  version "21.0.0-next.0"
+  resolved "https://registry.npmmirror.com/@tethys/cdk/-/cdk-21.0.0-next.0.tgz#bd1fbdd79f754ae144c933ec05c0ce32269865cb"
+  integrity sha512-cedy/qDWY5/2Gx4qelC4GQMg5m9dllPpAW6B6EjZI80+MFxCnfZGeS8wCU90wSkUApXoCAhGbKjg+BF0nhNjNQ==
   dependencies:
     tslib "^2.3.0"
 
