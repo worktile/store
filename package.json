@@ -18,7 +18,7 @@
     "release": "wpm release --release-branch-format release-auto-v{{version}}",
     "release-next-manual": "wpm release --release-branch-format release-next-v{{version}}",
     "release-next": "wpm release --release-branch-format release-auto-next-v{{version}}",
-    "pub": "wpm publish && yarn pub-only",
+    "pub": "wpm publish && npm run pub-only",
     "pub-only": "cd ./dist/store && npm publish",
     "pub-next": "wpm publish && npm run pub-only-next",
     "pub-only-next": "cd ./dist/store && npm publish --tag next"
