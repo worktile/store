@@ -1,7 +1,7 @@
 <button class="dg-btn dg-btn-primary dg-btn-sm" (click)="fetchItems()">Fetch Items</button>
 <button class="dg-btn dg-btn-primary dg-btn-sm" (click)="cancel()">Cancel</button>
 
-@if (loadingDone) {
+@if (loadingDone()) {
   <div>
     @for (item of todos$ | async; track item.title) {
       <div>
@@ -14,7 +14,7 @@
 }
 
 <div class="messages">
-  @for (message of messages; track message) {
+  @for (message of messages(); track message) {
     <div>
       {{ message }}
     </div>

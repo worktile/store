@@ -6,13 +6,13 @@ import { CounterStore } from './counter.store';
     selector: 'thy-store-counter-example',
     templateUrl: './counter.component.html',
     styleUrls: ['./counter.component.scss'],
-    standalone: false
+    standalone: false,
+    providers: [CounterStore]
 })
 export class ThyStoreCounterExampleComponent implements OnInit {
     public counterStore = inject(CounterStore);
 
     count$: Observable<number> = this.counterStore.select$(CounterStore.countSelector);
-
     count: Signal<number> = this.counterStore.select(CounterStore.countSelector);
 
     constructor() {

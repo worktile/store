@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { TodosStore } from './items.store';
 import { takeUntil, finalize, switchMap, catchError } from 'rxjs/operators';
 import { MonoTypeOperatorFunction, of, Subject, Observable } from 'rxjs';
@@ -14,9 +14,9 @@ export class ThyStoreCancellationExampleComponent implements OnInit {
     public todosStore = inject(TodosStore);
     destroy$ = new Subject<void>();
 
-    loadingDone = false;
+    loadingDone = signal(false);
 
-    messages: string[] = [];
+    messages = signal([]);
 
     todos$ = this.todosStore.select$((state) => {
         return state.items;
@@ -29,18 +29,18 @@ export class ThyStoreCancellationExampleComponent implements OnInit {
     }
 
     fetchItems() {
-        this.loadingDone = false;
+        this.loadingDone.set(false);
         this.todosStore
             .fetchItems()
             .pipe(
                 finalize(() => {
-                    this.loadingDone = true;
+                    this.loadingDone.set(true);
                 })
             )
             .subscribe({
                 next: (result) => {
                     console.log(`next`, result);
-                    this.messages.push(`Items fetched ${new Date()}`);
+                    this.messages.set([...this.messages(), `Items fetched ${new Date()}`]);
                 },
                 error: (error: Error) => {
                     console.log(error);

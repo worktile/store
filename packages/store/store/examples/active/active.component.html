@@ -29,7 +29,7 @@
   </section>
 }
 
-<p>activeItemsStore.activeId :{{ activeItemsStore.activeId }}</p>
-<p>activeItemsStore.activeEntity:{{ activeItemsStore.activeEntity | json }}</p>
+<p>activeItemsStore.activeId :{{ activeItemsStore.activeId() }}</p>
+<p>activeItemsStore.activeEntity:{{ activeItemsStore.activeEntity() | json }}</p>
 <p>activeItemsStore.activeId$:{{ activeItemsStore.activeId$ | async }}</p>
 <p>activeItemsStore.activeEntity$:{{ activeItemsStore.activeEntity$ | async | json }}</p>

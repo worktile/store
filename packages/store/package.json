@@ -2,9 +2,9 @@
   "name": "@tethys/store",
   "version": "20.0.0",
   "peerDependencies": {
-    "@angular/common": "^20.0.0",
-    "@angular/core": "^20.0.0",
-    "@tethys/cdk": ">=20.0.0"
+    "@angular/common": ">=21.0.0",
+    "@angular/core": ">=21.0.0",
+    "@tethys/cdk": ">=21.0.0"
   },
   "dependencies": {
     "tslib": "^2.0.0"
