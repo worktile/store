@@ -1,4 +1,3 @@
-import { Id } from '@tethys/cdk';
 import {
     ReferencedField,
     buildReferencesKeyBy,
@@ -7,16 +6,20 @@ import {
     ReferenceArrayExtractAllowKeys,
     ReferencesIdDictionary
 } from './references';
-import { getIdFromValue, getObjectValue, keyBy } from './utils';
+import { SafeAny } from './inner-types';
+import { getIdFromValue, getObjectValue } from './utils';
 
 export class ReferencesBuilder<TReferences> {
-    protected referencesIdMap: ReferencesIdDictionary<TReferences>;
+    protected referencesIdMap: ReferencesIdDictionary<TReferences> = {};
 
     get maps() {
         return this.referencesIdMap;
     }
 
-    constructor(protected references: TReferences, protected idKeys?: Partial<ReferenceArrayExtractAllowKeys<TReferences>>) {}
+    constructor(
+        protected references: TReferences,
+        protected idKeys?: Partial<ReferenceArrayExtractAllowKeys<TReferences>>
+    ) {}
 
     build(references?: TReferences): ReferencesBuilder<TReferences> {
         if (references) {
@@ -34,14 +37,14 @@ export class ReferencesBuilder<TReferences> {
     }
 
     attachRefs<T>(entity: T, fields: ReferencedField[]) {
-        const refs = {};
+        const refs: Record<string, SafeAny> = {};
         fields.forEach((field) => {
             const valuePath = field.value_path || field.key;
             const lookup = field.lookup || field.key;
 
             if (field.lookup) {
                 const value = getObjectValue(entity, valuePath);
-                let refsMap = this.referencesIdMap[lookup];
+                let refsMap = this.referencesIdMap[lookup as keyof TReferences];
                 if (refsMap) {
                     if (value) {
                         if (Array.isArray(value)) {

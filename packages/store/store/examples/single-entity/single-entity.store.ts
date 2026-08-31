@@ -12,6 +12,9 @@ export interface DetailInfo {
     _id: string;
     title?: string;
     state_id?: string;
+    refs?: {
+        state?: { _id: string; name?: string; [key: string]: SafeAny };
+    };
     [key: string]: any;
 }
 
@@ -47,7 +50,8 @@ export class DetailStore
     }
 
     onCombineRefs(entity: DetailInfo, referencesIdMap: ReferencesIdDictionary<DetailReferences>, references: DetailReferences): void {
-        entity.refs.state = (referencesIdMap.states || {})[entity.state_id];
+        entity.refs = entity.refs ?? {};
+        entity.refs.state = entity.state_id ? (referencesIdMap.states || {})[entity.state_id] : undefined;
     }
 
     @Action()

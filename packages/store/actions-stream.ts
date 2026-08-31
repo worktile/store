@@ -5,7 +5,7 @@ import { SafeAny } from './inner-types';
 /**
  * Status of a dispatched action
  */
-export const enum ActionStatus {
+export enum ActionStatus {
     Dispatched = 'DISPATCHED',
     Successful = 'SUCCESSFUL',
     Canceled = 'CANCELED',

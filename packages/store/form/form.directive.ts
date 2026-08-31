@@ -1,18 +1,18 @@
 import { Directive, Input, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormGroupDirective } from '@angular/forms';
+import { FormGroup, FormGroupDirective, ValidationErrors } from '@angular/forms';
 import { Store } from '@tethys/store';
 import { produce } from '@tethys/cdk/immutable';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, take, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, take, takeUntil } from 'rxjs/operators';
 
 @Directive({
     selector: '[thyStoreForm]',
     standalone: false
 })
 export class StoreFormDirective implements OnInit, OnDestroy {
-    @Input('thyStoreForm') store: Store;
+    @Input('thyStoreForm') store!: Store<any>;
 
-    @Input() thyStatePath: string;
+    @Input() thyStatePath!: string;
 
     @Input() thyClearDestroy = true;
 
@@ -60,7 +60,7 @@ export class StoreFormDirective implements OnInit, OnDestroy {
             this.getStateStream(`${this.path}`)
                 .pipe(take(1))
                 .subscribe(() => {
-                    this.store.update((state) => {
+                    this.store.update((state: any) => {
                         let obj = produce(state).set(`${this.path}.model`, this.form.getRawValue());
                         obj = produce(obj).set(`${this.path}.status`, this.form.status);
                         obj = produce(obj).set(`${this.path}.dirty`, this.form.dirty);
@@ -73,7 +73,7 @@ export class StoreFormDirective implements OnInit, OnDestroy {
             if (this.updating) {
                 return;
             }
-            this.form.patchValue(model);
+            this.form.patchValue(model ?? {});
             this._cdr.markForCheck();
         });
         this.getStateStream(`${this.path}.dirty`).subscribe((dirty) => {
@@ -117,7 +117,7 @@ export class StoreFormDirective implements OnInit, OnDestroy {
             });
 
         this.formGroup.statusChanges!.pipe(distinctUntilChanged(), this.debounceChange()).subscribe((status: string) => {
-            this.store.update((state) => {
+            this.store.update((state: any) => {
                 return produce(state).set(`${this.path}.status`, status);
             });
         });
@@ -129,7 +129,12 @@ export class StoreFormDirective implements OnInit, OnDestroy {
 
         const value = this.formGroup.control.getRawValue();
 
-        let updateState = {
+        let updateState: {
+            model: unknown;
+            status: string | null;
+            dirty: boolean | null;
+            errors: ValidationErrors | null;
+        } = {
             model: value,
             status: null,
             dirty: this.formGroup.dirty,
@@ -141,7 +146,7 @@ export class StoreFormDirective implements OnInit, OnDestroy {
 
         this.updating = true;
 
-        this.store.update((state) => {
+        this.store.update((state: any) => {
             let obj = produce(state).set(`${this.path}.model`, updateState.model);
             obj = produce(obj).set(`${this.path}.status`, updateState.status);
             obj = produce(obj).set(`${this.path}.dirty`, updateState.dirty);
@@ -155,7 +160,7 @@ export class StoreFormDirective implements OnInit, OnDestroy {
         this.destroy$.next();
         this.destroy$.complete();
         if (this.thyClearDestroy) {
-            this.store.update((state) => {
+            this.store.update((state: any) => {
                 let obj = produce(state).set(`${this.path}.model`, null);
                 obj = produce(obj).set(`${this.path}.status`, null);
                 obj = produce(obj).set(`${this.path}.dirty`, null);

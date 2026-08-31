@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { PageDetailStore } from './page-detail.store';
 import { Catalog, CatalogsStore } from './catalogs.store';
 import { Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
     templateUrl: './pages.component.html',
     styleUrls: ['./pages.component.scss'],
     providers: [PageDetailStore, CatalogsStore],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ThyStorePagesExampleComponent implements OnInit {
@@ -16,7 +17,7 @@ export class ThyStorePagesExampleComponent implements OnInit {
 
     pageDetail$: Observable<any> = this.pageDetailStore.select$(PageDetailStore.detailSelector);
 
-    selectedCatalog: Catalog;
+    selectedCatalog!: Catalog;
 
     ngOnInit() {
         this.catalogsStore.fetchCatalogs();

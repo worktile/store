@@ -4,6 +4,7 @@ export type ExtractTypeToPayload<T> = T extends [...infer A, never] ? ExtractTyp
 export interface ActionRef<T = any> {
     type: string;
     payload: ExtractTypeToPayload<T>;
+    id?: string;
 }
 
 export type ActionCreator<T = any> = (...payload: ExtractTypeToPayload<T>) => ActionRef<T>;

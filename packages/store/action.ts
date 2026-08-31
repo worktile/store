@@ -68,7 +68,7 @@ export function Action(
             cancelUncompleted: action.cancelUncompleted
         };
 
-        descriptor.value = function (...args: any[]) {
+        descriptor.value = function (this: { getStoreInstanceId(): string }, ...args: any[]) {
             const storeId = this.getStoreInstanceId();
             return InternalDispatcher.instance.dispatch(storeId, metadata.actions[type], () => {
                 return originalFn.call(this, ...args);

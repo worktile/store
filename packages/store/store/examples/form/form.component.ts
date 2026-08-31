@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { UserFormStore } from './form.store';
 
@@ -7,6 +7,7 @@ import { UserFormStore } from './form.store';
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.scss'],
     providers: [UserFormStore],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ThyStoreFormExampleComponent implements OnInit {

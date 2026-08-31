@@ -14,13 +14,13 @@ interface TodosState extends EntityState<Todo> {
     someKey?: string;
 }
 
-let id: number;
+let id = 0;
 @Injectable({ providedIn: 'root' })
 export class TodosStore extends EntityStore<TodosState, Todo> {
     private todosApiService = inject(TodosApiService);
     private storeFactory = inject(StoreFactory);
 
-    newTodoText: string;
+    newTodoText = '';
 
     stores = [];
 

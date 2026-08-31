@@ -22,7 +22,7 @@ export class InternalDispatcher {
         return this.dispatcher;
     }
 
-    private cancel$ = new Subject<{ storeId: string; action: string; cancelUncompleted?: CancelUncompleted }>();
+    private cancel$ = new Subject<{ storeId: string; action?: string; cancelUncompleted?: CancelUncompleted }>();
 
     private actions$ = new Subject<ActionContext>();
 
@@ -161,6 +161,9 @@ export class InternalDispatcher {
 
     public dispatch(storeId: string, action: ActionMetadata, originActionFn: () => Observable<unknown> | void) {
         const storeInstance = InternalStoreFactory.instance.get(storeId);
+        if (!storeInstance) {
+            return EMPTY;
+        }
         const dispatchId = `${action.type}-${generateIdWithTime()}`;
         let returnResult = undefined;
         const result$ = compose([

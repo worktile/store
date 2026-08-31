@@ -1,25 +1,32 @@
 {
+  "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc/site",
-    "sourceMap": true,
-    "declaration": false,
-    "downlevelIteration": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
     "experimentalDecorators": true,
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "esModuleInterop": false,
     "importHelpers": true,
     "target": "ES2022",
-    "useDefineForClassFields": true,
-    "lib": ["esnext", "dom"],
+    "module": "preserve",
+    "lib": ["ES2022", "dom"],
     "types": ["node"],
     "paths": {
-      "@tethys/store/*": ["../../packages/store/*"],
-      "@tethys/store": ["../../packages/store/index.ts"]
+      "@tethys/store": ["../../packages/store/index.ts"],
+      "@tethys/store/*": ["../../packages/store/*"]
     }
   },
   "files": ["src/main.ts"],
   "include": ["src/**/*.d.ts"],
-  "exclude": ["src/assets", "test.ts"]
+  "exclude": ["src/assets", "test.ts"],
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": false,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, Inject, Injectable, Optional, effect } from '@angular/core';
+import { Component, Inject, Injectable, Optional, effect, ChangeDetectionStrategy, inject } from '@angular/core';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 import { produce } from '@tethys/cdk/immutable';
 import { of, throwError } from 'rxjs';
@@ -103,16 +103,18 @@ class ZoomStore extends Store<ZoomState> {
 @Component({
     selector: 'thy-test-zoom',
     template: ``,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 class TesZoomComponent {
+    store = inject(ZoomStore);
     fooNameStateSpy = jasmine.createSpy('foo name spy');
     fooNameState = this.store.select(ZoomStore.fooNameSelector);
 
     fooDescriptionStateSpy = jasmine.createSpy('foo description spy');
     fooDescriptionState = this.store.select(ZoomStore.fooDescriptionSelector);
 
-    constructor(public store: ZoomStore) {
+    constructor() {
         effect(() => {
             this.fooNameStateSpy(this.fooNameState());
         });

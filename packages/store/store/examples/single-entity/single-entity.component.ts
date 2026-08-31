@@ -1,22 +1,23 @@
-import { Component, OnInit, Signal, effect, inject } from '@angular/core';
+import { Component, OnInit, Signal, effect, inject, ChangeDetectionStrategy } from '@angular/core';
 import { DetailInfo, DetailStore } from './single-entity.store';
 
 @Component({
     selector: 'thy-store-single-entity-example',
     templateUrl: './single-entity.component.html',
     styleUrls: ['./single-entity.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ThyStoreSingleEntityExampleComponent implements OnInit {
     public detailStore = inject(DetailStore);
 
-    titleState: Signal<string> = this.detailStore.select(DetailStore.titleSelector);
+    titleState: Signal<string | undefined> = this.detailStore.select(DetailStore.titleSelector);
 
-    stateIdState: Signal<string> = this.detailStore.select((state) => {
-        return state.entity.state_id;
+    stateIdState: Signal<string | undefined> = this.detailStore.select((state) => {
+        return state.entity?.state_id;
     });
 
-    entityState: Signal<DetailInfo> = this.detailStore.select((state) => {
+    entityState: Signal<DetailInfo | undefined> = this.detailStore.select((state) => {
         return state.entity;
     });
 

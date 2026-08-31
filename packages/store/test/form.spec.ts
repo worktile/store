@@ -123,6 +123,7 @@ class TestFormRequiredPluginComponent {
             <input type="text" formControlName="value" />
         </form>
     `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 class TestDebounceFormPluginComponent {

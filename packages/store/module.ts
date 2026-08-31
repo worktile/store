@@ -1,13 +1,15 @@
-import { NgModule, ModuleWithProviders, Type, Injector, NgModuleRef } from '@angular/core';
+import { NgModule, ModuleWithProviders, Type, NgModuleRef } from '@angular/core';
 import { ROOT_STORES_TOKEN, FEATURE_STORES_TOKEN } from './types';
-import { Store } from './store';
 import { clearInjector, setInjector } from './internals/static-injector';
 import { PLUGINS_TOKEN, StorePlugin } from './plugin';
 import { StorePluginManager } from './plugin-manager';
 
 @NgModule()
 export class ThyRootStoreModule {
-    constructor(ngModuleRef: NgModuleRef<any>, private storePluginManager: StorePluginManager) {
+    constructor(
+        ngModuleRef: NgModuleRef<any>,
+        private storePluginManager: StorePluginManager
+    ) {
         setInjector(ngModuleRef.injector);
         ngModuleRef.onDestroy(clearInjector);
     }
@@ -21,7 +23,7 @@ export class ThyFeatureStoreModule {
 @NgModule({})
 export class ThyStoreModule {
     static forRoot(
-        stores: Type<Store>[] = [],
+        stores: Type<any>[] = [],
         options?: {
             plugins: Type<StorePlugin>[];
         }
@@ -47,7 +49,7 @@ export class ThyStoreModule {
         };
     }
 
-    static forFeature(stores: Type<Store>[] = []): ModuleWithProviders<ThyFeatureStoreModule> {
+    static forFeature(stores: Type<any>[] = []): ModuleWithProviders<ThyFeatureStoreModule> {
         return {
             ngModule: ThyFeatureStoreModule,
             providers: [

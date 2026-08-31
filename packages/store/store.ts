@@ -1,13 +1,16 @@
-import { computed, Injectable, isDevMode, OnDestroy, Signal } from '@angular/core';
+import { computed, Inject, Injectable, InjectionToken, isDevMode, OnDestroy, Optional, Signal } from '@angular/core';
 import { isArray, isFunction, isNumber, isObject } from '@tethys/cdk/is';
 import { BehaviorSubject, from, Observable, Observer, Subject, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs/operators';
 import { Action } from './action';
-import { StoreMetaInfo } from './inner-types';
+import { MetaHost } from './inner-types';
 import { InternalDispatcher } from './internals/dispatcher';
 import { InternalStoreFactory } from './internals/internal-store-factory';
 import { META_KEY, StoreOptions, UpdateStatePredicate } from './types';
 import { toSignal } from '@angular/core/rxjs-interop';
+
+const STORE_INITIAL_STATE = new InjectionToken<unknown>('STORE_INITIAL_STATE');
+const STORE_OPTIONS_TOKEN = new InjectionToken<StoreOptions>('STORE_OPTIONS');
 
 /**
  * @dynamic
@@ -22,12 +25,15 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
 
     private name: string;
 
-    private storeOptions: StoreOptions;
+    private storeOptions?: StoreOptions;
 
     public readonly state: Signal<T>;
 
-    constructor(initialState: Partial<T>, options?: StoreOptions) {
-        this.storeOptions = options;
+    constructor(
+        @Optional() @Inject(STORE_INITIAL_STATE) initialState?: Partial<T>,
+        @Optional() @Inject(STORE_OPTIONS_TOKEN) options?: StoreOptions
+    ) {
+        this.storeOptions = options ?? undefined;
         this.name = this.setName();
         this.defaultStoreInstanceId = this.createStoreInstanceId();
         this.state$ = new BehaviorSubject<T>(initialState as T);
@@ -37,7 +43,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         // use json format function to deep clone an object, but it can't clone something correctly, such as NaN, function, Date and so on
         // https://stackoverflow.com/questions/122102/what-is-the-most-efficient-way-to-deep-clone-an-object-in-javascript
         // https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
-        this.initialStateCache = this.cloneInitialState(initialState);
+        this.initialStateCache = this.cloneInitialState((initialState === undefined ? {} : initialState) as Partial<T>);
         InternalStoreFactory.instance.register(this);
         InternalDispatcher.instance.dispatch(
             this.getStoreInstanceId(),
@@ -72,7 +78,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     }
 
     private _dispatch(action: any): Observable<any> {
-        const meta = this[META_KEY] as StoreMetaInfo;
+        const meta = (this as MetaHost)[META_KEY];
         if (!meta) {
             throw new Error(`${META_KEY} is not found, current store has not action`);
         }
@@ -80,7 +86,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
         if (!actionMeta) {
             throw new Error(`${action.type} is not found`);
         }
-        let result: any = actionMeta.originalFn.call(this, this.snapshot, action.payload);
+        let result: any = actionMeta.originalFn!.call(this, this.snapshot, action.payload);
 
         if (result instanceof Promise) {
             result = from(result);
@@ -213,7 +219,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
     }
 
     private getNameByConstructor() {
-        return this.constructor.name || /function (.+)\(/.exec(this.constructor + '')[1];
+        return this.constructor.name || /function (.+)\(/.exec(this.constructor + '')?.[1] || 'Store';
     }
 
     private setName(): string {
@@ -228,7 +234,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
             const allStores = InternalStoreFactory.instance.getAllStores();
             let count = 1;
             for (let i = 0; i < allStores.length; i++) {
-                if (allStores[i].name === name) {
+                if (allStores[i].getName() === name) {
                     count++;
                     if (count > instanceMaxCount) {
                         break;

@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import { FormControlStatus, ValidationErrors } from '@angular/forms';
 import { Store, setObjectValue } from '@tethys/store';
 
@@ -28,24 +27,23 @@ export interface FormModelState<T> {
 export function createFormModel<T>(
     model: T,
     options: {
-        dirty: boolean | null,
-        status: FormControlStatus | null,
+        dirty: boolean | null;
+        status: FormControlStatus | null;
         errors: ValidationErrors | null;
     } = {
         dirty: null,
         status: null,
         errors: null
     }
-): FormModelState<T>{
+): FormModelState<T> {
     return {
         model,
         dirty: options.dirty,
         status: options.status,
         errors: options.errors
-    }
+    };
 }
 
-@Injectable()
 export class FormStore<T = unknown> extends Store<T> {
     updateDirty(dirty: boolean, propertyKey: string) {
         this.update((state) => {
