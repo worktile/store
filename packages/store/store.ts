@@ -9,9 +9,6 @@ import { InternalStoreFactory } from './internals/internal-store-factory';
 import { META_KEY, StoreOptions, UpdateStatePredicate } from './types';
 import { toSignal } from '@angular/core/rxjs-interop';
 
-const STORE_INITIAL_STATE = new InjectionToken<unknown>('STORE_INITIAL_STATE');
-const STORE_OPTIONS_TOKEN = new InjectionToken<StoreOptions>('STORE_OPTIONS');
-
 /**
  * @dynamic
  */
@@ -29,10 +26,7 @@ export class Store<T = unknown> implements Observer<T>, OnDestroy {
 
     public readonly state: Signal<T>;
 
-    constructor(
-        @Optional() @Inject(STORE_INITIAL_STATE) initialState?: Partial<T>,
-        @Optional() @Inject(STORE_OPTIONS_TOKEN) options?: StoreOptions
-    ) {
+    constructor(initialState?: Partial<T>, options?: StoreOptions) {
         this.storeOptions = options ?? undefined;
         this.name = this.setName();
         this.defaultStoreInstanceId = this.createStoreInstanceId();
