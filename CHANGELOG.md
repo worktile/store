@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [22.0.0-next.0](https://github.com/worktile/store/compare/v21.0.0-next.1...v22.0.0-next.0) (2026-09-01)
+
+
+### Features
+
+* upgrade ng to 22 #TINFR-3764 ([#238](https://github.com/worktile/store/issues/238)) ([3c4a4c7](https://github.com/worktile/store/commit/3c4a4c79c084f16cc42b0cc47082ba05ca104908)), closes [#TINFR-3764](https://github.com/worktile/store/issues/TINFR-3764)
+
 # [20.0.0](https://github.com/worktile/store/compare/v20.0.0-next.0...v20.0.0) (2025-11-26)
 
 
