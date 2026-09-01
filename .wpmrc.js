@@ -2,7 +2,7 @@ module.exports = {
     allowBranch: ['master', 'v0.*', 'release-*', 'release-auto-*'],
     bumpFiles: [
         'package.json',
-        'package-lock.json',
+        'pnpm-lock.yaml',
         './packages/store/package.json',
         {
             filename: './packages/store/src/version.ts',
@@ -15,7 +15,7 @@ module.exports = {
     },
     commitAll: true,
     hooks: {
-        prepublish: 'yarn build',
+        prepublish: 'pnpm build',
         postreleaseBranch: 'git add .'
     }
 };

@@ -5,11 +5,20 @@ order: 20
 
 ## 安装
 
-```bash
+:::code-group
+
+```npm
 npm i @tethys/store --save
-// or
+```
+
+```pnpm
+pnpm add @tethys/store
+```
+
+```yarn
 yarn add @tethys/store
 ```
+:::
 
 ## 定义 Store 和 State
 

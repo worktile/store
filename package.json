@@ -3,8 +3,8 @@
   "version": "21.0.1",
   "scripts": {
     "ng": "ng",
-    "start": "npm run start:docs",
-    "docgeni": "npx --no-install docgeni init",
+    "start": "pnpm run start:docs",
+    "docgeni": "pnpm exec docgeni init",
     "start:docs": "docgeni serve --port 8887",
     "build": "ng build store --configuration production",
     "build:docs": "docgeni build --configuration production",
@@ -18,15 +18,17 @@
     "release": "wpm release --release-branch-format release-auto-v{{version}}",
     "release-next-manual": "wpm release --release-branch-format release-next-v{{version}}",
     "release-next": "wpm release --release-branch-format release-auto-next-v{{version}}",
-    "pub": "wpm publish && npm run pub-only",
+    "pub": "wpm publish && pnpm run pub-only",
     "pub-only": "cd ./dist/store && npm publish",
-    "pub-next": "wpm publish && npm run pub-only-next",
+    "pub-next": "wpm publish && pnpm run pub-only-next",
     "pub-only-next": "cd ./dist/store && npm publish --tag next"
   },
+  "packageManager": "pnpm@11.20.0",
   "engines": {
     "node": ">=18.10.0",
-    "yarn": ">=1.22.4 <2",
-    "npm": "Please use yarn instead of NPM to install dependencies"
+    "pnpm": ">=11.0.0",
+    "npm": "Please use pnpm instead of NPM to install dependencies",
+    "yarn": "Please use pnpm instead of Yarn to install dependencies"
   },
   "private": true,
   "dependencies": {
@@ -64,7 +66,7 @@
     "@typescript-eslint/eslint-plugin": "^8.68.0",
     "@typescript-eslint/parser": "^8.68.0",
     "typescript-eslint": "^8.68.0",
-    "@worktile/pkg-manager": "0.1.5",
+    "@worktile/pkg-manager": "0.2.0-next.8",
     "coveralls": "^3.0.9",
     "eslint": "^10.9.1",
     "husky": "^6.0.0",

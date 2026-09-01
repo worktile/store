@@ -4,11 +4,21 @@ order: 20
 ---
 ## Installation
 
-```bash
+:::code-group
+
+```npm
 npm i @tethys/store --save
-// or
+```
+
+```pnpm
+pnpm add @tethys/store
+```
+
+```yarn
 yarn add @tethys/store
 ```
+:::
+
 
 ## Define Store and State
 
