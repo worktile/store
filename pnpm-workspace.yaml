@@ -6,3 +6,7 @@ allowBuilds:
     '@parcel/watcher': true
     lmdb: true
     msgpackr-extract: true
+packageExtensions:
+    '@worktile/pkg-manager':
+        dependencies:
+            minimatch: 3.1.5
