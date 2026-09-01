@@ -2,7 +2,6 @@ module.exports = {
     allowBranch: ['master', 'v0.*', 'release-*', 'release-auto-*'],
     bumpFiles: [
         'package.json',
-        'pnpm-lock.yaml',
         './packages/store/package.json',
         {
             filename: './packages/store/src/version.ts',
