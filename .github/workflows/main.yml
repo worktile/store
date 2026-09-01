@@ -27,5 +27,5 @@ jobs:
             - name: Test
               run: |
                   pnpm lint
-                  pnpm test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
+                  pnpm test --no-watch --no-progress --browsers=ChromeHeadlessCI
                   pnpm run report-coverage
