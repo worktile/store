@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Component, OnInit, Signal, effect, inject } from '@angular/core';
+import { Component, OnInit, Signal, effect, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CounterStore } from './counter.store';
 
 @Component({
@@ -7,6 +7,7 @@ import { CounterStore } from './counter.store';
     templateUrl: './counter.component.html',
     styleUrls: ['./counter.component.scss'],
     standalone: false,
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [CounterStore]
 })
 export class ThyStoreCounterExampleComponent implements OnInit {

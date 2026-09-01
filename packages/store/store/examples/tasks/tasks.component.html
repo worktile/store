@@ -5,7 +5,7 @@
 @if (tasksStore.entitiesWithRefs$ | async; as tasks) {
   <div>
     @for (task of tasks; track tasksStore.trackBy($index, task)) {
-      <div>{{ task.title }} - {{ task.refs.assignee?.name }}</div>
+      <div>{{ task.title }} - {{ task.refs?.assignee?.name }}</div>
     }
   </div>
 }

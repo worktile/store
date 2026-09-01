@@ -1,5 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
+import { SafeAny } from '../inner-types';
 import { Store } from '../store';
 import { coerceArray } from '../utils';
 import { newWeakRef, WeakRef } from '../weak-ref';
@@ -17,7 +18,7 @@ export class InternalStoreFactory implements OnDestroy {
         return this.factory;
     }
 
-    private storeInstancesMap = new Map<string, WeakRef<Store>>();
+    private storeInstancesMap = new Map<string, WeakRef<Store<SafeAny>>>();
 
     public state$ = new Subject<{ storeId: string; state: unknown }>();
 
@@ -26,15 +27,15 @@ export class InternalStoreFactory implements OnDestroy {
         return this.currentId;
     }
 
-    register(store: Store) {
+    register(store: Store<SafeAny>) {
         this.storeInstancesMap.set(store.getStoreInstanceId(), newWeakRef(store));
     }
 
-    unregister(store: Store) {
+    unregister(store: Store<SafeAny>) {
         this.storeInstancesMap.delete(store.getStoreInstanceId());
     }
 
-    get(id: string) {
+    get(id: string): Store<SafeAny> | null {
         const storeWeakRef = this.storeInstancesMap.get(id);
         if (storeWeakRef) {
             const store = storeWeakRef.deref();
@@ -49,8 +50,8 @@ export class InternalStoreFactory implements OnDestroy {
         }
     }
 
-    getStores(predicate: (storeId: string, name: string, store?: string) => boolean) {
-        const stores = [];
+    getStores(predicate: (storeId: string, name: string, store?: string) => boolean): Store<SafeAny>[] {
+        const stores: Store<SafeAny>[] = [];
         this.storeInstancesMap.forEach((storeWeakRef, id) => {
             const store = storeWeakRef.deref();
             if (!store) {
@@ -77,11 +78,14 @@ export class InternalStoreFactory implements OnDestroy {
         });
     }
 
-    getAllState() {
-        return this.getAllStores().reduce((state, store) => {
-            state[store.getStoreInstanceId()] = store.getState();
-            return state;
-        }, {});
+    getAllState(): Record<string, SafeAny> {
+        return this.getAllStores().reduce(
+            (state, store) => {
+                state[store.getStoreInstanceId()] = store.getState();
+                return state;
+            },
+            {} as Record<string, SafeAny>
+        );
     }
 
     // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method

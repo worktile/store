@@ -10,4 +10,4 @@ export * from './action/action-definition';
 export { defineActions, payload } from './action/action-group-definition';
 export { Dispatcher, dispatch } from './dispatcher';
 export { getObjectValue, setObjectValue } from './utils';
-export { Id, PaginationInfo, StoreOptions } from './types';
+export type { Id, PaginationInfo, StoreOptions } from './types';

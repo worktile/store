@@ -4,10 +4,12 @@ const payloadSymbol = '__payloadSymbol';
 
 type PayloadRef = { [payloadSymbol]: true };
 
-type ExtractActionCreators<T> = { [key in keyof T]?: ActionCreator<T[key] extends { payload: infer P } ? P : T[key]> };
+type ExtractActionCreators<T> = { [key in keyof T]: ActionCreator<T[key] extends { payload: infer P } ? P : T[key]> };
 
 function isPayloadRef(variable: unknown): variable is PayloadRef {
-    return typeof variable === 'object' && payloadSymbol in variable && variable[payloadSymbol] === true;
+    return (
+        typeof variable === 'object' && variable !== null && payloadSymbol in variable && (variable as PayloadRef)[payloadSymbol] === true
+    );
 }
 
 export function payload<T1 = never, T2 = never, T3 = never, T4 = never>() {
@@ -17,7 +19,7 @@ export function payload<T1 = never, T2 = never, T3 = never, T4 = never>() {
 }
 
 export function defineActions<T extends Record<string, PayloadRef>>(groupName: string, actions: T) {
-    let result: ExtractActionCreators<T> = {};
+    const result = {} as ExtractActionCreators<T>;
     for (const key in actions) {
         if (isPayloadRef(actions[key])) {
             const type = `${groupName}_${key}`;

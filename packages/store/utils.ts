@@ -1,26 +1,28 @@
 import { isObject } from '@tethys/cdk';
-import { ActionMetadata, SafeAny, StoreMetaInfo } from './inner-types';
+import { ActionMetadata, MetaHost, SafeAny, StoreMetaInfo } from './inner-types';
 import { META_KEY } from './types';
 
-export function findAndCreateStoreMetadata(target: Object): StoreMetaInfo {
-    if (!target.hasOwnProperty(META_KEY)) {
+export function findAndCreateStoreMetadata(target: object): StoreMetaInfo {
+    const host = target as MetaHost;
+    if (!Object.prototype.hasOwnProperty.call(host, META_KEY)) {
         const defaultMetadata: StoreMetaInfo = {
             actions: {},
             path: null,
             children: [],
             instance: null
         };
-        target[META_KEY] = defaultMetadata;
+        host[META_KEY] = defaultMetadata;
     }
-    return target[META_KEY];
+    return host[META_KEY]!;
 }
 
-export function findActionMetadata(target: Object, actionId: string): ActionMetadata {
-    let currentObj = target;
+export function findActionMetadata(target: object, actionId: string): ActionMetadata | undefined {
+    let currentObj: object | null = target;
     while (currentObj !== null) {
-        if (currentObj.hasOwnProperty(META_KEY)) {
-            const meta = currentObj[META_KEY];
-            if (meta.actions && meta.actions[actionId]) {
+        const host = currentObj as MetaHost;
+        if (Object.prototype.hasOwnProperty.call(host, META_KEY)) {
+            const meta = host[META_KEY];
+            if (meta?.actions && meta.actions[actionId]) {
                 return meta.actions[actionId];
             }
         }
@@ -33,7 +35,7 @@ export function keyBy<T>(array: T[], key: T extends object ? keyof T : never): {
     const result: { [key: string]: T } = {};
     array.forEach((item) => {
         const keyValue = item[key];
-        (result as any)[keyValue] = item;
+        (result as SafeAny)[keyValue] = item;
     });
     return result;
 }
@@ -42,7 +44,7 @@ export function indexKeyBy<T>(array: T[], key: T extends object ? keyof T : neve
     const result: { [key: string]: number } = {};
     array.forEach((item, index) => {
         const keyValue = item[key];
-        (result as any)[keyValue] = index;
+        (result as SafeAny)[keyValue] = index;
     });
     return result;
 }
@@ -90,22 +92,26 @@ export function setObjectValue<T>(obj: T, prop: string, value: SafeAny) {
     const split = prop.split('.');
     const lastIndex = split.length - 1;
 
-    split.reduce((previousValue, part, index) => {
-        if (index === lastIndex) {
-            previousValue[part] = value;
-        } else {
-            previousValue[part] = Array.isArray(previousValue[part]) ? previousValue[part].slice() : { ...previousValue[part] };
-        }
+    split.reduce(
+        (previousValue: Record<string, SafeAny>, part, index) => {
+            if (index === lastIndex) {
+                previousValue[part] = value;
+            } else {
+                previousValue[part] = Array.isArray(previousValue[part]) ? previousValue[part].slice() : { ...previousValue[part] };
+            }
 
-        return previousValue && previousValue[part];
-    }, obj);
+            return previousValue && previousValue[part];
+        },
+        obj as Record<string, SafeAny>
+    );
 
     return obj;
 }
 
 export function getIdFromValue<T>(value: T) {
     if (isObject(value)) {
-        return value['uid'] || value['id'] || value['_id'];
+        const record = value as Record<string, SafeAny>;
+        return record['uid'] || record['id'] || record['_id'];
     } else {
         return value;
     }

@@ -25,7 +25,7 @@ interface ReduxDevtoolsAction {
  */
 interface DevtoolsExtension {
     send(action: ReduxDevtoolsAction, state: object): void;
-    subscribe(callback: Function): VoidFunction;
+    subscribe(callback: (action: ReduxDevtoolsAction) => void): VoidFunction;
 }
 
 @Injectable()
@@ -86,7 +86,7 @@ export class ReduxDevtoolsPlugin implements StorePlugin, OnDestroy {
     }
     private sendToDevTools(action: ReduxDevtoolsAction, state: object): void {
         if (this.isConnectSuccessful()) {
-            this.devtoolsExtension.send(action, state);
+            this.devtoolsExtension!.send(action, state);
         }
     }
 

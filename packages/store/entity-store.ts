@@ -12,6 +12,7 @@ import {
     ReferencesIdDictionary
 } from './references';
 import { Store } from './store';
+import { SafeAny } from './inner-types';
 import { PaginationInfo, StoreOptions, UpdateStatePredicate } from './types';
 import { coerceArray } from './utils';
 import { Signal, computed } from '@angular/core';
@@ -35,18 +36,18 @@ export interface ActiveState {
 }
 
 export interface EntityState<TEntity, TReferences = unknown> extends ActiveState {
-    pagination?: PaginationInfo;
+    pagination?: PaginationInfo | null;
     entities?: TEntity[];
     entity?: TEntity;
-    references?: TReferences;
+    references?: TReferences | null;
 }
 
 export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEntity, TReferences = unknown> extends Store<TState> {
     protected options: EntityStoreOptions<TEntity, TReferences>;
 
-    private internalReferencesIdMap: ReferencesIdDictionary<TReferences>;
+    private internalReferencesIdMap: ReferencesIdDictionary<TReferences> = {};
 
-    private isSingleEntity: boolean;
+    private isSingleEntity = false;
 
     entities$ = this.select$((state) => {
         return state.entities;
@@ -72,9 +73,9 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     });
 
     activeEntity$: Observable<TEntity | null> = this.select$((state) => {
-        return state.entities.find((entity) => entity[this.options.idKey] === state.activeId);
+        return state.entities?.find((entity) => entity[this.options.idKey as keyof TEntity] === state.activeId);
     }).pipe(
-        map((entity: TEntity) => {
+        map((entity) => {
             return entity || null;
         }),
         shareReplay(1)
@@ -117,12 +118,13 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     });
 
     private buildRefs(entity: TEntity) {
-        const newEntity = { ...entity };
-        if (this['onCombineRefs']) {
-            if (!newEntity['refs']) {
-                newEntity['refs'] = {};
+        const newEntity = { ...entity } as TEntity & { refs?: Record<string, unknown> };
+        const onCombineRefs = (this as SafeAny)['onCombineRefs'];
+        if (onCombineRefs) {
+            if (!newEntity.refs) {
+                newEntity.refs = {};
             }
-            this['onCombineRefs'](newEntity, this.internalReferencesIdMap, this.snapshot.references);
+            onCombineRefs.call(this, newEntity, this.internalReferencesIdMap, this.snapshot.references);
         } else {
             throw new Error(`onCombineRefs is not empty`);
         }
@@ -132,20 +134,22 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     private resetPagination(pagination: PaginationInfo, count: number) {
         pagination.count = count;
         // 向上取整 21 / 20 = 1.05 = 2 pageCount is 2
-        const pageCount = Math.ceil(pagination.count / pagination.pageSize);
+        const pageCount = Math.ceil(pagination.count / (pagination.pageSize || 1));
         pagination.pageCount = pageCount;
         this.snapshot.pagination = { ...pagination };
     }
 
     private increasePagination(amount: number) {
         const pagination = this.snapshot.pagination;
-        this.resetPagination(pagination, pagination.count + amount);
+        if (pagination) {
+            this.resetPagination(pagination, (pagination.count ?? 0) + amount);
+        }
     }
 
     private decreasePagination(amount: number) {
         const pagination = this.snapshot.pagination;
         if (pagination) {
-            this.resetPagination(pagination, pagination.count - amount);
+            this.resetPagination(pagination, (pagination.count ?? 0) - amount);
         }
     }
 
@@ -169,9 +173,9 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
             throw new Error(`idKey is required in EntityStore`);
         }
         this.buildReferencesIdMap();
-        this.entities = toSignal(this.entities$);
-        this.entity = toSignal(this.entity$);
-        this.activeId = toSignal(this.activeId$);
+        this.entities = toSignal(this.entities$) as Signal<TEntity[]>;
+        this.entity = toSignal(this.entity$) as Signal<TEntity>;
+        this.activeId = toSignal(this.activeId$) as Signal<Id | null>;
     }
 
     /**
@@ -239,14 +243,14 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         let finalAddEntities = addEntities;
 
         if (addOptions?.addByPagination && state.pagination) {
-            finalAddEntities = addEntities.slice(0, state.pagination.pageSize - state.entities.length);
+            finalAddEntities = addEntities.slice(0, (state.pagination.pageSize ?? 0) - (state.entities?.length ?? 0));
         }
 
-        state.entities = produce(state.entities).add(finalAddEntities, addOptions);
+        state.entities = produce(state.entities ?? []).add(finalAddEntities, addOptions);
 
         if (state.references) {
-            mergeReferences(state.references, references, this.options.referencesIdKeys, {
-                strategy: this.options.mergeReferencesStrategy
+            mergeReferences(state.references, references ?? {}, this.options.referencesIdKeys, {
+                strategy: this.options.mergeReferencesStrategy ?? MergeReferencesStrategy.ThrowError
             });
             this.buildReferencesIdMap();
         }
@@ -314,24 +318,25 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
         const ids = coerceArray(idsOrFn);
         if (this.isSingleEntity) {
             const oldEntity = state.entity;
-            if (ids.includes(oldEntity[this.options.idKey] as Id)) {
+            if (oldEntity && ids.includes(oldEntity[this.options.idKey as keyof TEntity] as Id)) {
                 const newState = isFunction(newStateOrFn) ? (newStateOrFn as any)(oldEntity) : newStateOrFn;
                 state.entity = { ...oldEntity, ...newState };
             }
         } else {
-            for (let i = 0; i < state.entities.length; i++) {
-                const oldEntity = state.entities[i];
-                if (ids.includes(oldEntity[this.options.idKey] as Id)) {
+            const entities = state.entities ?? [];
+            for (let i = 0; i < entities.length; i++) {
+                const oldEntity = entities[i];
+                if (ids.includes(oldEntity[this.options.idKey as keyof TEntity] as Id)) {
                     const newState = isFunction(newStateOrFn) ? (newStateOrFn as any)(oldEntity) : newStateOrFn;
-                    state.entities[i] = { ...oldEntity, ...newState };
+                    entities[i] = { ...oldEntity, ...newState };
                 }
             }
-            state.entities = [...state.entities];
+            state.entities = [...entities];
         }
 
         if (state.references) {
-            mergeReferences(state.references, references, this.options.referencesIdKeys, {
-                strategy: this.options.mergeReferencesStrategy
+            mergeReferences(state.references, references ?? ({} as TReferences), this.options.referencesIdKeys, {
+                strategy: this.options.mergeReferencesStrategy ?? MergeReferencesStrategy.ThrowError
             });
             this.buildReferencesIdMap();
         }
@@ -358,11 +363,11 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
      *   name: 'New Name'
      * }, references);
      */
-    update(state: Partial<TState>): void;
-    update(predicate: UpdateStatePredicate<TState>): void;
-    update(ids: Id | Id[] | null, newStateOrFn: Partial<TEntity>): void;
-    update(ids: Id | Id[] | null, newStateOrFn: UpdateStatePredicate<TEntity>): void;
-    update(
+    override update(state: Partial<TState>): void;
+    override update(predicate: UpdateStatePredicate<TState>): void;
+    override update(ids: Id | Id[] | null, newStateOrFn: Partial<TEntity>): void;
+    override update(ids: Id | Id[] | null, newStateOrFn: UpdateStatePredicate<TEntity>): void;
+    override update(
         idsOrFnOrState: Id | Id[] | null | Partial<TState> | UpdateStatePredicate<TState>,
         newStateOrFn?: UpdateStatePredicate<TEntity> | Partial<TEntity>
     ): void {
@@ -417,14 +422,15 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
             throw new Error(`single entity can't remove`);
         }
         const state = this.snapshot;
-        const originalLength = state.entities.length;
-        state.entities = produce(state.entities, this.options).remove(idsOrFn as Id | Id[]);
+        const entities = state.entities ?? [];
+        const originalLength = entities.length;
+        state.entities = produce(entities, this.options).remove(idsOrFn as Id | Id[]);
         this.decreasePagination(originalLength - state.entities.length);
         this.next({ ...state });
     }
 
     trackBy = (_index: number, entity: TEntity) => {
-        return entity[this.options.idKey];
+        return entity[this.options.idKey as keyof TEntity];
     };
 
     clearPagination() {
@@ -443,11 +449,13 @@ export class EntityStore<TState extends EntityState<TEntity, TReferences>, TEnti
     }
 
     protected getEntityById(id: Id): TEntity | null {
+        const idKey = this.options.idKey as keyof TEntity;
         if (this.isSingleEntity) {
-            return (this.entity()[this.options.idKey] as Id) === id ? this.snapshot.entity : null;
+            const entity = this.entity();
+            return entity && (entity[idKey] as Id) === id ? entity : null;
         } else {
-            const entity = this.entities().find((entity) => {
-                return (entity[this.options.idKey] as Id) === id;
+            const entity = this.entities()?.find((item) => {
+                return (item[idKey] as Id) === id;
             });
             return entity ? entity : null;
         }

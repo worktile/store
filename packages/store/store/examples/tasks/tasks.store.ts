@@ -25,7 +25,7 @@ export interface TasksReferences {
 
 interface TasksState extends EntityState<Task, TasksReferences> {}
 
-let taskIndex: number;
+let taskIndex = 0;
 @Injectable({ providedIn: 'root' })
 export class TasksStore extends EntityStore<TasksState, Task, TasksReferences> implements OnCombineRefs<Task, TasksReferences> {
     constructor() {
@@ -33,8 +33,8 @@ export class TasksStore extends EntityStore<TasksState, Task, TasksReferences> i
     }
 
     onCombineRefs(entity: Task, referencesIdMap: ReferencesIdDictionary<TasksReferences>, references?: TasksReferences): void {
-        entity.refs.assignee = referencesIdMap.users[entity.assignee];
-        entity.refs.created_by = referencesIdMap.users[entity.created_by];
+        entity.refs!.assignee = referencesIdMap.users?.[entity.assignee] as User;
+        entity.refs!.created_by = referencesIdMap.users?.[entity.created_by] as User;
     }
 
     @Action()

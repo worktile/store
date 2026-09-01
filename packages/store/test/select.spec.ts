@@ -1,4 +1,4 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { Observable } from 'rxjs';
 import { ThyStoreModule, Store } from '../index';
@@ -22,6 +22,7 @@ class StringSelectStore extends Store<StringSelectState> {
     // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'my-component-0',
     template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 class StringSelectComponent {

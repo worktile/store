@@ -55,9 +55,10 @@ export interface ReferencedField {
     value_path?: string;
 }
 
-function getReferenceIdKey<TReferences>(referenceKey: string, idKeys: ReferenceArrayExtractAllowKeys<TReferences>) {
-    if (idKeys && idKeys[referenceKey]) {
-        return idKeys[referenceKey];
+function getReferenceIdKey<TReferences>(referenceKey: string, idKeys?: Partial<ReferenceArrayExtractAllowKeys<TReferences>>) {
+    const keys = idKeys as Record<string, string> | undefined;
+    if (keys && keys[referenceKey]) {
+        return keys[referenceKey];
     } else {
         return '_id';
     }
@@ -94,8 +95,10 @@ export function mergeReferences<TReferences>(
                     throw new Error(`original reference must exist when append new reference: ${key}`);
                 }
                 if (options.strategy === MergeReferencesStrategy.Append) {
-                    originalReferences[key] = reference;
-                    originalReference = originalReferences[key];
+                    if (reference !== undefined) {
+                        originalReferences[key] = reference;
+                        originalReference = originalReferences[key];
+                    }
                 }
             }
             if (originalReference) {
@@ -103,12 +106,12 @@ export function mergeReferences<TReferences>(
                     // original reference id index map
                     const originalReferenceIdIndexMap = indexKeyBy<ReferenceExtractAllowKeys<TReferences>>(
                         originalReferences[key] as any,
-                        referenceIdKey
+                        referenceIdKey as any
                     );
                     // append reference is array
                     if (reference instanceof Array) {
                         reference.forEach((item: TReferences[Extract<keyof TReferences, string>]) => {
-                            const itemId = item[referenceIdKey];
+                            const itemId = (item as Record<string, SafeAny>)[referenceIdKey];
                             const index = originalReferenceIdIndexMap[itemId];
                             if (index >= 0) {
                                 originalReference[index] = { ...originalReference[index], ...item };
@@ -118,7 +121,7 @@ export function mergeReferences<TReferences>(
                         });
                     } else {
                         // append reference is not array, support append signal object to array reference
-                        const itemId = reference[referenceIdKey];
+                        const itemId = (reference as Record<string, SafeAny>)[referenceIdKey];
                         const index = originalReferenceIdIndexMap[itemId];
                         if (itemId >= 0) {
                             originalReference[index] = { ...originalReference[index], ...reference };
@@ -151,7 +154,7 @@ export function buildReferencesKeyBy<TReferences>(
             const referenceIdKey = getReferenceIdKey<TReferences>(key, idKeys);
             const reference = references[key];
             if (reference instanceof Array) {
-                const originalReferenceIdMap = keyBy<ArrayInferExtract<TReferences>>(reference, referenceIdKey);
+                const originalReferenceIdMap = keyBy<ArrayInferExtract<TReferences>>(reference, referenceIdKey as any);
                 (result as any)[key] = originalReferenceIdMap;
             }
         }

@@ -1,10 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Todo, TodosStore } from './todos.store';
 
 @Component({
     selector: 'thy-store-todos-example',
     templateUrl: './todos.component.html',
     styleUrls: ['./todos.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ThyStoreTodosExampleComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, Inject, Injectable, effect } from '@angular/core';
+import { Component, Inject, Injectable, effect, inject } from '@angular/core';
 import { produce } from '@tethys/cdk/immutable';
 import { EntityState, EntityStore, EntityStoreOptions } from '../entity-store';
 import { StoreInitialStateToken, StoreOptionsToken, injectStoreForTest } from './inject-store';
@@ -40,13 +40,15 @@ describe('Store: EntityStore', () => {
         standalone: false
     })
     class TesTaskDetailComponent {
+        store = inject(TaskDetailStore);
+
         taskNameState = this.store.select((state) => {
             return state.entity.name;
         });
 
         taskNameStateSpy = jasmine.createSpy('task name spy');
 
-        constructor(public store: TaskDetailStore) {
+        constructor() {
             effect(() => {
                 this.taskNameStateSpy(this.taskNameState());
             });

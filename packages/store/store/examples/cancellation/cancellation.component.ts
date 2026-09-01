@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { TodosStore } from './items.store';
 import { takeUntil, finalize, switchMap, catchError } from 'rxjs/operators';
 import { MonoTypeOperatorFunction, of, Subject, Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { MonoTypeOperatorFunction, of, Subject, Observable } from 'rxjs';
     templateUrl: './cancellation.component.html',
     styleUrls: ['./cancellation.component.scss'],
     providers: [TodosStore],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ThyStoreCancellationExampleComponent implements OnInit {
@@ -16,7 +17,7 @@ export class ThyStoreCancellationExampleComponent implements OnInit {
 
     loadingDone = signal(false);
 
-    messages = signal([]);
+    messages = signal<string[]>([]);
 
     todos$ = this.todosStore.select$((state) => {
         return state.items;

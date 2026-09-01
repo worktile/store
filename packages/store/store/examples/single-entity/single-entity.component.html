@@ -6,7 +6,7 @@
     <h4>标题: {{ detailInfo.title }}</h4>
     <p>
       状态:
-      <span [ngStyle]="{ color: detailInfo?.refs?.state?._id === 'success-state-id' ? '#73d897' : '' }">
+      <span [style.color]="detailInfo.refs?.state?._id === 'success-state-id' ? '#73d897' : null">
         {{ detailInfo.refs?.state?.name }}
       </span>
     </p>
@@ -22,8 +22,8 @@
   <h4>标题: {{ titleState() }}</h4>
   <p>
     状态:
-    <span [ngStyle]="{ color: stateIdState() === 'success-state-id' ? '#73d897' : '' }">
-      {{ (detailStore.entityWithRefs$ | async).refs?.state?.name }}
+    <span [style.color]="stateIdState() === 'success-state-id' ? '#73d897' : null">
+      {{ (detailStore.entityWithRefs$ | async)?.refs?.state?.name }}
     </span>
   </p>
 </div>

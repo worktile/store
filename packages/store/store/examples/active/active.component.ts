@@ -1,10 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActiveItem, ActiveItemsStore } from './active.store';
 
 @Component({
     selector: 'thy-store-active-example',
     templateUrl: './active.component.html',
     styleUrls: ['./active.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ThyStoreActiveItemsExampleComponent implements OnInit {

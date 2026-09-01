@@ -26,12 +26,15 @@ export function dispatch(action: ActionRef) {
 
 function invokeActions(action: ActionRef) {
     InternalStoreFactory.instance.getAllStores().forEach((store) => {
-        const actionMeta = findActionMetadata(store, action['id']);
+        if (!action.id) {
+            return;
+        }
+        const actionMeta = findActionMetadata(store, action.id);
         if (!actionMeta) {
             return;
         }
-        InternalDispatcher.instance.dispatch(store.defaultStoreInstanceId, actionMeta, () => {
-            return actionMeta.originalFn.call(store, ...action.payload);
+        InternalDispatcher.instance.dispatch(store.getStoreInstanceId(), actionMeta, () => {
+            return actionMeta.originalFn?.call(store, ...action.payload);
         });
     });
 }

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { createReferencesBuilder } from '@tethys/store/references-builder';
 
 @Component({
     selector: 'thy-store-references-builder-example',
     templateUrl: './references-builder.component.html',
     styleUrls: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class ThyStoreReferencesBuilderExampleComponent implements OnInit {

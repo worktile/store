@@ -3,7 +3,7 @@ import { Store } from '@tethys/store';
 // import { Store } from "@tethys/store/form";
 
 interface FormState<T> {
-    model: T;
+    model: T | undefined;
     dirty: boolean;
     status: string;
     errors: {};
