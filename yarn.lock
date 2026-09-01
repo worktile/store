@@ -229,14 +229,6 @@
   optionalDependencies:
     lmdb "3.5.6"
 
-"@angular/cdk@^21.1.2":
-  version "21.1.2"
-  resolved "https://registry.npmmirror.com/@angular/cdk/-/cdk-21.1.2.tgz#ec96817566761a1ec9308535eacd8710dab1b4ba"
-  integrity sha512-0q+PhBKmjKO0Yi353VCpMxT0g787cllLhdpyxh00i3twxNWvFkQZgy2Ih187ZXydvW+u9mFkK9+UGLzncQ0yng==
-  dependencies:
-    parse5 "^8.0.0"
-    tslib "^2.3.0"
-
 "@angular/cli@^22.1.6":
   version "22.1.6"
   resolved "https://registry.npmjs.org/@angular/cli/-/cli-22.1.6.tgz#07585e917347a66a933701e96a2b4223d458960e"
