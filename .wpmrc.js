@@ -9,7 +9,6 @@ module.exports = {
         }
     ],
     skip: {
-        changelog: true,
         confirm: true
     },
     commitAll: true,
