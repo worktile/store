@@ -27,8 +27,8 @@
 
 ```
 npm install @tethys/store --save
-# or if you are using yarn
-yarn add @tethys/store
+# or if you are using pnpm
+pnpm add @tethys/store
 ```
 
 ## 简单使用
@@ -114,15 +114,15 @@ export class ThyStoreCounterExampleComponent implements OnInit {
 ## Development
 ```base
 $ git clone https://github.com/worktile/store
-$ cd store && yarn
-$ yarn start:docs // open http://localhost:8887
+$ cd store && pnpm install
+$ pnpm start:docs // open http://localhost:8887
 ```
 
 ## Release & Publish
 
 ```
-yarn release
-yarn pub
+pnpm release
+pnpm pub
 ```
 ## LICENSE
 

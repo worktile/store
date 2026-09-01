@@ -1,0 +1,8 @@
+shamefullyHoist: true
+strictPeerDependencies: false
+engineStrict: true
+allowBuilds:
+    esbuild: true
+    '@parcel/watcher': true
+    lmdb: true
+    msgpackr-extract: true
