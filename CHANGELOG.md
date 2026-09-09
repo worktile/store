@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+# [22.0.0](https://github.com/worktile/store/compare/v22.0.0-next.0...v22.0.0) (2026-09-09)
+
 # [22.0.0-next.0](https://github.com/worktile/store/compare/v21.0.0-next.1...v22.0.0-next.0) (2026-09-01)
 
 
