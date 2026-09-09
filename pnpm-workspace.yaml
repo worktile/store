@@ -10,3 +10,5 @@ packageExtensions:
     '@worktile/pkg-manager':
         dependencies:
             minimatch: 3.1.5
+minimumReleaseAgeExclude:
+    - '@tethys/cdk@22.0.0'
